@@ -1,13 +1,15 @@
 /* font style for the whole website fonts */
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 600;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
+
 /* logo size */
-.logo{
+.logo {
   width: 250px;
   height: 100px;
 }
+
 /* splash screen animation start */
 .loader {
   width: 100%;
@@ -17,12 +19,103 @@ body{
   align-items: center;
   animation: l1 1s linear infinite alternate;
 }
+
 .loader:before {
   content: "";
 }
+
 @keyframes l1 {
   to {
     opacity: 0;
   }
 }
+
 /* splash screen animation end */
+
+.title {
+  font-size: 24px;
+  padding: 0px;
+  margin: 0px;
+}
+
+/* footer style start */
+.footer-child-div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.email-box {
+  padding: 0px;
+  margin: 0px;
+  word-break: break-all;
+}
+
+.combine-footer-div {
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.first-tab-size-div{
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8%;
+}
+
+.second-tab-size-div{
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+@media (max-width: 767px) {
+  .combine-footer-div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .first-tab-size-div {
+    width: 100%;
+    flex-direction: column;
+  }
+  .second-tab-size-div {
+    width: 100%;
+    flex-direction: column;
+  }
+  .footer-child-div {
+    flex-direction: row;
+  }
+}
+
+@media ((min-width : 768px) and (max-width: 1023px)) {
+  .first-tab-size-div {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .second-tab-size-div {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  @media ((min-width: 768px) and (max-width: 1023px)) {
+     .combine-footer-div{
+       width: 100%;
+     }
+  }
+}
+/* footer style end */
