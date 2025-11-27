@@ -119,3 +119,25 @@ body {
   }
 }
 /* footer style end */
+
+/* scrollbar style start */
+/* scrollbar style for the chrome, edge, opera and brave browsers */
+/* scrollbar width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* scrollbar thumb (draggable part) */
+::-webkit-scrollbar-thumb {
+  background: #20b820;
+  border-radius: 10px;
+}
+
+/* scrollbar style for the firefox */
+* {
+  scrollbar-width: thin;
+  /* thumb-color track-color */
+  scrollbar-color: #20b820 transparent; 
+}
+
+/* scrollbar style end */
