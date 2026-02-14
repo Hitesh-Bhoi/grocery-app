@@ -1,0 +1,102 @@
+{
+  "vegetables": [
+    {
+      "name": "Tomato",
+      "category": "vegetable",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063316/Two_ripe_tomatoes_on_a_white_gv5bmu.jpg",
+      "price": 20,
+      "unit": "kg",
+      "discount": null
+    },
+    {
+      "name": "Potato",
+      "category": "vegetable",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063511/download_12_bo0fsu.jpg",
+      "price": 18,
+      "unit": "kg",
+      "discount": 5
+    },
+    {
+      "name": "Onion",
+      "category": "vegetable",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063297/Download_premium_image_of_Shallot_Shallot_shallot_vegetable_onion__by_Ratcharin_Noiruksa_about_plant_food_pink_onion_and_red_12567944_1_xd9iqy.jpg",
+      "price": 22,
+      "unit": "kg",
+      "discount": null
+    },
+    {
+      "name": "Carrot",
+      "category": "vegetable",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063430/download_11_wb7esl.jpg",
+      "price": 30,
+      "unit": "kg",
+      "discount": 10
+    },
+    {
+      "name": "Lady fingure",
+      "category": "vegetable",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063582/download_9_p7np7s.jpg",
+      "price": 25,
+      "unit": "kg",
+      "discount": null
+    },
+    {
+      "name": "Cauliflower",
+      "category": "vegetable",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063444/Farmstand_Nook_kvxk29.jpg",
+      "price": 35,
+      "unit": "kg",
+      "discount": 8
+    }
+  ],
+  "fruits": [
+    {
+      "name": "Apple",
+      "category": "fruit",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1770747209/apple_s6x3at.jpg",
+      "price": 120,
+      "unit": "kg",
+      "discount": 15
+    },
+    {
+      "name": "Banana",
+      "category": "fruit",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063066/download_faa0ee.jpg",
+      "price": 40,
+      "unit": "dozen",
+      "discount": null
+    },
+    {
+      "name": "Orange",
+      "category": "fruit",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063143/Top_Foods_to_Help_Lower_Cholesterol_cwwszn.jpg",
+      "price": 60,
+      "unit": "kg",
+      "discount": 10
+    },
+    {
+      "name": "Grapes",
+      "category": "fruit",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063157/download_1_gl7mis.jpg",
+      "price": 90,
+      "unit": "kg",
+      "discount": null
+    },
+    {
+      "name": "Mango",
+      "category": "fruit",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063175/download_3_pvspnm.jpg",
+      "price": 150,
+      "unit": "kg",
+      "discount": 20
+    },
+    {
+      "name": "Papaya",
+      "category": "fruit",
+      "image_url": "https://res.cloudinary.com/dqwzddm94/image/upload/v1768063187/Embracing_Papaya_Slumber_Papaya_Slumber_Papaya_Fruit_Coma_Tropical_Fruit_PNG_Transparent_Image_and_Clipart_for_Free_Download_jtyu2w.jpg",
+      "price": 45,
+      "unit": "kg",
+      "discount": null
+    }
+  ]
+}
