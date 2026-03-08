@@ -1,4 +1,5 @@
 'use client';
+import { FlexBox } from "@/styles/mixins";
 import styled from "styled-components";
 
 export const StyledInfoCard = styled.div`
@@ -37,13 +38,9 @@ export const StyledCardImg = styled.div`
 `
 
 export const StyledInfoCardContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  gap: 20px;
+  ${FlexBox({ justify: "space-between",wrap: "wrap", gap: "20px" })};
   padding: 30px;
   margin: 20px;
-  flex-wrap: wrap;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 `;

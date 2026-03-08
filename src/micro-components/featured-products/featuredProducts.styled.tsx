@@ -62,7 +62,7 @@ export const StyledFeatureProductCard = styled.div`
     width: 100%;
     ${FlexBox({ justify: "space-between" })};
     .product-name-category {
-      ${FlexBox({ direction: "column" })};
+      /* ${FlexBox({ direction: "column" })}; */
       .product-category {
         text-transform: capitalize;
         font-size: 14px;
@@ -83,9 +83,9 @@ export const StyledFeatureProductCard = styled.div`
     width: 130px;
     height: 130px;
   }
-  .product-price-and-unit {
+  /* .product-price-and-unit {
     ${FlexBox({ direction: "column" })};
-  }
+  } */
   .product-details {
     width: 100%;
     ${FlexBox({ justify: "space-between" })};

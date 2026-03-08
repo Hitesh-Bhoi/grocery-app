@@ -16,17 +16,17 @@ import {
   StyledContactSection,
   StyledCorporateInfo,
   StyledEmailSection,
-  StyledFollowusInfo,
+  // StyledFollowusInfo,
   StyledFooterContainer,
   StyledInstallAppInfo,
-  StyledLogoSection,
+  // StyledLogoSection,
   StyledLogoWithInfo,
-  StyledPaymentsLink,
-  StyledPhoneInfo,
+  // StyledPaymentsLink,
+  // StyledPhoneInfo,
   StyledPopularProductInfo,
-  StyledRightsInfo,
-  StyledStoreLinks,
-  StyleFooterContactDetails,
+  // StyledRightsInfo,
+  // StyledStoreLinks,
+  // StyleFooterContactDetails,
   StyleFooterInfoDetails,
 } from "./footer.styled";
 
@@ -39,9 +39,9 @@ const Footer = () => {
         <StyleFooterInfoDetails>
           <div className="first-tab-size-div">
           <StyledLogoWithInfo>
-            <StyledLogoSection>
+            <div>
               <Image src={logo} alt="website logo" />
-            </StyledLogoSection>
+            </div>
             <div className="footer-child-div">
             <StyledAddressSection>
               <Image src={location} alt="address icon" width={20} height={20} />
@@ -125,24 +125,24 @@ const Footer = () => {
                 Install App
             </p>
             <span>From App Store or Google Play</span>
-            <StyledStoreLinks>
+            <div>
                 <Image src={appStore} alt="app store link" width={100} height={45}/>
                 <Image src={playStore} alt="play store link" width={100} height={45}/>
-            </StyledStoreLinks>
+            </div>
             <span>Secure Payment Gatways</span>
-            <StyledPaymentsLink>
+            <div>
                 <Image src={mastercard} alt="mastercard link" width={100} height={50}/>
                 <Image src={UPI} alt="UPI link" width={100} height={45}/>
-            </StyledPaymentsLink>
+            </div>
           </StyledInstallAppInfo>
           </div>
         </StyleFooterInfoDetails>
 
-        <StyleFooterContactDetails>
-          <StyledRightsInfo></StyledRightsInfo>
+        {/* <StyleFooterContactDetails> */}
+          {/* <StyledRightsInfo></StyledRightsInfo>
           <StyledPhoneInfo></StyledPhoneInfo>
-          <StyledFollowusInfo></StyledFollowusInfo>
-        </StyleFooterContactDetails>
+          <StyledFollowusInfo></StyledFollowusInfo> */}
+        {/* </StyleFooterContactDetails> */}
       </StyledFooterContainer>
     </>
   );

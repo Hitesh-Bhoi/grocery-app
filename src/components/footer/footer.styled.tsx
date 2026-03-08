@@ -1,44 +1,31 @@
 "use client";
+import { FlexBox } from "@/styles/mixins";
 import styled from "styled-components";
 
 export const StyledFooterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  ${FlexBox ({ direction: "column" })};
   padding: 20px;
   box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
 `;
 export const StyleFooterInfoDetails = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0px;
+  width: 100%;
+  ${FlexBox ({ justify: "space-between", align: "flex-start" })}
 
   @media (max-width: 767px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    ${FlexBox ({ direction: "column" })};
   }
 
   @media ((min-width: 768px) and (max-width: 1023px)) {
     width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+    ${FlexBox ({ direction: "column", gap: "20px" })};
   }
 `;
 export const StyledLogoWithInfo = styled.div`
   width: 40%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 15px;
-
+  ${FlexBox ({ direction: "column", justify: "flex-start", align: "flex-start", gap: "15px" })};
   @media (max-width: 767px) {
     width: 100%;
-    justify-content: center;
-    align-items: center;
+    ${FlexBox ({ direction: "column", gap: "30px" })};
     padding-bottom: 20px;
   }
 
@@ -48,14 +35,11 @@ export const StyledLogoWithInfo = styled.div`
 `;
 export const StyledCompanyInfo = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 15px;
+  ${FlexBox ({ direction: "column", justify: "flex-start", align: "flex-start", gap: "15px" })};
 
   @media (max-width: 767px) {
     width: 100%;
+    /* ${FlexBox ({ direction: "column" })}; */
     justify-content: center;
     align-items: center;
     padding-bottom: 20px;
