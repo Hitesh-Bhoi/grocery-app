@@ -79,14 +79,6 @@ const slides = [
 
 export default function Carousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-
-  const prevSlide = () => {
-    setActiveIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
-  const nextSlide = () => {
-    setActiveIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-  };
-
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -125,35 +117,6 @@ export default function Carousel() {
           />
         ))}
       </Indicators>
-
-      {/* Controls */}
-      <PrevButton className="slider_button" onClick={prevSlide}>
-        <ControlIconWrapper>
-          <ControlIcon viewBox="0 0 24 24" fill="none">
-            <path
-              d="m15 19-7-7 7-7"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </ControlIcon>
-        </ControlIconWrapper>
-      </PrevButton>
-
-      <NextButton className="slider_button" onClick={nextSlide}>
-        <ControlIconWrapper>
-          <ControlIcon viewBox="0 0 24 24" fill="none">
-            <path
-              d="m9 5 7 7-7 7"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </ControlIcon>
-        </ControlIconWrapper>
-      </NextButton>
     </CarouselWrapper>
   );
 }
