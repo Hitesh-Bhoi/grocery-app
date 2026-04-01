@@ -1,5 +1,6 @@
 import Carousel from "@/micro-components/carousel/Carousel";
 import ContactUs from "@/micro-components/contact-us/contactUs";
+import FAQ from "@/micro-components/faq/faq";
 import DiscountCard from "@/micro-components/discount-card/DiscountCard";
 import FeaturedProducts from "@/micro-components/featured-products/FeaturedProducts";
 import NewseLetter from "@/micro-components/news-letter/NewsLetter";
@@ -25,6 +26,9 @@ const Dashboard = () => {
         </div>
         <div className="contact-us-container">
           <ContactUs/>
+        </div>
+        <div className="faq-container">
+          <FAQ/>
         </div>
       </div>
     </>
