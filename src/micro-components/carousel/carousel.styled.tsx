@@ -19,11 +19,13 @@ export const CarouselInner = styled.div`
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
 
-  @media (min-width: 768px) {
-    min-height: 720px;
+  @media (max-width: 1024px) {
+    height: 60vh;
+    min-height: 480px;
   }
   @media (max-width: 768px) {
-    min-height: 520px;
+    height: 50vh;
+    min-height: 420px;
   }
 `;
 
@@ -38,6 +40,10 @@ export const CarouselItem = styled.div<{ $bg: string }>`
   background-image: url(${({ $bg }) => $bg});
   background-size: cover;
   background-position: center;
+
+  @media (max-width: 1024px) {
+    background-position: center center;
+  }
 
   &[data-active="true"] {
     opacity: 1;
@@ -66,20 +72,42 @@ export const CarouselItem = styled.div<{ $bg: string }>`
       rgba(0, 0, 0, 0.38) 45%,
       rgba(0, 0, 0, 0) 72%
     );
+
+    @media (max-width: 1024px) {
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.5) 45%,
+        rgba(0, 0, 0, 0.1) 75%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
   }
 `;
 
 export const CarouselContent = styled.div`
   position: absolute;
   top: 50%;
-  left: 8%;
+  left: 12%;
   transform: translateY(-50%);
   color: white;
-  max-width: 540px;
+  max-width: 720px;
   z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  /* Tab and laptop centering */
+  @media (max-width: 1440px) {
+    top: auto;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    text-align: center;
+    width: 95%;
+    max-width: 900px;
+  }
 
   .carousel_tag {
     display: inline-flex;
@@ -98,27 +126,58 @@ export const CarouselContent = styled.div`
   }
 
   .carousel_title {
-    font-size: clamp(30px, 4.5vw, 62px);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.5px;
+    font-size: clamp(22px, 5vw, 48px);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
     opacity: 0;
+    white-space: nowrap;
+    
+    @media (max-width: 1024px) {
+      font-size: clamp(20px, 4.5vw, 38px);
+    }
+    
+    @media (max-width: 768px) {
+      white-space: normal;
+      font-size: clamp(18px, 6vw, 28px);
+    }
+    
+    @media (max-width: 375px) {
+      font-size: 20px;
+    }
   }
 
   .carousel_description {
-    font-size: clamp(14px, 1.6vw, 18px);
+    font-size: clamp(17px, 2.2vw, 22px);
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.85);
-    max-width: 420px;
-    font-weight: 400;
+    color: #f8fafc;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    max-width: 580px;
+    font-weight: 510;
+    letter-spacing: 0.2px;
     opacity: 0;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+      max-width: 90%;
+    }
   }
 
   .carousel_buttons {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    justify-content: center; /* This handles centering of buttons */
     opacity: 0;
+
+    @media (min-width: 1441px) {
+      justify-content: flex-start;
+    }
+
+    @media (max-width: 375px) {
+      gap: 8px;
+    }
 
     button {
       padding: 14px 28px;
@@ -129,36 +188,49 @@ export const CarouselContent = styled.div`
       font-weight: 700;
       transition: transform 0.2s ease, box-shadow 0.2s ease,
         background-color 0.2s ease;
+
+      @media (max-width: 375px) {
+        padding: 10px 16px;
+        font-size: 13px;
+      }
     }
 
     .button1 {
-      background-color: var(--green);
+      background-color: #199b19; /* slightly darker than var(--green) */
       color: white;
-      box-shadow: 0 12px 28px rgba(32, 184, 32, 0.35);
-
+      border: none;
+      box-shadow: none;
+      
       &:hover {
+        background-color: #147e14; /* even darker green */
         transform: translateY(-2px);
-        box-shadow: 0 18px 34px rgba(32, 184, 32, 0.45);
+        box-shadow: none;
       }
     }
 
     .button2 {
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: rgba(255, 255, 255, 0.12);
       color: white;
-      border: 1.5px solid rgba(255, 255, 255, 0.45);
-      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(12px);
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.28);
+        background-color: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.8);
         transform: translateY(-2px);
       }
     }
   }
 
   @media (max-width: 768px) {
-    left: 5%;
-    right: 5%;
-    gap: 12px;
+    top: auto;
+    bottom: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    gap: 16px;
+    align-items: center;
+    text-align: center;
   }
 `;
 
@@ -202,6 +274,10 @@ const ControlButton = styled.button`
   cursor: pointer;
   background: transparent;
   border: none;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const PrevButton = styled(ControlButton)`

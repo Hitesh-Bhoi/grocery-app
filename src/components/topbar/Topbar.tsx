@@ -13,6 +13,7 @@ import {
 } from "./topbar.styled";
 import logo from "../../../public/logo.svg";
 import Image from "next/image";
+import Link from "next/link";
 import { CgProfile } from "react-icons/cg";
 import { IoMdLogOut } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
@@ -25,14 +26,16 @@ import {
   HiOutlineUser,
 } from "react-icons/hi2";
 
+import { useCart } from "@/context/CartContext";
+
 const Topbar = () => {
   const [isProfileToggle, setIsProfileToggle] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isNavbarShow, setIsNavbarShow] = useState<boolean>(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  /* cart item count — replace with real state/context later */
-  const cartCount = 3;
+  const { totalItems } = useCart();
+  const cartCount = totalItems;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,12 +99,14 @@ const Topbar = () => {
         {/* right: cart + profile */}
         <StyledRightSection>
           {/* cart */}
-          <StyledCartButton>
-            <HiOutlineShoppingCart className="cart-icon" />
-            {cartCount > 0 && (
-              <span className="cart-badge">{cartCount}</span>
-            )}
-          </StyledCartButton>
+          <Link href="/cart">
+            <StyledCartButton>
+              <HiOutlineShoppingCart className="cart-icon" />
+              {cartCount > 0 && (
+                <span className="cart-badge">{cartCount}</span>
+              )}
+            </StyledCartButton>
+          </Link>
 
           {/* profile dropdown */}
           <StyledProfileContainer ref={profileRef}>

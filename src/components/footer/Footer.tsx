@@ -16,89 +16,76 @@ import {
   StyledContactSection,
   StyledCorporateInfo,
   StyledEmailSection,
-  // StyledFollowusInfo,
+  StyledFooterBottom,
   StyledFooterContainer,
-  StyledInstallAppInfo,
-  // StyledLogoSection,
   StyledLogoWithInfo,
-  // StyledPaymentsLink,
-  // StyledPhoneInfo,
   StyledPopularProductInfo,
-  // StyledRightsInfo,
-  // StyledStoreLinks,
-  // StyleFooterContactDetails,
   StyleFooterInfoDetails,
 } from "./footer.styled";
-
-require("./footer.styled");
 
 const Footer = () => {
   return (
     <>
       <StyledFooterContainer>
         <StyleFooterInfoDetails>
-          <div className="first-tab-size-div">
+
+          {/* ── brand + contact ── */}
           <StyledLogoWithInfo>
-            <div>
-              <Image src={logo} alt="website logo" />
-            </div>
+            <Image src={logo} alt="Ecobazar logo" width={140} />
+            <p className="brand-tagline">
+              Fresh groceries, unbeatable prices, and quick delivery — straight
+              from local farms to your doorstep.
+            </p>
             <div className="footer-child-div">
-            <StyledAddressSection>
-              <Image src={location} alt="address icon" width={20} height={20} />
-              <span>
-                Address: 5th Floor, Bandra-Kurla Complex, Mumbai, MH 400051
-              </span>
-            </StyledAddressSection>
-            <StyledContactSection>
-              <Image
-                src={headphone}
-                alt="headphone icon"
-                width={20}
-                height={20}
-              />
-              <span>
-                Call Us{" "}
-                <span className="contact-number">(+91)-540-025-124553</span>
-              </span>
-            </StyledContactSection>
-            </div>
-            <div className="footer-child-div">
-            <StyledEmailSection>
-              <Image src={email} alt="email icon" width={20} height={20} />
-              <p className="email-box">
-                <span>Email</span> <span className="email">sales@ecobazar.com</span>
-              </p>
-            </StyledEmailSection>
-            <StyledEmailSection>
-              <Image src={clock} alt="clock icon" width={20} height={20} />
-              <span>Hours 10:00 - 18:00, Mon - Sat</span>
-            </StyledEmailSection>
+              <StyledAddressSection>
+                <Image src={location} alt="location" width={16} height={16} />
+                <span>Ahmedabad, Gujarat, India</span>
+              </StyledAddressSection>
+              <StyledContactSection>
+                <Image src={headphone} alt="phone" width={16} height={16} />
+                <span>
+                  Call Us{" "}
+                  <span className="contact-number">(+91)-8200861893</span>
+                </span>
+              </StyledContactSection>
+              <StyledEmailSection>
+                <Image src={email} alt="email" width={16} height={16} />
+                <p className="email-box">
+                  <span>Email</span>
+                  <span className="email">sales@ecobazar.com</span>
+                </p>
+              </StyledEmailSection>
+              <StyledEmailSection>
+                <Image src={clock} alt="hours" width={16} height={16} />
+                <span>10:00 – 18:00, Mon – Sat</span>
+              </StyledEmailSection>
             </div>
           </StyledLogoWithInfo>
-          <div className="combine-footer-div">
+
+          {/* ── company ── */}
           <StyledCompanyInfo>
             <p className="title">Company</p>
             <span>About Us</span>
             <span>Privacy Policy</span>
-            <span>Terms & Conditions</span>
+            <span>Terms &amp; Conditions</span>
             <span>Contact Us</span>
             <span>Support Center</span>
             <span>Careers</span>
           </StyledCompanyInfo>
+
+          {/* ── account ── */}
           <StyledAccountInfo>
             <p className="title">Account</p>
             <span>Sign In</span>
-            <span>View Chart</span>
+            <span>View Cart</span>
             <span>My Wishlist</span>
-            <span>Tract My Order</span>
+            <span>Track My Order</span>
             <span>Help Ticket</span>
             <span>Shipping Details</span>
             <span>Compare Products</span>
           </StyledAccountInfo>
-          </div>
-          </div>
-          <div className="second-tab-size-div">
-          <div className="combine-footer-div">
+
+          {/* ── corporate ── */}
           <StyledCorporateInfo>
             <p className="title">Corporate</p>
             <span>Become a Vendor</span>
@@ -106,9 +93,11 @@ const Footer = () => {
             <span>Farm Business</span>
             <span>Farm Careers</span>
             <span>Our Suppliers</span>
-            <span>Accessibilitty</span>
+            <span>Accessibility</span>
             <span>Promotion</span>
           </StyledCorporateInfo>
+
+          {/* ── popular ── */}
           <StyledPopularProductInfo>
             <p className="title">Popular</p>
             <span>Fresh Fruits</span>
@@ -119,30 +108,16 @@ const Footer = () => {
             <span>Root Vegetables</span>
             <span>Herbs &amp; Garnishes</span>
           </StyledPopularProductInfo>
-          </div>
-          <StyledInstallAppInfo>
-            <p className="title">
-                Install App
-            </p>
-            <span>From App Store or Google Play</span>
-            <div>
-                <Image src={appStore} alt="app store link" width={100} height={45}/>
-                <Image src={playStore} alt="play store link" width={100} height={45}/>
-            </div>
-            <span>Secure Payment Gatways</span>
-            <div>
-                <Image src={mastercard} alt="mastercard link" width={100} height={50}/>
-                <Image src={UPI} alt="UPI link" width={100} height={45}/>
-            </div>
-          </StyledInstallAppInfo>
-          </div>
+
         </StyleFooterInfoDetails>
 
-        {/* <StyleFooterContactDetails> */}
-          {/* <StyledRightsInfo></StyledRightsInfo>
-          <StyledPhoneInfo></StyledPhoneInfo>
-          <StyledFollowusInfo></StyledFollowusInfo> */}
-        {/* </StyleFooterContactDetails> */}
+        {/* ── bottom bar ── */}
+        <StyledFooterBottom>
+          <p className="copyright">
+            © {new Date().getFullYear()} <span>Ecobazar</span>. All rights reserved.
+          </p>
+        </StyledFooterBottom>
+
       </StyledFooterContainer>
     </>
   );

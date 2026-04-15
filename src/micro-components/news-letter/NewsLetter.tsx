@@ -20,9 +20,8 @@ const NewseLetter = () => {
             </h2>
             <p>
               Get exclusive discounts, new product alerts, and weekly meal
-              inspiration delivered to your inbox, Get exclusive discounts, new
-              product alerts, and weekly meal inspiration delivered to your
-              inbox.
+              inspiration delivered to your inbox — curated just for you, every
+              week.
             </p>
           </div>
           <div className="news-letter-rating-container">

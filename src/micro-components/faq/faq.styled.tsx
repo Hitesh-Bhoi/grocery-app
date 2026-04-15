@@ -1,67 +1,87 @@
 import { FlexBox } from "@/styles/mixins";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-/* ─── tokens ────────────────────────────────────────────────────────────── */
-const green = "var(--green)";
-const greenLight = "rgba(32,184,32,0.10)";
-const greenSoft = "rgba(32,184,32,0.22)";
-const border = "#d4d6da";
-const textMuted = "#787f8a";
-const shadow =
-  "rgba(0,0,0,0.25) 0px 0.0625em 0.0625em, rgba(0,0,0,0.25) 0px 0.125em 0.5em, rgba(255,255,255,0.1) 0px 0px 0px 1px inset";
+/* ─── tokens ─────────────────────────────────────────────────────────────── */
+const green     = "var(--green)";
+const greenLight = "rgba(25,155,25,0.08)";
+const greenMid   = "rgba(25,155,25,0.15)";
+const greenSoft  = "rgba(25,155,25,0.22)";
+const border     = "rgba(25,155,25,0.12)";
+const borderGrey = "#e5e7eb";
+const textMuted  = "#6b7280";
 
-/* ─── outer wrapper ─────────────────────────────────────────────────────── */
+const slideDown = keyframes`
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+`;
+
+/* ─── outer wrapper ──────────────────────────────────────────────────────── */
 export const FAQMain = styled.div`
-  margin: 20px;
-  border-radius: 10px;
-  box-shadow: ${shadow};
+  margin: 0 20px 48px;
+  border-radius: 20px;
   overflow: hidden;
+  background: linear-gradient(135deg, #f0faf0 0%, #ffffff 60%, #f7fef7 100%);
+  border: 1px solid ${border};
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.05),
+    0 0 0 1px rgba(255,255,255,0.9) inset;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: -80px;
+    left: -80px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(25,155,25,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
   @media (max-width: 480px) {
-    margin: 10px;
-    border-radius: 8px;
+    margin: 0 10px 32px;
+    border-radius: 14px;
   }
 `;
 
-/* ─── header: title + search ────────────────────────────────────────────── */
+/* ─── header ─────────────────────────────────────────────────────────────── */
 export const FAQHeader = styled.div`
-  background: linear-gradient(
-    90deg,
-    ${greenLight} 0%,
-    rgba(32, 184, 32, 0.04) 100%
-  );
   border-bottom: 1px solid ${border};
-  padding: 40px 50px 32px;
+  padding: 48px 50px 36px;
   text-align: center;
 
   h2 {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 800;
     margin: 0 0 10px;
-    span {
-      color: ${green};
-    }
+    color: #111827;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+
+    span { color: ${green}; }
   }
 
   .faq-sub {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 400;
     color: ${textMuted};
     margin: 0;
+    line-height: 1.6;
   }
 
   /* search bar */
   .faq-search {
     position: relative;
-    max-width: 440px;
-    margin: 24px auto 0;
+    max-width: 480px;
+    margin: 28px auto 0;
 
     .search-icon {
       position: absolute;
-      left: 14px;
+      left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: ${textMuted};
+      color: #9ca3af;
       display: flex;
       align-items: center;
       pointer-events: none;
@@ -69,79 +89,73 @@ export const FAQHeader = styled.div`
 
     input {
       width: 100%;
-      padding: 13px 18px 13px 44px;
-      border: 1.5px solid ${border};
-      border-radius: 8px;
-      font-size: 14px;
+      padding: 15px 20px 15px 48px;
+      border: 1.5px solid ${borderGrey};
+      border-radius: 50px;
+      font-size: 15px;
       font-family: inherit;
-      font-weight: 500;
+      font-weight: 400;
       outline: none;
       background: #fff;
       color: #111;
       box-sizing: border-box;
       transition: border-color 0.2s, box-shadow 0.2s;
 
-      &::placeholder {
-        color: #c0c8d2;
-        font-weight: 400;
-      }
+      &::placeholder { color: #c0c8d2; }
 
       &:focus {
         border-color: ${green};
-        box-shadow: 0 0 0 3px ${greenLight};
+        box-shadow: 0 0 0 4px ${greenLight};
       }
     }
   }
 
   /* tablet */
   @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 32px 30px 28px;
-    h2 {
-      font-size: 1.7rem;
-    }
+    padding: 36px 30px 28px;
+    h2 { font-size: 1.8rem; }
   }
 
   /* mobile */
   @media (max-width: 767px) {
-    padding: 24px 16px 20px;
-    h2 {
-      font-size: 1.4rem;
-    }
-    .faq-sub {
-      font-size: 13px;
-    }
-    .faq-search {
-      margin-top: 16px;
-    }
+    padding: 28px 20px 22px;
+    h2 { font-size: 1.5rem; }
+    .faq-sub { font-size: 14px; }
+    .faq-search { margin-top: 18px; }
   }
 `;
 
-/* ─── body: categories + accordion list ────────────────────────────────── */
+/* ─── body ───────────────────────────────────────────────────────────────── */
 export const FAQBody = styled.div`
-  padding: 32px 50px 40px;
+  padding: 36px 50px 44px;
 
   /* category filter chips */
   .faq-cats {
     ${FlexBox({ justify: "center", gap: "8px" })};
     flex-wrap: wrap;
-    margin-bottom: 28px;
+    margin-bottom: 32px;
 
     .cat-btn {
-      padding: 8px 18px;
+      padding: 9px 22px;
       border-radius: 99px;
-      border: 1.5px solid ${border};
+      border: 1.5px solid ${borderGrey};
       background: #fff;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
       color: ${textMuted};
       cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 
-      &:hover,
+      &:hover {
+        border-color: ${green};
+        color: ${green};
+      }
+
       &.active {
         background: ${green};
         color: #fff;
         border-color: ${green};
+        box-shadow: 0 4px 14px rgba(25,155,25,0.28);
       }
     }
   }
@@ -151,7 +165,7 @@ export const FAQBody = styled.div`
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 12px;
   }
 
   /* tablet */
@@ -161,47 +175,43 @@ export const FAQBody = styled.div`
 
   /* mobile */
   @media (max-width: 767px) {
-    padding: 20px 16px 28px;
+    padding: 22px 16px 28px;
 
     .faq-cats {
       gap: 6px;
-      margin-bottom: 20px;
-
-      .cat-btn {
-        padding: 7px 14px;
-        font-size: 12px;
-      }
+      margin-bottom: 22px;
+      .cat-btn { padding: 8px 16px; font-size: 13px; }
     }
   }
 `;
 
-/* ─── single accordion item ─────────────────────────────────────────────── */
+/* ─── single accordion item ──────────────────────────────────────────────── */
 export const FAQItem = styled.div<{ $open: boolean }>`
   background: #fff;
-  border: 1.5px solid ${({ $open }) => ($open ? green : border)};
-  border-radius: 10px;
+  border: 1.5px solid ${({ $open }) => ($open ? green : borderGrey)};
+  border-radius: 14px;
   overflow: hidden;
   box-shadow: ${({ $open }) =>
     $open
-      ? "0 6px 24px rgba(32,184,32,0.13)"
-      : "0 2px 8px rgba(0,0,0,0.04)"};
+      ? "0 8px 28px rgba(25,155,25,0.12)"
+      : "0 1px 4px rgba(0,0,0,0.04)"};
   transition: border-color 0.25s, box-shadow 0.25s;
 
-  /* question row (clickable) */
+  /* question row */
   .faq-question {
     width: 100%;
-    ${FlexBox({ justify: "flex-start", align: "center", gap: "14px" })};
-    padding: 18px 22px;
+    ${FlexBox({ justify: "flex-start", align: "center", gap: "16px" })};
+    padding: 20px 24px;
     background: none;
     border: none;
     cursor: pointer;
     text-align: left;
 
     .faq-item-icon {
-      width: 38px;
-      height: 38px;
-      min-width: 38px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      border-radius: 12px;
       background: ${({ $open }) => ($open ? green : greenLight)};
       color: ${({ $open }) => ($open ? "#fff" : green)};
       display: flex;
@@ -209,88 +219,104 @@ export const FAQItem = styled.div<{ $open: boolean }>`
       justify-content: center;
       flex-shrink: 0;
       transition: background 0.25s, color 0.25s;
+
+      svg { width: 20px; height: 20px; }
     }
 
     .faq-question-text {
       flex: 1;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
-      color: #111;
+      color: #111827;
       text-align: left;
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
     .faq-toggle {
-      width: 28px;
-      height: 28px;
-      min-width: 28px;
+      width: 32px;
+      height: 32px;
+      min-width: 32px;
       border-radius: 50%;
-      background: ${({ $open }) => ($open ? greenLight : "#f3f4f6")};
+      background: ${({ $open }) => ($open ? greenMid : "#f3f4f6")};
       ${FlexBox({ justify: "center", align: "center" })};
       color: ${green};
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       transition: transform 0.3s, background 0.25s;
       transform: ${({ $open }) => ($open ? "rotate(45deg)" : "rotate(0deg)")};
       flex-shrink: 0;
+      line-height: 1;
     }
   }
 
   /* answer panel */
   .faq-answer {
-    max-height: ${({ $open }) => ($open ? "400px" : "0")};
+    max-height: ${({ $open }) => ($open ? "500px" : "0")};
     overflow: hidden;
-    transition: max-height 0.35s ease;
+    transition: max-height 0.38s ease;
 
     .faq-answer-inner {
-      padding: 0 22px 20px 74px;
-      font-size: 14px;
-      font-weight: 500;
+      padding: 0 24px 22px 84px;
+      font-size: 15px;
+      font-weight: 400;
       color: ${textMuted};
-      line-height: 1.75;
+      line-height: 1.8;
+      animation: ${slideDown} 0.3s ease;
     }
   }
 
   /* mobile */
   @media (max-width: 767px) {
-    .faq-question {
-      padding: 14px 14px;
-      gap: 10px;
+    border-radius: 12px;
 
-      .faq-question-text {
-        font-size: 14px;
-      }
+    .faq-question {
+      padding: 16px 16px;
+      gap: 12px;
+
+      .faq-item-icon { width: 38px; height: 38px; min-width: 38px; border-radius: 10px; }
+      .faq-question-text { font-size: 14px; }
+      .faq-toggle { width: 28px; height: 28px; min-width: 28px; font-size: 20px; }
     }
 
     .faq-answer .faq-answer-inner {
-      padding: 0 14px 16px 62px;
-      font-size: 13px;
+      padding: 0 16px 18px 66px;
+      font-size: 14px;
     }
   }
 `;
 
-/* ─── bottom CTA block ──────────────────────────────────────────────────── */
+/* ─── bottom CTA ─────────────────────────────────────────────────────────── */
 export const FAQCTA = styled.div`
-  margin: 0 50px 40px;
-  padding: 32px;
+  margin: 0 50px 44px;
+  padding: 36px;
   text-align: center;
-  background: linear-gradient(
-    135deg,
-    ${greenLight} 0%,
-    rgba(32, 184, 32, 0.04) 100%
-  );
+  background: linear-gradient(135deg, ${greenLight} 0%, rgba(25,155,25,0.04) 100%);
   border: 1.5px solid ${greenSoft};
-  border-radius: 10px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(25,155,25,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
   p {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 500;
     color: ${textMuted};
-    margin: 0 0 18px;
+    margin: 0 0 20px;
 
     strong {
-      color: #111;
-      font-weight: 700;
+      color: #111827;
+      font-weight: 800;
     }
   }
 
@@ -300,38 +326,39 @@ export const FAQCTA = styled.div`
 
     .btn-primary {
       ${FlexBox({ align: "center", gap: "8px" })};
-      padding: 13px 28px;
-      background: ${green};
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #1db81d 0%, #199b19 100%);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: 0 6px 28px rgba(32, 184, 32, 0.22);
-      transition: background 0.2s, transform 0.15s;
+      box-shadow: 0 6px 20px rgba(25,155,25,0.28);
+      transition: transform 0.2s, box-shadow 0.2s;
 
       &:hover {
-        background: #17981a;
         transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(25,155,25,0.35);
       }
     }
 
     .btn-secondary {
       ${FlexBox({ align: "center", gap: "8px" })};
-      padding: 13px 28px;
+      padding: 14px 32px;
       background: #fff;
       color: ${green};
-      border: 1.5px solid ${border};
-      border-radius: 8px;
+      border: 1.5px solid ${borderGrey};
+      border-radius: 10px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      transition: border-color 0.2s, transform 0.15s;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 
       &:hover {
         border-color: ${green};
         transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.08);
       }
     }
   }
@@ -344,22 +371,21 @@ export const FAQCTA = styled.div`
   /* mobile */
   @media (max-width: 767px) {
     margin: 0 16px 24px;
-    padding: 22px 16px;
+    padding: 24px 20px;
 
     p {
-      font-size: 14px;
-      margin-bottom: 14px;
+      font-size: 15px;
+      margin-bottom: 16px;
     }
 
     .cta-buttons {
       gap: 10px;
-
       .btn-primary,
       .btn-secondary {
         width: 100%;
         justify-content: center;
-        padding: 12px 20px;
-        font-size: 14px;
+        padding: 13px 20px;
+        font-size: 15px;
       }
     }
   }

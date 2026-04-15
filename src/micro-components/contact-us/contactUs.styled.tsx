@@ -1,54 +1,74 @@
 import { FlexBox } from "@/styles/mixins";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-/* ─── tokens (mirror project globals) ─────────────────────────────────── */
-const green = "var(--green)";
-const greenLight = "rgba(32,184,32,0.10)";
-const greenSoft = "rgba(32,184,32,0.22)";
-const border = "#d4d6da";
-const textMuted = "#787f8a";
-const shadow =
-  "rgba(0,0,0,0.25) 0px 0.0625em 0.0625em, rgba(0,0,0,0.25) 0px 0.125em 0.5em, rgba(255,255,255,0.1) 0px 0px 0px 1px inset";
-const shadowGreen = "0 6px 28px rgba(32,184,32,0.22)";
+/* ─── tokens ─────────────────────────────────────────────────────────────── */
+const green      = "var(--green)";
+const greenLight = "rgba(25,155,25,0.08)";
+const greenMid   = "rgba(25,155,25,0.14)";
+const greenSoft  = "rgba(25,155,25,0.22)";
+const borderGrey = "#e5e7eb";
+const borderGreen= "rgba(25,155,25,0.15)";
+const textMuted  = "#6b7280";
 
-/* ─── wrapper ──────────────────────────────────────────────────────────── */
+const pulseDot = keyframes`
+  0%, 100% { opacity: 1; transform: scale(1);  }
+  50%       { opacity: 0.4; transform: scale(0.85); }
+`;
+
+/* ─── outer wrapper ──────────────────────────────────────────────────────── */
 export const ContactUsMain = styled.div`
-  margin: 20px;
-  border-radius: 10px;
-  box-shadow: ${shadow};
+  margin: 0 20px 48px;
+  border-radius: 20px;
   overflow: hidden;
+  background: linear-gradient(135deg, #f0faf0 0%, #ffffff 60%, #f7fef7 100%);
+  border: 1px solid ${borderGreen};
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.05),
+    0 0 0 1px rgba(255,255,255,0.9) inset;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(25,155,25,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
   @media (max-width: 480px) {
-    margin: 10px;
-    border-radius: 8px;
+    margin: 0 10px 32px;
+    border-radius: 14px;
   }
 `;
 
-/* ─── section header bar ───────────────────────────────────────────────── */
+/* ─── header bar ──────────────────────────────────────────────────────────── */
 export const ContactUsHeader = styled.div`
-  background: linear-gradient(
-    90deg,
-    ${greenLight} 0%,
-    rgba(32, 184, 32, 0.04) 100%
-  );
-  border-bottom: 1px solid ${border};
-  padding: 28px 50px;
-  ${FlexBox({ justify: "space-between", align: "center" })};
+  border-bottom: 1px solid ${borderGreen};
+  padding: 36px 50px 28px;
+  ${FlexBox({ direction: "column", justify: "center", align: "center" })};
+  text-align: center;
 
   .contact-title-block {
     h2 {
-      font-size: 1.9rem;
-      font-weight: 700;
-      margin: 0 0 6px;
-      span {
-        color: ${green};
-      }
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0 0 8px;
+      color: #111827;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      span { color: ${green}; }
     }
     p {
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 400;
       color: ${textMuted};
-      max-width: 420px;
+      margin: 0 auto;
+      max-width: 480px;
+      line-height: 1.6;
     }
   }
 
@@ -57,7 +77,7 @@ export const ContactUsHeader = styled.div`
     background: ${greenLight};
     border: 1px solid ${greenSoft};
     border-radius: 99px;
-    padding: 6px 18px;
+    padding: 8px 20px;
     font-size: 12px;
     font-weight: 700;
     color: ${green};
@@ -69,76 +89,60 @@ export const ContactUsHeader = styled.div`
       height: 8px;
       border-radius: 50%;
       background: ${green};
-      animation: pulse-dot 1.6s infinite;
-    }
-  }
-
-  @keyframes pulse-dot {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.3;
+      flex-shrink: 0;
+      animation: ${pulseDot} 1.6s ease-in-out infinite;
     }
   }
 
   /* tablet */
   @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 22px 30px;
-    .contact-title-block h2 {
-      font-size: 1.6rem;
-    }
+    padding: 28px 30px 22px;
+    .contact-title-block h2 { font-size: 1.65rem; }
   }
 
   /* mobile */
   @media (max-width: 767px) {
     ${FlexBox({ direction: "column", align: "flex-start", gap: "14px" })};
-    padding: 20px 16px;
+    padding: 24px 20px 20px;
     .contact-title-block {
-      h2 {
-        font-size: 1.3rem;
-      }
-      p {
-        font-size: 13px;
-      }
+      h2 { font-size: 1.4rem; }
+      p  { font-size: 13px; }
     }
   }
 `;
 
-/* ─── body grid (info left | form right) ──────────────────────────────── */
+/* ─── body grid ──────────────────────────────────────────────────────────── */
 export const ContactUsBody = styled.div`
   display: grid;
   grid-template-columns: 300px 1fr;
   min-height: 480px;
 
-  /* tablet */
   @media (min-width: 768px) and (max-width: 1024px) {
     grid-template-columns: 260px 1fr;
   }
 
-  /* mobile */
   @media (max-width: 767px) {
     grid-template-columns: 1fr;
   }
 `;
 
-/* ─── left panel — info + social ─────────────────────────────────────── */
+/* ─── left: info + social ────────────────────────────────────────────────── */
 export const ContactInfoPanel = styled.div`
-  ${FlexBox({ direction: "column", justify: "flex-start", align: "stretch", gap: "0px" })};
-  border-right: 1px solid ${border};
-  padding: 32px 24px;
-  background: #fafafa;
-  gap: 20px;
+  ${FlexBox({ direction: "column", justify: "flex-start", align: "stretch", gap: "4px" })};
+  border-right: 1px solid ${borderGreen};
+  padding: 36px 28px;
+  background: rgba(240, 250, 240, 0.5);
 
   .info-row {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
-    padding: 12px 0;
-    border-bottom: 1px solid ${border};
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid ${borderGreen};
+    transition: background 0.2s;
+
+    &:first-of-type { padding-top: 0; }
 
     &:last-of-type {
       border-bottom: none;
@@ -146,37 +150,45 @@ export const ContactInfoPanel = styled.div`
     }
 
     .info-icon {
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
-      background: ${greenLight};
-      border-radius: 10px;
+      width: 46px;
+      height: 46px;
+      min-width: 46px;
+      background: linear-gradient(135deg, #e8f8e8 0%, #d1f0d1 100%);
+      border: 1px solid rgba(25,155,25,0.18);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: ${green};
       flex-shrink: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    &:hover .info-icon {
+      background: ${green};
+      color: #fff;
+      transform: scale(1.05);
     }
 
     .info-text {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 2px;
+      gap: 3px;
 
       h4 {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 700;
-        color: #111;
+        color: #9ca3af;
         margin: 0;
-        line-height: 1.3;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
       }
       p {
-        font-size: 13px;
-        font-weight: 500;
-        color: ${textMuted};
+        font-size: 14px;
+        font-weight: 600;
+        color: #111827;
         margin: 0;
-        line-height: 1.3;
+        line-height: 1.35;
       }
     }
   }
@@ -184,15 +196,16 @@ export const ContactInfoPanel = styled.div`
   .social-buttons {
     ${FlexBox({ gap: "8px" })};
     flex-wrap: wrap;
+    margin-top: 8px;
 
     .social-btn {
       flex: 1;
       min-width: 80px;
-      padding: 10px 8px;
-      border-radius: 8px;
-      background: ${greenLight};
-      border: 1px solid ${greenSoft};
-      color: ${green};
+      padding: 11px 8px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1.5px solid ${borderGrey};
+      color: #374151;
       font-size: 12px;
       font-weight: 700;
       cursor: pointer;
@@ -201,12 +214,14 @@ export const ContactInfoPanel = styled.div`
       align-items: center;
       justify-content: center;
       gap: 6px;
-      transition: background 0.2s, color 0.2s, transform 0.15s;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
 
       &:hover {
         background: ${green};
         color: #fff;
-        transform: translateY(-1px);
+        border-color: ${green};
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(25,155,25,0.25);
       }
     }
   }
@@ -214,69 +229,75 @@ export const ContactInfoPanel = styled.div`
   /* mobile */
   @media (max-width: 767px) {
     border-right: none;
-    border-bottom: 1px solid ${border};
-    padding: 20px 16px;
-    gap: 14px;
+    border-bottom: 1px solid ${borderGreen};
+    padding: 24px 20px;
+    gap: 0;
   }
 `;
 
-/* ─── right panel — message form ─────────────────────────────────────── */
+/* ─── right: message form ────────────────────────────────────────────────── */
 export const ContactFormPanel = styled.div`
-  padding: 32px 36px;
+  padding: 36px 42px;
   ${FlexBox({ direction: "column", justify: "flex-start", align: "stretch", gap: "0px" })};
 
   .form-heading {
-    margin-bottom: 4px;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #111;
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.3px;
   }
 
   .form-sub {
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
     color: ${textMuted};
-    margin-bottom: 18px;
+    margin: 0 0 20px;
+    line-height: 1.55;
   }
 
-  /* topic chips */
+  /* topic label */
   .topic-label {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
-    color: ${textMuted};
-    letter-spacing: 0.06em;
+    color: #9ca3af;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
     margin-bottom: 10px;
   }
 
+  /* topic chips */
   .topic-chips {
     ${FlexBox({ justify: "flex-start", gap: "8px" })};
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 
     .chip {
-      padding: 7px 16px;
+      padding: 7px 18px;
       border-radius: 99px;
-      border: 1.5px solid ${border};
+      border: 1.5px solid ${borderGrey};
       background: #fff;
       font-size: 13px;
       font-weight: 600;
       color: ${textMuted};
       cursor: pointer;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 
-      &:hover,
+      &:hover { border-color: ${green}; color: ${green}; }
+
       &.active {
         background: ${green};
         color: #fff;
         border-color: ${green};
+        box-shadow: 0 3px 12px rgba(25,155,25,0.28);
       }
     }
   }
 
   /* form rows */
   .form-row {
-    ${FlexBox({ gap: "14px" })};
-    margin-bottom: 14px;
+    ${FlexBox({ gap: "16px" })};
+    margin-bottom: 16px;
   }
 
   /* floating-label field */
@@ -289,22 +310,21 @@ export const ContactFormPanel = styled.div`
     textarea {
       width: 100%;
       padding: 20px 14px 8px;
-      border: 1.5px solid ${border};
-      border-radius: 8px;
+      border: 1.5px solid ${borderGrey};
+      border-radius: 10px;
       font-size: 14px;
       font-family: inherit;
       font-weight: 500;
-      color: #111;
-      background: #fafafa;
+      color: #111827;
+      background: #fff;
       outline: none;
       resize: vertical;
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
       box-sizing: border-box;
 
       &:focus {
         border-color: ${green};
         box-shadow: 0 0 0 3px ${greenLight};
-        background: #fff;
       }
     }
 
@@ -314,7 +334,7 @@ export const ContactFormPanel = styled.div`
       top: 14px;
       font-size: 13px;
       font-weight: 500;
-      color: #b0b8c4;
+      color: #9ca3af;
       pointer-events: none;
       transition: top 0.18s, font-size 0.18s, color 0.18s;
     }
@@ -332,60 +352,56 @@ export const ContactFormPanel = styled.div`
     }
   }
 
-  .message-group {
-    margin-bottom: 20px;
-  }
+  .message-group { margin-bottom: 22px; }
 
-  /* footer row */
+  /* form footer */
   .form-footer {
     ${FlexBox({ justify: "space-between", align: "center", gap: "12px" })};
     flex-wrap: wrap;
 
     .privacy-note {
       font-size: 12px;
-      font-weight: 500;
-      color: #b0b8c4;
+      font-weight: 400;
+      color: #9ca3af;
 
       a {
         color: ${green};
         text-decoration: none;
         font-weight: 600;
-        &:hover {
-          text-decoration: underline;
-        }
+        &:hover { text-decoration: underline; }
       }
     }
 
     .send-btn {
       ${FlexBox({ align: "center", gap: "8px" })};
-      padding: 13px 32px;
-      background: ${green};
+      padding: 14px 34px;
+      background: linear-gradient(135deg, #1db81d 0%, #199b19 100%);
       color: #fff;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      box-shadow: ${shadowGreen};
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(25,155,25,0.28);
+      transition: transform 0.2s, box-shadow 0.2s;
       white-space: nowrap;
+      letter-spacing: 0.01em;
 
       &:hover {
-        background: #17981a;
         transform: translateY(-2px);
-        box-shadow: 0 8px 32px rgba(32, 184, 32, 0.32);
+        box-shadow: 0 10px 28px rgba(25,155,25,0.36);
       }
     }
   }
 
   /* tablet */
   @media (min-width: 768px) and (max-width: 1024px) {
-    padding: 24px 22px;
+    padding: 28px 24px;
   }
 
   /* mobile */
   @media (max-width: 767px) {
-    padding: 20px 16px;
+    padding: 24px 20px;
 
     .form-row {
       flex-direction: column;
@@ -393,7 +409,6 @@ export const ContactFormPanel = styled.div`
       margin-bottom: 10px;
     }
 
-    /* switch to label-above-input on mobile */
     .fl-group {
       width: 100%;
       display: flex;
@@ -407,39 +422,19 @@ export const ContactFormPanel = styled.div`
         color: ${textMuted};
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        top: unset;
-        left: unset;
         pointer-events: auto;
         transition: none;
       }
 
-      input,
-      textarea {
+      input, textarea {
         padding: 11px 12px;
-
-        &:focus ~ label,
-        &:not(:placeholder-shown) ~ label {
-          top: unset;
-          font-size: 11px;
-          color: ${textMuted};
-          letter-spacing: 0.05em;
-        }
-      }
-
-      /* re-order so label renders above input */
-      input,
-      textarea {
         order: 2;
       }
 
-      label {
-        order: 1;
-      }
+      label { order: 1; }
     }
 
-    .message-group {
-      margin-bottom: 14px;
-    }
+    .message-group { margin-bottom: 16px; }
 
     .form-footer {
       flex-direction: column;
@@ -454,8 +449,7 @@ export const ContactFormPanel = styled.div`
     }
   }
 
-  /* small mobile */
   @media (max-width: 400px) {
-    padding: 14px 12px;
+    padding: 18px 14px;
   }
 `;

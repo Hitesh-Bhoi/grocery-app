@@ -1,61 +1,135 @@
 'use client';
 import { FlexBox } from "@/styles/mixins";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
+const floatUp = keyframes`
+  from { transform: translateY(0px); }
+  to   { transform: translateY(-6px); }
+`;
+
+const iconPulse = keyframes`
+  0%, 100% { box-shadow: 0 0 0 0 rgba(25, 155, 25, 0.35); }
+  50%       { box-shadow: 0 0 0 10px rgba(25, 155, 25, 0); }
+`;
+
+/* ── outer wrapper ── */
+export const StyledInfoCardContainer = styled.div`
+  ${FlexBox({ justify: "space-between", wrap: "wrap", gap: "0px" })};
+  padding: 0 20px;
+  margin: 0 20px 48px;
+  background: linear-gradient(135deg, #f0faf0 0%, #ffffff 50%, #f0faf0 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(25, 155, 25, 0.12);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  overflow: hidden;
+  position: relative;
+
+  /* faint decorative arc */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(25, 155, 25, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+`;
+
+/* ── single card ── */
 export const StyledInfoCard = styled.div`
-  flex: 1 1 calc(10% - 20px);
-  max-width: calc(25% - 20px);
+  flex: 1 1 calc(25% - 2px);
+  max-width: calc(25%);
+  min-width: 200px;
 
-  padding: 30px 20px;
+  ${FlexBox({ direction: "column", align: "center", gap: "12px" })};
+  padding: 36px 24px 32px;
   text-align: center;
-  border-radius: 12px;
-  background: #fff;
-
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  position: relative;
+  transition: background 0.28s ease, transform 0.28s ease;
+
+  /* right-side divider between cards */
+  &:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(25, 155, 25, 0.18) 40%,
+      rgba(25, 155, 25, 0.18) 60%,
+      transparent
+    );
+  }
 
   &:hover {
-    transform: scale(1.08);
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 20px;
+    background: rgba(25, 155, 25, 0.04);
+    transform: translateY(-4px);
     z-index: 2;
   }
 
-  /* Tablet */
-  @media (max-width: 1024px) {
-    flex: 1 1 calc(15% - 0px);
-    max-width: calc(25% - 0px);
+  /* Mobile */
+  @media (max-width: 768px) {
+    flex: 1 1 calc(50% - 2px);
+    max-width: calc(50%);
+
+    &:not(:last-child)::after { display: none; }
   }
 
-  /* Mobile */
-  @media (max-width: 600px) {
+  @media (max-width: 480px) {
     flex: 1 1 100%;
     max-width: 100%;
+    border-bottom: 1px solid rgba(25, 155, 25, 0.1);
+    &:last-child { border-bottom: none; }
   }
 `;
 
+/* ── icon wrapper circle ── */
 export const StyledCardImg = styled.div`
-    text-align: center;
-`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e8f8e8 0%, #d1f0d1 100%);
+  border: 1.5px solid rgba(25, 155, 25, 0.2);
+  ${FlexBox({ justify: "center", align: "center" })};
+  flex-shrink: 0;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 
-export const StyledInfoCardContainer = styled.div`
-  ${FlexBox({ justify: "space-between",wrap: "wrap", gap: "20px" })};
-  padding: 30px;
-  margin: 20px;
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  img {
+    transition: transform 0.3s ease;
+  }
+
+  ${StyledInfoCard}:hover & {
+    animation: ${iconPulse} 1.2s ease-out 1;
+    transform: scale(1.1);
+    img { transform: scale(1.05); }
+  }
 `;
 
+/* ── title ── */
 export const StyledCardTitle = styled.p`
-    margin: 0;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-`
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+`;
 
+/* ── description ── */
 export const StyledCardDescription = styled.p`
-    margin: 0;
-    padding-top: 6px;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 500;
-`
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: #6b7280;
+  line-height: 1.6;
+  max-width: 200px;
+`;
