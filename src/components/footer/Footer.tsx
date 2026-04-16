@@ -30,27 +30,7 @@ const Footer = () => {
             <div>
               <Image src={logo} alt="website logo" />
             </div>
-            <div className="footer-child-div">
-            <StyledAddressSection>
-              <Image src={location} alt="address icon" width={20} height={20} />
-              <span>
-                Address: Ahmedabad, Gujarat, India
-              </span>
-            </StyledAddressSection>
-            <StyledContactSection>
-              <Image
-                src={headphone}
-                alt="headphone icon"
-                width={20}
-                height={20}
-              />
-              <span>
-                Call Us{" "}
-                <span className="contact-number">(+91)-8200861893</span>
-              </span>
-            </StyledContactSection>
-            </div>
-            <div className="footer-child-div">
+
               <StyledAddressSection>
                 <Image src={location} alt="location" width={16} height={16} />
                 <span>Ahmedabad, Gujarat, India</span>
@@ -73,7 +53,6 @@ const Footer = () => {
                 <Image src={clock} alt="hours" width={16} height={16} />
                 <span>10:00 – 18:00, Mon – Sat</span>
               </StyledEmailSection>
-            </div>
           </StyledLogoWithInfo>
           <StyledCompanyInfo>
             <p className="title">Company</p>

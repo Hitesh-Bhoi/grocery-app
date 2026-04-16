@@ -45,7 +45,6 @@ export const StyleFooterInfoDetails = styled.div`
 
 /* ─── logo + contact column ──────────────────────────────────────────────── */
 export const StyledLogoWithInfo = styled.div`
-  width: 25%;
   ${FlexBox ({ direction: "column", justify: "flex-start", align: "flex-start", gap: "15px" })};
   @media (max-width: 767px) {
     width: 100%;
@@ -59,52 +58,51 @@ export const StyledLogoWithInfo = styled.div`
     padding-bottom: 20px;
   }
 `;
-export const StyledCompanyInfo = styled.div`
-  width: auto;
-  ${FlexBox ({ direction: "column", justify: "flex-start", align: "flex-start", gap: "15px" })};
-
-  @media (max-width: 1023px) {
-    width: 45%;
-    align-items: center;
+export const StyledAddressSection = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  span {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.5;
   }
 `;
-export const StyledAccountInfo = styled.div`
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 15px;
 
-  @media (max-width: 1023px) {
-    width: 45%;
-    align-items: center;
+export const StyledContactSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  span {
+    font-size: 14px;
+    color: #4b5563;
+  }
+  .contact-number {
+    font-weight: 500;
+    color: #111827;
   }
 `;
-export const StyledCorporateInfo = styled.div`
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 15px;
 
-  @media (max-width: 1023px) {
-    width: 45%;
-    align-items: center;
+export const StyledEmailSection = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  .email-box {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    span {
+      font-size: 14px;
+      color: #4b5563;
+    }
+    .email {
+      font-weight: 500;
+      color: #111827;
+    }
   }
-`;
-export const StyledPopularProductInfo = styled.div`
-  width: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 15px;
-
-  @media (max-width: 1023px) {
-    width: 45%;
-    align-items: center;
+  & > span {
+    font-size: 14px;
+    color: #4b5563;
   }
 `;
 
