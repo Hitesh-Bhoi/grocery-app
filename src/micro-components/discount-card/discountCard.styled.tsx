@@ -14,12 +14,7 @@ const flipIn = keyframes`
 
 export const StyledDiscountCardContainer = styled.div`
   ${FlexBox({ justify: "space-between", align: "center" })};
-  background-image:
-    linear-gradient(110deg, rgba(0,0,0,0.88) 0%, rgba(10,60,10,0.65) 55%, rgba(0,0,0,0.2) 100%),
-    url("https://images.pexels.com/photos/3962285/pexels-photo-3962285.jpeg?auto=compress&cs=tinysrgb&w=1600");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: #199b19;
   margin: 48px 20px;
   padding: 40px 44px;
   border-radius: 20px;
