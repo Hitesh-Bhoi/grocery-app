@@ -12,21 +12,14 @@ import {
   StyledContactSection,
   StyledCorporateInfo,
   StyledEmailSection,
-  // StyledFollowusInfo,
+  StyledFooterBottom,
   StyledFooterContainer,
   // StyledInstallAppInfo,
   // StyledLogoSection,
   StyledLogoWithInfo,
-  // StyledPaymentsLink,
-  // StyledPhoneInfo,
   StyledPopularProductInfo,
-  // StyledRightsInfo,
-  // StyledStoreLinks,
-  // StyleFooterContactDetails,
   StyleFooterInfoDetails,
 } from "./footer.styled";
-
-require("./footer.styled");
 
 const Footer = () => {
   return (
@@ -58,33 +51,47 @@ const Footer = () => {
             </StyledContactSection>
             </div>
             <div className="footer-child-div">
-            <StyledEmailSection>
-              <Image src={email} alt="email icon" width={20} height={20} />
-              <p className="email-box">
-                <span>Email</span> <span className="email">sales@ecobazar.com</span>
-              </p>
-            </StyledEmailSection>
-            <StyledEmailSection>
-              <Image src={clock} alt="clock icon" width={20} height={20} />
-              <span>Hours 10:00 - 18:00, Mon - Sat</span>
-            </StyledEmailSection>
+              <StyledAddressSection>
+                <Image src={location} alt="location" width={16} height={16} />
+                <span>Ahmedabad, Gujarat, India</span>
+              </StyledAddressSection>
+              <StyledContactSection>
+                <Image src={headphone} alt="phone" width={16} height={16} />
+                <span>
+                  Call Us{" "}
+                  <span className="contact-number">(+91)-8200861893</span>
+                </span>
+              </StyledContactSection>
+              <StyledEmailSection>
+                <Image src={email} alt="email" width={16} height={16} />
+                <p className="email-box">
+                  <span>Email</span>
+                  <span className="email">sales@ecobazar.com</span>
+                </p>
+              </StyledEmailSection>
+              <StyledEmailSection>
+                <Image src={clock} alt="hours" width={16} height={16} />
+                <span>10:00 – 18:00, Mon – Sat</span>
+              </StyledEmailSection>
             </div>
           </StyledLogoWithInfo>
           <StyledCompanyInfo>
             <p className="title">Company</p>
             <span>About Us</span>
             <span>Privacy Policy</span>
-            <span>Terms & Conditions</span>
+            <span>Terms &amp; Conditions</span>
             <span>Contact Us</span>
             <span>Support Center</span>
             <span>Careers</span>
           </StyledCompanyInfo>
+
+          {/* ── account ── */}
           <StyledAccountInfo>
             <p className="title">Account</p>
             <span>Sign In</span>
-            <span>View Chart</span>
+            <span>View Cart</span>
             <span>My Wishlist</span>
-            <span>Tract My Order</span>
+            <span>Track My Order</span>
             <span>Help Ticket</span>
             <span>Shipping Details</span>
             <span>Compare Products</span>
@@ -96,9 +103,11 @@ const Footer = () => {
             <span>Farm Business</span>
             <span>Farm Careers</span>
             <span>Our Suppliers</span>
-            <span>Accessibilitty</span>
+            <span>Accessibility</span>
             <span>Promotion</span>
           </StyledCorporateInfo>
+
+          {/* ── popular ── */}
           <StyledPopularProductInfo>
             <p className="title">Popular</p>
             <span>Fresh Fruits</span>
@@ -111,11 +120,13 @@ const Footer = () => {
           </StyledPopularProductInfo>
         </StyleFooterInfoDetails>
 
-        {/* <StyleFooterContactDetails> */}
-          {/* <StyledRightsInfo></StyledRightsInfo>
-          <StyledPhoneInfo></StyledPhoneInfo>
-          <StyledFollowusInfo></StyledFollowusInfo> */}
-        {/* </StyleFooterContactDetails> */}
+        {/* ── bottom bar ── */}
+        <StyledFooterBottom>
+          <p className="copyright">
+            © {new Date().getFullYear()} <span>Ecobazar</span>. All rights reserved.
+          </p>
+        </StyledFooterBottom>
+
       </StyledFooterContainer>
     </>
   );

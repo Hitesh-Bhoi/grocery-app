@@ -19,7 +19,7 @@ const slides = [
     image:
       "https://res.cloudinary.com/dqwzddm94/image/upload/v1773249652/pexels-filirovska-8234152_ncgtdx.jpg",
     tag: "Limited Time Offer",
-    title: "Farm Fresh\nVegetables",
+    title: "Farm Fresh Vegetables",
     description:
       "Stock up on crisp, local produce with bundle savings all week long.",
     button1: { label: "Shop Veggies", link: "/products/vegetables" },
@@ -28,7 +28,7 @@ const slides = [
   {
     image: "/images/carousel-pexels-style-2.jpg",
     tag: "Seasonal Picks",
-    title: "Organic Fruit\nDeals",
+    title: "Organic Fruit Deals",
     description:
       "Juicy, sweet, and fresh. Save on today's seasonal fruit selection.",
     button1: { label: "Shop Fruits", link: "/products/fruits" },
@@ -37,7 +37,7 @@ const slides = [
   {
     image: "/images/carousel-pexels-flat-4.jpg",
     tag: "Up to 30% Off",
-    title: "Daily Grocery\nDiscounts",
+    title: "Daily Grocery Discounts",
     description:
       "Smart savings on essentials with rotating discounts every day.",
     button1: { label: "View Discounts", link: "/offers" },
@@ -47,7 +47,7 @@ const slides = [
     image:
       "https://res.cloudinary.com/dqwzddm94/image/upload/v1773249431/pexels-vanessa-loring-5966149_i5pbre.jpg",
     tag: "Fresh & Bright",
-    title: "Colorful Market\nSpecials",
+    title: "Colorful Market Specials",
     description:
       "Handpicked deals across fruits and veggies, refreshed daily.",
     button1: { label: "Shop Specials", link: "/specials" },
@@ -70,9 +70,39 @@ export default function Carousel() {
   const next = () =>
     setActiveIndex((p) => (p === slides.length - 1 ? 0 : p + 1));
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      next();
+    } else if (isRightSwipe) {
+      prev();
+    }
+  };
+
   return (
     <CarouselWrapper>
-      <CarouselInner>
+      <CarouselInner
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         {slides.map((item, index) => (
           <CarouselItem
             key={index}
@@ -81,14 +111,7 @@ export default function Carousel() {
           >
             <CarouselContent>
               <span className="carousel_tag">{item.tag}</span>
-              <p className="carousel_title">
-                {item.title.split("\n").map((line, i) => (
-                  <span key={i}>
-                    {line}
-                    {i < item.title.split("\n").length - 1 && <br />}
-                  </span>
-                ))}
-              </p>
+              <p className="carousel_title">{item.title}</p>
               <p className="carousel_description">{item.description}</p>
               <div className="carousel_buttons">
                 <button className="button1">{item.button1.label}</button>

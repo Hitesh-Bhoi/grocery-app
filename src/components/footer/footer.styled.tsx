@@ -1,15 +1,29 @@
 "use client";
 import { FlexBox } from "@/styles/mixins";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
-export const StyledFooterContainer = styled.div`
-  ${FlexBox ({ direction: "column" })};
-  padding: 20px;
-  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+const green      = "var(--green)";
+const greenLight = "rgba(25,155,25,0.12)";
+
+/* ─── outer container ────────────────────────────────────────────────────── */
+export const StyledFooterContainer = styled.footer`
+  background: linear-gradient(135deg, #f0faf0 0%, #ffffff 60%, #f7fef7 100%);
+  border-top: 1px solid rgba(25,155,25,0.12);
+  padding: 60px 40px 0;
+  margin-top: 4px;
+
+  @media (max-width: 768px) {
+    padding: 40px 20px 0;
+  }
 `;
+
+/* ─── main grid row ──────────────────────────────────────────────────────── */
 export const StyleFooterInfoDetails = styled.div`
-  width: 100%;
-  ${FlexBox ({ justify: "space-between", align: "flex-start" })}
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(25,155,25,0.12);
 
   @media (max-width: 767px) {
     display: flex;
@@ -28,13 +42,13 @@ export const StyleFooterInfoDetails = styled.div`
     gap: 40px 0;
   }
 `;
+
+/* ─── logo + contact column ──────────────────────────────────────────────── */
 export const StyledLogoWithInfo = styled.div`
   width: 25%;
   ${FlexBox ({ direction: "column", justify: "flex-start", align: "flex-start", gap: "15px" })};
   @media (max-width: 767px) {
     width: 100%;
-    ${FlexBox ({ direction: "column", gap: "30px" })};
-    padding-bottom: 20px;
   }
 
   @media ((min-width: 768px) and (max-width: 1023px)) {
@@ -93,69 +107,113 @@ export const StyledPopularProductInfo = styled.div`
     align-items: center;
   }
 `;
-export const StyledInstallAppInfo = styled.div`
-  width: 30%;
+
+/* ─── link column base ───────────────────────────────────────────────────── */
+const linkColumn = `
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 10px;
+  gap: 14px;
 
-  @media (max-width: 767px) {
-    width: 100%;
-    justify-content: center;
-    align-items: center;
+  .title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #111827;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 4px;
+    position: relative;
+    padding-bottom: 10px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--green);
+      border-radius: 2px;
+    }
   }
 
-  @media ((min-width: 768px) and (max-width: 1023px)) {
-    width: 70%;
+  span {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6b7280;
+    cursor: pointer;
+    line-height: 1.4;
+    position: relative;
+    width: fit-content;
+    transition: color 0.2s;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 1.5px;
+      background: var(--green);
+      border-radius: 2px;
+      transition: width 0.25s ease;
+    }
+
+    &:hover {
+      color: var(--green);
+      &::after { width: 100%; }
+    }
   }
 `;
-export const StyledLogoSection = styled.div``;
-export const StyledAddressSection = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
 
-  @media (max-width: 767px) {
-    width: 50%;
-    align-items: flex-start;
+export const StyledCompanyInfo = styled.div`
+  ${linkColumn}
+  @media (max-width: 400px) { width: 100%; }
+`;
+
+export const StyledAccountInfo = styled.div`
+  ${linkColumn}
+  @media (max-width: 400px) { width: 100%; }
+`;
+
+export const StyledCorporateInfo = styled.div`
+  ${linkColumn}
+  @media (max-width: 400px) { width: 100%; }
+`;
+
+export const StyledPopularProductInfo = styled.div`
+  ${linkColumn}
+  @media (max-width: 400px) { width: 100%; }
+`;
+
+/* ─── bottom bar ─────────────────────────────────────────────────────────── */
+export const StyledFooterBottom = styled.div`
+  ${FlexBox({ justify: "center", align: "center" })};
+  padding: 20px 0;
+  border-top: 1px solid rgba(25,155,25,0.12);
+
+  .copyright {
+    font-size: 13px;
+    font-weight: 400;
+    color: #9ca3af;
+    margin: 0;
+
+    span { color: ${green}; font-weight: 600; }
+  }
+
+  @media (max-width: 640px) {
+    text-align: center;
+    padding: 16px 0;
   }
 `;
-export const StyledContactSection = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  .contact-number {
-    color: #20b820;
-  }
 
-  @media (max-width: 767px) {
-    width: 50%;
-    align-items: flex-start;
-  }
-`;
-export const StyledEmailSection = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  .email {
-    color: #20b820;
-    word-wrap: wrap;
-  }
-
-  @media (max-width: 767px) {
-    width: 50%;
-    align-items: flex-start;
-  }
-`;
-export const StyledStoreLinks = styled.div``;
-export const StyledPaymentsLink = styled.div``;
-
+/* ─── unused legacy exports (keep to avoid import errors) ────────────────── */
+export const StyledLogoSection      = styled.div``;
+export const StyledInstallAppInfo   = styled.div``;
+export const StyledStoreLinks       = styled.div``;
+export const StyledPaymentsLink     = styled.div``;
 export const StyleFooterContactDetails = styled.div``;
-export const StyledRightsInfo = styled.div``;
-export const StyledPhoneInfo = styled.div``;
-export const StyledFollowusInfo = styled.div``;
+export const StyledRightsInfo       = styled.div``;
+export const StyledPhoneInfo        = styled.div``;
+export const StyledFollowusInfo     = styled.div``;

@@ -37,10 +37,7 @@ const ContactUs = () => {
             to hear from you.
           </p>
         </div>
-        <div className="contact-chip">
-          <span className="dot" />
-          Support · Replies in 2–4 hrs
-        </div>
+
       </ContactUsHeader>
 
       {/* ── body ──────────────────────────────────────────────────────── */}
