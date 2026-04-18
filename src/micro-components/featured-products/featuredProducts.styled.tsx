@@ -19,28 +19,39 @@ export const StyledFeaturedProductSection = styled.div`
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 8px;
-    padding: 0px 10px;
+    padding: 10px 10px 32px;
 
     @media (max-width: 1280px) {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    @media (max-width: 768px) {
       display: flex;
       flex-wrap: nowrap;
-      overflow-x: auto;
+      overflow-x: scroll;
       gap: 16px;
       padding: 12px 16px 20px;
-      scrollbar-width: none;
+      
+      /* Stylish horizontal scrollbar, always visible */
+      scrollbar-width: thin;
+      scrollbar-color: var(--green) #f4f4f5;
+
       &::-webkit-scrollbar {
-        display: none;
+        height: 8px;
+        -webkit-appearance: none;
+        background-color: #f4f4f5;
+      }
+      &::-webkit-scrollbar-track {
+        background: #f4f4f5;
+        border-radius: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--green);
+        border-radius: 10px;
       }
     }
   }
 `;
 
 export const StyledFeaturedProductHeading = styled.div`
-  ${FlexBox({ justify: "space-between", align: "center" })};
+  ${FlexBox({ justify: "space-between", align: "flex-end" })};
+  gap: 12px;
   padding: 28px 16px 16px 16px;
   margin-bottom: 0;
   text-align: left;
@@ -78,7 +89,7 @@ export const StyledFeaturedProductHeading = styled.div`
     color: var(--green);
     cursor: pointer;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 16px;
     white-space: nowrap;
     padding: 4px 0;
     transition: gap 0.2s ease;
@@ -87,7 +98,7 @@ export const StyledFeaturedProductHeading = styled.div`
 
     &::after {
       content: "→";
-      font-size: 15px;
+      font-size: 26px;
       display: inline-block;
       transition: transform 0.2s ease;
     }
@@ -109,7 +120,8 @@ export const StyledFeatureProductCard = styled.div`
   box-sizing: border-box;
   border-radius: 10px;
   padding: 20px 16px 16px;
-  border: 3px solid #e8edf2;
+  border: 1px solid rgba(25, 155, 25, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
   cursor: pointer;
   transition: all 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
@@ -329,8 +341,16 @@ export const StyledFeatureProductCard = styled.div`
     }
   }
 
+  flex-shrink: 0;
+  
+  @media (max-width: 1280px) {
+    min-width: 220px;
+    width: 220px;
+  }
+
   @media (max-width: 1024px) {
     min-width: 180px;
+    width: 180px;
     .product-image {
       width: 90px;
       height: 90px;

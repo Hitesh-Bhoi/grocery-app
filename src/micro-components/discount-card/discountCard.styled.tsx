@@ -21,6 +21,7 @@ export const StyledDiscountCardContainer = styled.div`
   gap: 24px;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 10px 40px rgba(25, 155, 25, 0.22);
 
   /* subtle green glow ring */
   &::after {
@@ -33,7 +34,7 @@ export const StyledDiscountCardContainer = styled.div`
   }
 
   @media (max-width: 900px) {
-    ${FlexBox({ direction: "column", align: "flex-start" })};
+    ${FlexBox({ direction: "column", align: "flex-start", gap: "16px" })};
     margin: 24px 12px;
     padding: 28px 24px;
   }
@@ -159,8 +160,16 @@ export const StyledDiscountButton = styled.div`
   }
 
   @media (max-width: 600px) {
-    gap: 8px;
-    button { font-size: 13px; padding: 10px 14px; }
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    
+    button { 
+      width: 100%;
+      justify-content: center;
+      font-size: 14px; 
+      padding: 12px; 
+    }
   }
 `;
 
@@ -200,6 +209,15 @@ export const StyledOfferExpireSection = styled.div`
     padding: 20px;
     min-width: unset;
   }
+
+  @media (max-width: 600px) {
+    padding: 16px;
+    gap: 10px;
+    .timer-colon {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+  }
 `;
 
 export const StyledTimerBlock = styled.div`
@@ -215,9 +233,10 @@ export const StyledTimerBlock = styled.div`
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
-    padding: 10px 14px;
-    min-width: 60px;
+    padding: 10px 0;
+    width: 68px;
     text-align: center;
+    font-variant-numeric: tabular-nums;
     animation: ${flipIn} 0.3s ease;
   }
 
@@ -227,5 +246,13 @@ export const StyledTimerBlock = styled.div`
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: rgba(255, 255, 255, 0.45);
+  }
+
+  @media (max-width: 600px) {
+    .timer-number {
+      font-size: 28px;
+      width: 54px;
+      padding: 8px 0;
+    }
   }
 `;

@@ -17,14 +17,14 @@ const slideDown = keyframes`
 
 /* ─── outer wrapper ──────────────────────────────────────────────────────── */
 export const FAQMain = styled.div`
-  margin: 0 20px 48px;
+  margin: 0 20px 64px;
   border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, #f0faf0 0%, #ffffff 60%, #f7fef7 100%);
-  border: 1px solid ${border};
+  border: 1px solid rgba(25, 155, 25, 0.3);
   box-shadow:
-    0 2px 8px rgba(0,0,0,0.05),
-    0 0 0 1px rgba(255,255,255,0.9) inset;
+    0 10px 40px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
   position: relative;
 
   &::before {

@@ -81,11 +81,11 @@ const FeaturedProducts = () => {
                   {/* Image area */}
                   <div className="product-image-wrap">
                     <button
-                      className={`wishlist-btn${likedItems.has(String(e?.id)) ? " liked" : ""}`}
+                      className={`wishlist-btn${likedItems.has(String(e?.id || e?.name)) ? " liked" : ""}`}
                       aria-label="Add to wishlist"
-                      onClick={(ev) => { ev.stopPropagation(); toggleLike(String(e?.id)); }}
+                      onClick={(ev) => { ev.stopPropagation(); toggleLike(String(e?.id || e?.name)); }}
                     >
-                      <HeartIcon filled={likedItems.has(String(e?.id))} />
+                      <HeartIcon filled={likedItems.has(String(e?.id || e?.name))} />
                     </button>
                     <Image
                       src={e?.image_url}

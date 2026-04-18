@@ -20,11 +20,11 @@ export const CarouselInner = styled.div`
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
 
   @media (max-width: 1024px) {
-    height: 60vh;
+    height: 100vh;
     min-height: 480px;
   }
   @media (max-width: 768px) {
-    height: 50vh;
+    height: 100vh;
     min-height: 420px;
   }
 `;
@@ -42,7 +42,10 @@ export const CarouselItem = styled.div<{ $bg: string }>`
   background-position: center;
 
   @media (max-width: 1024px) {
-    background-position: center center;
+    background-position: 65% center;
+  }
+  @media (max-width: 768px) {
+    background-position: 80% center;
   }
 
   &[data-active="true"] {
@@ -107,6 +110,7 @@ export const CarouselContent = styled.div`
     text-align: center;
     width: 95%;
     max-width: 900px;
+    gap: 12px;
   }
 
   .carousel_tag {
@@ -125,7 +129,15 @@ export const CarouselContent = styled.div`
     opacity: 0;
   }
 
+  .carousel_text_group {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+  }
+
   .carousel_title {
+    margin: 0 !important;
+    padding: 0 !important;
     font-size: clamp(22px, 5vw, 48px);
     font-weight: 900;
     line-height: 1.1;
@@ -135,20 +147,23 @@ export const CarouselContent = styled.div`
     white-space: nowrap;
     
     @media (max-width: 1024px) {
-      font-size: clamp(20px, 4.5vw, 38px);
+      font-size: clamp(32px, 6vw, 46px);
+      white-space: normal;
     }
     
     @media (max-width: 768px) {
       white-space: normal;
-      font-size: clamp(18px, 6vw, 28px);
+      font-size: clamp(28px, 8vw, 42px);
     }
     
     @media (max-width: 375px) {
-      font-size: 20px;
+      font-size: 26px;
     }
   }
 
   .carousel_description {
+    margin: 0 !important;
+    padding: 0 !important;
     font-size: clamp(17px, 2.2vw, 22px);
     line-height: 1.6;
     color: #f8fafc;
@@ -158,9 +173,14 @@ export const CarouselContent = styled.div`
     letter-spacing: 0.2px;
     opacity: 0;
 
+    @media (max-width: 1024px) {
+      font-size: 20px;
+      max-width: 80%;
+    }
+
     @media (max-width: 768px) {
-      font-size: 16px;
-      max-width: 90%;
+      font-size: 18px;
+      max-width: 95%;
     }
   }
 
@@ -228,7 +248,7 @@ export const CarouselContent = styled.div`
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    gap: 16px;
+    gap: 8px;
     align-items: center;
     text-align: center;
   }

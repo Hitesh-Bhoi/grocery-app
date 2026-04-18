@@ -111,8 +111,10 @@ export default function Carousel() {
           >
             <CarouselContent>
               <span className="carousel_tag">{item.tag}</span>
-              <p className="carousel_title">{item.title}</p>
-              <p className="carousel_description">{item.description}</p>
+              <div className="carousel_text_group">
+                <p className="carousel_title">{item.title}</p>
+                <p className="carousel_description">{item.description}</p>
+              </div>
               <div className="carousel_buttons">
                 <button className="button1">{item.button1.label}</button>
                 <button className="button2">{item.button2.label}</button>

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { FlexBox } from "@/styles/mixins";
 import styled, { keyframes } from "styled-components";
 
@@ -16,12 +16,12 @@ const iconPulse = keyframes`
 export const StyledInfoCardContainer = styled.div`
   ${FlexBox({ justify: "space-between", wrap: "wrap", gap: "0px" })};
   padding: 0 20px;
-  margin: 0 20px 48px;
+  margin: 0 20px 64px;
   background: linear-gradient(135deg, #f0faf0 0%, #ffffff 50%, #f0faf0 100%);
   border-radius: 20px;
-  border: 1px solid rgba(25, 155, 25, 0.12);
+  border: 1px solid rgba(25, 155, 25, 0.3);
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 10px 40px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.8) inset;
   overflow: hidden;
   position: relative;
@@ -35,8 +35,16 @@ export const StyledInfoCardContainer = styled.div`
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(25, 155, 25, 0.07) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(25, 155, 25, 0.07) 0%,
+      transparent 70%
+    );
     pointer-events: none;
+  }
+
+  @media (max-width: 1024px) {
+    margin: 10px;
   }
 `;
 
@@ -44,14 +52,16 @@ export const StyledInfoCardContainer = styled.div`
 export const StyledInfoCard = styled.div`
   flex: 1 1 calc(25% - 2px);
   max-width: calc(25%);
-  min-width: 200px;
+  min-width: 240px;
 
   ${FlexBox({ direction: "column", align: "center", gap: "12px" })};
   padding: 36px 24px 32px;
   text-align: center;
   cursor: pointer;
   position: relative;
-  transition: background 0.28s ease, transform 0.28s ease;
+  transition:
+    background-color 0.28s ease,
+    transform 0.28s ease;
 
   /* right-side divider between cards */
   &:not(:last-child)::after {
@@ -60,14 +70,8 @@ export const StyledInfoCard = styled.div`
     right: 0;
     top: 20%;
     height: 60%;
-    width: 1px;
-    background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(25, 155, 25, 0.18) 40%,
-      rgba(25, 155, 25, 0.18) 60%,
-      transparent
-    );
+    width: 0;
+    border-right: 2px solid rgba(7, 66, 7, 0.25);
   }
 
   &:hover {
@@ -76,19 +80,45 @@ export const StyledInfoCard = styled.div`
     z-index: 2;
   }
 
-  /* Mobile */
-  @media (max-width: 768px) {
-    flex: 1 1 calc(50% - 2px);
-    max-width: calc(50%);
+  /* Tablet / Small Laptops (2x2 Grid) */
+  @media (max-width: 1024px) {
+    flex: 1 1 50%;
+    max-width: 50%;
+    min-width: 50%;
 
-    &:not(:last-child)::after { display: none; }
+    /* Remove the default pseudo 'after' pipe on this view */
+    &::after {
+      display: none !important;
+    }
+
+    /* Add horizontal border for top row */
+    border-bottom: 1px solid rgba(25, 155, 25, 0.15);
+    &:nth-child(3),
+    &:nth-child(4) {
+      border-bottom: none;
+    }
+
+    /* Add vertical border for left column */
+    &:nth-child(odd) {
+      border-right: 1px solid rgba(25, 155, 25, 0.15);
+    }
   }
 
-  @media (max-width: 480px) {
+  /* Mobile (1x4 Stack) */
+  @media (max-width: 600px) {
     flex: 1 1 100%;
     max-width: 100%;
-    border-bottom: 1px solid rgba(25, 155, 25, 0.1);
-    &:last-child { border-bottom: none; }
+    min-width: 100%;
+
+    /* Clear the 2x2 right borders */
+    &:nth-child(odd) {
+      border-right: none;
+    }
+
+    border-bottom: 1px solid rgba(25, 155, 25, 0.15);
+    &:last-child {
+      border-bottom: none;
+    }
   }
 `;
 
@@ -101,7 +131,9 @@ export const StyledCardImg = styled.div`
   border: 1.5px solid rgba(25, 155, 25, 0.2);
   ${FlexBox({ justify: "center", align: "center" })};
   flex-shrink: 0;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 
   img {
     transition: transform 0.3s ease;
@@ -110,7 +142,9 @@ export const StyledCardImg = styled.div`
   ${StyledInfoCard}:hover & {
     animation: ${iconPulse} 1.2s ease-out 1;
     transform: scale(1.1);
-    img { transform: scale(1.05); }
+    img {
+      transform: scale(1.05);
+    }
   }
 `;
 

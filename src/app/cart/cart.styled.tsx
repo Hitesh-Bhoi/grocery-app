@@ -36,9 +36,9 @@ export const CartItemCard = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid rgba(25, 155, 25, 0.2);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 
   @media (max-width: 500px) {
     flex-direction: column;

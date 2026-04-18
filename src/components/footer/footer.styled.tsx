@@ -28,9 +28,9 @@ export const StyleFooterInfoDetails = styled.div`
   @media (max-width: 767px) {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
-    gap: 20px 0;
+    gap: 32px 20px;
   }
 
   @media ((min-width: 768px) and (max-width: 1023px)) {
@@ -39,23 +39,37 @@ export const StyleFooterInfoDetails = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 40px 0;
+    gap: 40px 20px;
   }
 `;
 
 /* ─── logo + contact column ──────────────────────────────────────────────── */
 export const StyledLogoWithInfo = styled.div`
-  ${FlexBox ({ direction: "column", justify: "flex-start", align: "flex-start", gap: "15px" })};
+  ${FlexBox({ direction: "column", justify: "flex-start", align: "flex-start", gap: "20px" })};
+  
   @media (max-width: 767px) {
     width: 100%;
   }
 
   @media ((min-width: 768px) and (max-width: 1023px)) {
     width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
+    padding-bottom: 24px;
+  }
+
+  .contact-info-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     align-items: flex-start;
-    padding-bottom: 20px;
+
+    @media ((min-width: 768px) and (max-width: 1023px)) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 16px 36px;
+      margin-top: 4px;
+    }
   }
 `;
 export const StyledAddressSection = styled.div`
@@ -85,12 +99,15 @@ export const StyledContactSection = styled.div`
 
 export const StyledEmailSection = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   .email-box {
     margin: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
     span {
       font-size: 14px;
       color: #4b5563;
@@ -98,6 +115,7 @@ export const StyledEmailSection = styled.div`
     .email {
       font-weight: 500;
       color: #111827;
+      word-break: break-word;
     }
   }
   & > span {
@@ -163,26 +181,30 @@ const linkColumn = `
       &::after { width: 100%; }
     }
   }
+
+  @media (max-width: 767px) {
+    width: calc(50% - 10px);
+  }
+
+  @media (max-width: 320px) {
+    width: 100%;
+  }
 `;
 
 export const StyledCompanyInfo = styled.div`
   ${linkColumn}
-  @media (max-width: 400px) { width: 100%; }
 `;
 
 export const StyledAccountInfo = styled.div`
   ${linkColumn}
-  @media (max-width: 400px) { width: 100%; }
 `;
 
 export const StyledCorporateInfo = styled.div`
   ${linkColumn}
-  @media (max-width: 400px) { width: 100%; }
 `;
 
 export const StyledPopularProductInfo = styled.div`
   ${linkColumn}
-  @media (max-width: 400px) { width: 100%; }
 `;
 
 /* ─── bottom bar ─────────────────────────────────────────────────────────── */

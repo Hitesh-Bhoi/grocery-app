@@ -8,13 +8,13 @@ const shimmer = keyframes`
 
 /* ── outer card ── */
 export const NewsLetterMain = styled.div`
-  margin: 0 20px 48px;
+  margin: 0 20px 64px;
   border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, #f0faf0 0%, #ffffff 60%, #f7fef7 100%);
-  border: 1px solid rgba(25, 155, 25, 0.13);
+  border: 1px solid rgba(25, 155, 25, 0.3);
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.05),
+    0 10px 40px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.9) inset;
   position: relative;
 
@@ -47,7 +47,7 @@ export const NewsLetterHeader = styled.div`
     width: 52%;
 
     h2 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       margin: 0 0 10px;
       color: #111827;

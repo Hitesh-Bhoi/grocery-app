@@ -31,6 +31,7 @@ const Footer = () => {
               <Image src={logo} alt="website logo" />
             </div>
 
+            <div className="contact-info-options">
               <StyledAddressSection>
                 <Image src={location} alt="location" width={16} height={16} />
                 <span>Ahmedabad, Gujarat, India</span>
@@ -53,6 +54,7 @@ const Footer = () => {
                 <Image src={clock} alt="hours" width={16} height={16} />
                 <span>10:00 – 18:00, Mon – Sat</span>
               </StyledEmailSection>
+            </div>
           </StyledLogoWithInfo>
           <StyledCompanyInfo>
             <p className="title">Company</p>
