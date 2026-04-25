@@ -9,8 +9,10 @@ import {
 } from "./featuredProducts.styled";
 import Image from "next/image";
 import { StarRating, ShoppingBag } from "../../../icons";
-import { useCart } from "@/context/CartContext";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/redux/cartSlice";
+import { HiOutlineCheck } from "react-icons/hi2";
+import Link from "next/link";
 const HeartIcon = ({ filled }: { filled: boolean }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +33,27 @@ const HeartIcon = ({ filled }: { filled: boolean }) => (
 const FeaturedProducts = () => {
   const [productList, setProductList] = useState<any>([]);
   const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
-  const { addToCart } = useCart();
+  const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set());
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product: any) => {
+    dispatch(addToCart({ product, quantity: 1 }));
+    const id = String(product?.id || product?.name);
+    
+    setAddedItemIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+
+    setTimeout(() => {
+      setAddedItemIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }, 2000);
+  };
 
   const toggleLike = (id: string) => {
     setLikedItems((prev) => {
@@ -71,7 +93,9 @@ const FeaturedProducts = () => {
                   {item?.description}
                 </div>
               </div>
-              <button className="see-all-btn">See all</button>
+              <Link href="/products">
+                <button className="see-all-btn">See all</button>
+              </Link>
             </StyledFeaturedProductHeading>
 
             {/* Product cards */}
@@ -118,9 +142,21 @@ const FeaturedProducts = () => {
                         <p className="product-unit">{e?.unit}</p>
                         <p className="product-price">{"₹" + e?.price}</p>
                       </div>
-                      <button className="cart-btn" onClick={() => addToCart(e, 1)}>
-                        <ShoppingBag />
-                        <span>Add to Cart</span>
+                      <button 
+                        className={`cart-btn ${addedItemIds.has(String(e?.id || e?.name)) ? "added" : ""}`} 
+                        onClick={() => handleAddToCart(e)}
+                      >
+                        {addedItemIds.has(String(e?.id || e?.name)) ? (
+                          <>
+                            <HiOutlineCheck style={{ fontSize: '18px', strokeWidth: 2.5 }} />
+                            <span>Added</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingBag />
+                            <span>Add to Cart</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>

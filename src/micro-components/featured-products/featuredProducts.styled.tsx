@@ -311,6 +311,14 @@ export const StyledFeatureProductCard = styled.div`
       transform: translateY(0);
     }
 
+    &.added {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+      pointer-events: none;
+      box-shadow: 0 5px 16px rgba(25, 155, 25, 0.28);
+    }
+
     svg {
       width: 15px;
       height: 15px;
