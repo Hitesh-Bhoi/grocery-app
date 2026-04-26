@@ -1,20 +1,7 @@
 "use client";
-import {
-  StyledCartButton,
-  StyledLogoContainer,
-  StyledMenuBar,
-  StyledNavbarContainer,
-  StyledProfileContainer,
-  StyledProfileMenu,
-  StyledProfileOption,
-  StyledRightSection,
-  StyledTopbarContainer,
-  StyledUserProfile,
-} from "./topbar.styled";
 import logo from "../../../public/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { CgProfile } from "react-icons/cg";
 import { IoMdLogOut } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -25,14 +12,30 @@ import {
   HiOutlineHeart,
   HiOutlineShoppingCart,
   HiOutlineUser,
+  HiOutlineBell,
 } from "react-icons/hi2";
 
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { 
+  StyledCartButton, 
+  StyledLogoContainer, 
+  StyledMenuBar, 
+  StyledNavbarContainer, 
+  StyledNotificationButton, 
+  StyledProfileContainer, 
+  StyledProfileMenu, 
+  StyledProfileOption, 
+  StyledRightSection, 
+  StyledTopbarContainer, 
+  StyledUserProfile 
+} from "./topbar.styled";
+
 const Topbar = () => {
   const [isProfileToggle, setIsProfileToggle] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isNavbarShow, setIsNavbarShow] = useState<boolean>(false);
+  const [hasNotification, setHasNotification] = useState<boolean>(true); // For demo
   const profileRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -70,60 +73,16 @@ const Topbar = () => {
         {/* logo */}
         <StyledLogoContainer>
           <Image src={logo} alt="Ecobazar logo" />
-          <StyledMenuBar>
-            {isNavbarShow ? (
-              <RxCross1
-                className="cross-line"
-                onClick={() => setIsNavbarShow(false)}
-              />
-            ) : (
-              <HiMiniBars3
-                className="cross-line"
-                onClick={() => setIsNavbarShow(true)}
-              />
-            )}
-          </StyledMenuBar>
         </StyledLogoContainer>
 
-        {/* navbar */}
-        <StyledNavbarContainer className={`${isNavbarShow ? "active" : ""}`}>
-          <ul>
-            <li className={pathname === "/dashboard" ? "active" : ""}>
-              <Link href="/dashboard">Home</Link>
-            </li>
-            <li className={pathname === "/products" ? "active" : ""}>
-              <Link href="/products">Shop Now</Link>
-            </li>
-            <li className={pathname === "/cart" ? "active" : ""}>
-              <Link href="/cart">Special Offers</Link>
-            </li>
-            <li className={pathname === "/products" ? "active" : ""}>
-              <Link href="/products">Fresh Produce</Link>
-            </li>
-            <li className={pathname === "/orders" ? "active" : ""}>
-              <Link href="/orders">Track Order</Link>
-            </li>
-            {/* mobile-only items */}
-            <li className={`show-on-mobile ${pathname === "/cart" ? "active" : ""}`}>
-              <Link href="/cart">My Cart</Link>
-            </li>
-            <li className={`show-on-mobile ${pathname === "/orders" ? "active" : ""}`}>
-              <Link href="/orders">My Orders</Link>
-            </li>
-            <li className={`show-on-mobile ${pathname === "/wishlist" ? "active" : ""}`}>
-              <Link href="/wishlist">My Wishlist</Link>
-            </li>
-            <li className={`show-on-mobile ${pathname === "/profile" ? "active" : ""}`}>
-              <Link href="/profile">My Profile</Link>
-            </li>
-            <li className="show-on-mobile">
-              <Link href="/logout">Logout</Link>
-            </li>
-          </ul>
-        </StyledNavbarContainer>
-
-        {/* right: cart + profile */}
+        {/* right: notification + cart + profile + menu bar */}
         <StyledRightSection>
+          {/* notification */}
+          <StyledNotificationButton onClick={() => setHasNotification(false)}>
+            <HiOutlineBell className="bell-icon" />
+            {hasNotification && <span className="dot" />}
+          </StyledNotificationButton>
+
           {/* cart */}
           <Link href="/cart">
             <StyledCartButton className={pathname === "/cart" ? "active" : ""}>
@@ -175,9 +134,41 @@ const Topbar = () => {
               </StyledProfileMenu>
             </StyledUserProfile>
           </StyledProfileContainer>
+
+          {/* menu bar (mobile only) */}
+          <StyledMenuBar 
+            className={isNavbarShow ? "active" : ""} 
+            onClick={() => setIsNavbarShow(!isNavbarShow)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </StyledMenuBar>
         </StyledRightSection>
+
+        {/* navbar */}
+        <StyledNavbarContainer className={`${isNavbarShow ? "active" : ""}`}>
+          <ul onClick={() => setIsNavbarShow(false)}>
+            <li className={pathname === "/dashboard" ? "active" : ""}>
+              <Link href="/dashboard">Home</Link>
+            </li>
+            <li className={pathname === "/products" ? "active" : ""}>
+              <Link href="/products">Shop Now</Link>
+            </li>
+            <li className={pathname === "/cart" ? "active" : ""}>
+              <Link href="/cart">Special Offers</Link>
+            </li>
+            <li className={pathname === "/products" ? "active" : ""}>
+              <Link href="/products">Fresh Produce</Link>
+            </li>
+            <li className={pathname === "/orders" ? "active" : ""}>
+              <Link href="/orders">Track Order</Link>
+            </li>
+          </ul>
+        </StyledNavbarContainer>
       </StyledTopbarContainer>
     </>
   );
 };
+
 export default Topbar;
