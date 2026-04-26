@@ -9,7 +9,6 @@ import data from "../../../public/fake-json/data.json";
 
 import {
   StyledProductsContainer,
-  StyledPageHeader,
   StyledFilterBar,
   StyledSearchInput,
   StyledCategoryFilter,
@@ -17,6 +16,7 @@ import {
   StyledEmptyState
 } from "./products.styled";
 import { StyledFeatureProductCard } from "@/micro-components/featured-products/featuredProducts.styled";
+import Link from "next/link";
 
 // We'll use the same HeartIcon from FeaturedProducts
 const HeartIcon = ({ filled }: { filled: boolean }) => (
@@ -87,11 +87,6 @@ export default function ProductsPage() {
 
   return (
     <StyledProductsContainer>
-      <StyledPageHeader>
-        <h1>Fresh Produce</h1>
-        <p>Browse our selection of fresh fruits and vegetables</p>
-      </StyledPageHeader>
-
       <StyledFilterBar>
         <StyledSearchInput>
           <HiOutlineMagnifyingGlass className="search-icon" />
@@ -150,58 +145,71 @@ export default function ProductsPage() {
         <StyledProductGrid>
           {filteredProducts.map((e: any, j: number) => (
             <StyledFeatureProductCard key={j + 1} style={{ width: '100%', minWidth: 'auto' }}>
-              <div className="product-image-wrap">
-                <button
-                  className={`wishlist-btn${likedItems.has(String(e?.id || e?.name)) ? " liked" : ""}`}
-                  aria-label="Add to wishlist"
-                  onClick={(ev) => { ev.stopPropagation(); toggleLike(String(e?.id || e?.name)); }}
-                >
-                  <HeartIcon filled={likedItems.has(String(e?.id || e?.name))} />
-                </button>
-                <Image
-                  src={e?.image_url}
-                  alt={e?.name}
-                  className="product-image"
-                  width={100}
-                  height={100}
-                />
-              </div>
-
-              <div className="product-content">
-                <div className="product-name-row">
-                  <div style={{ minWidth: 0, flex: 1 }}>
-                    <div className="product-category">{e?.category}</div>
-                    <div className="product-name" title={e?.name}>{e?.name}</div>
-                  </div>
-                  <div className="product-rating">
-                    <StarRating />
-                    <span className="rating-score">4.2</span>
-                  </div>
-                </div>
-
-                <div className="product-bottom-row">
-                  <div className="price-wrap">
-                    <p className="product-unit">{e?.unit}</p>
-                    <p className="product-price">{"₹" + e?.price}</p>
-                  </div>
-                  <button 
-                    className={`cart-btn ${addedItemIds.has(String(e?.id || e?.name)) ? "added" : ""}`} 
-                    onClick={() => handleAddToCart(e)}
+              <Link 
+                href={`/products/${e.name.toLowerCase().replace(/\s+/g, '-')}`}
+                style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
+              >
+                <div className="product-image-wrap">
+                  <button
+                    className={`wishlist-btn${likedItems.has(String(e?.id || e?.name)) ? " liked" : ""}`}
+                    aria-label="Add to wishlist"
+                    onClick={(ev) => { 
+                      ev.preventDefault();
+                      ev.stopPropagation(); 
+                      toggleLike(String(e?.id || e?.name)); 
+                    }}
                   >
-                    {addedItemIds.has(String(e?.id || e?.name)) ? (
-                      <>
-                        <HiOutlineCheck style={{ fontSize: '18px', strokeWidth: 2.5 }} />
-                        <span>Added</span>
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingBag />
-                        <span>Add</span>
-                      </>
-                    )}
+                    <HeartIcon filled={likedItems.has(String(e?.id || e?.name))} />
                   </button>
+                  <Image
+                    src={e?.image_url}
+                    alt={e?.name}
+                    className="product-image"
+                    width={100}
+                    height={100}
+                  />
                 </div>
-              </div>
+
+                <div className="product-content">
+                  <div className="product-name-row">
+                    <div style={{ minWidth: 0, flex: 1 }}>
+                      <div className="product-category">{e?.category}</div>
+                      <div className="product-name" title={e?.name}>{e?.name}</div>
+                    </div>
+                    <div className="product-rating">
+                      <StarRating />
+                      <span className="rating-score">4.2</span>
+                    </div>
+                  </div>
+
+                  <div className="product-bottom-row">
+                    <div className="price-wrap">
+                      <p className="product-unit">{e?.unit}</p>
+                      <p className="product-price">{"₹" + e?.price}</p>
+                    </div>
+                    <button 
+                      className={`cart-btn ${addedItemIds.has(String(e?.id || e?.name)) ? "added" : ""}`} 
+                      onClick={(ev) => {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        handleAddToCart(e);
+                      }}
+                    >
+                      {addedItemIds.has(String(e?.id || e?.name)) ? (
+                        <>
+                          <HiOutlineCheck style={{ fontSize: '18px', strokeWidth: 2.5 }} />
+                          <span>Added</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingBag />
+                          <span>Add</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </Link>
             </StyledFeatureProductCard>
           ))}
         </StyledProductGrid>
