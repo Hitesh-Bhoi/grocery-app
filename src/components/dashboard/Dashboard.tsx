@@ -5,6 +5,9 @@ import DiscountCard from "@/micro-components/discount-card/DiscountCard";
 import FeaturedProducts from "@/micro-components/featured-products/FeaturedProducts";
 import NewseLetter from "@/micro-components/news-letter/NewsLetter";
 import ServiceCard from "@/micro-components/service-card/ServiceCard";
+import MissionSection from "@/micro-components/mission-section/MissionSection";
+import StatsSection from "@/micro-components/stats-section/StatsSection";
+import TestimonialsSection from "@/micro-components/testimonials-section/TestimonialsSection";
 const Dashboard = () => {
   return (
     <>
@@ -17,6 +20,15 @@ const Dashboard = () => {
         </div>
         <div className="discount-card-main">
           <DiscountCard/>
+        </div>
+        <div className="mission-section-container">
+          <MissionSection />
+        </div>
+        <div className="stats-section-container">
+          <StatsSection />
+        </div>
+        <div className="testimonials-section-container">
+          <TestimonialsSection />
         </div>
         <div className="service-card-container">
           <ServiceCard/>
