@@ -16,6 +16,11 @@ const float = keyframes`
   50%      { transform: translateY(-8px); }
 `;
 
+const fadeIn = keyframes`
+  from { opacity: 0; }
+  to   { opacity: 1; }
+`;
+
 /* ── Page Header Banner ── */
 export const CartHeader = styled.div`
   background: linear-gradient(135deg, #f0fdf0 0%, #e8f8e8 40%, #dcf5dc 100%);
@@ -232,6 +237,36 @@ export const CartItemsList = styled.div`
   gap: 16px;
 `;
 
+export const ClearAllButton = styled.button`
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  align-self: flex-end;
+  margin-bottom: 8px;
+
+  &:hover {
+    color: #ef4444;
+    background: #fef2f2;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  .icon {
+    font-size: 18px;
+  }
+`;
+
 export const CartItemCard = styled.div`
   display: flex;
   align-items: center;
@@ -383,7 +418,7 @@ export const ItemActions = styled.div`
   .remove-btn {
     background: none;
     border: none;
-    color: #ccc;
+    color: #888;
     cursor: pointer;
     font-size: 20px;
     padding: 8px;
@@ -811,6 +846,35 @@ export const SuccessContainer = styled.div`
       }
     }
 
+    .view-details-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: #1a1a1a;
+      padding: 14px 32px;
+      border-radius: 14px;
+      border: 1.5px solid #e5e7eb;
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: none;
+
+      &:hover {
+        border-color: #d1d5db;
+        background: #f9fafb;
+        transform: translateY(-2px);
+        box-shadow: none;
+        color: #1a1a1a;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+
     button {
       display: inline-flex;
       align-items: center;
@@ -834,6 +898,90 @@ export const SuccessContainer = styled.div`
       &:active {
         transform: translateY(0);
       }
+    }
+  }
+`;
+
+/* ── Confirmation Modal ── */
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: ${fadeIn} 0.3s ease-out;
+`;
+
+export const ModalContent = styled.div`
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: ${fadeInUp} 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .modal-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: #fef2f2;
+    color: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+  }
+
+  p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 32px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+
+    button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cancel-btn {
+      background: #f3f4f6;
+      color: #4b5563;
+      border: none;
+      &:hover { background: #e5e7eb; }
+    }
+
+    .confirm-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      &:hover { background: #dc2626; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
     }
   }
 `;

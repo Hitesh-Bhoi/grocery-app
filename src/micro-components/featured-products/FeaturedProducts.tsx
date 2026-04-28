@@ -10,10 +10,12 @@ import {
 } from "./featuredProducts.styled";
 import Image from "next/image";
 import { StarRating, ShoppingBag } from "../../../icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/cartSlice";
 import { HiOutlineCheck, HiMagnifyingGlass } from "react-icons/hi2";
 import Link from "next/link";
+import { RootState } from "@/redux/store";
+import { toggleWishlist } from "@/redux/wishlistSlice";
 
 const HeartIcon = ({ filled }: { filled: boolean }) => (
   <svg
@@ -35,9 +37,13 @@ const HeartIcon = ({ filled }: { filled: boolean }) => (
 const FeaturedProducts = () => {
   const [activeCategory, setActiveCategory] = useState<"fruits" | "vegetables">("fruits");
   const [searchTerm, setSearchTerm] = useState("");
-  const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
   const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set());
   const dispatch = useDispatch();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
+  
+  const likedItemNames = useMemo(() => 
+    new Set(wishlistItems.map(item => item.name)), 
+  [wishlistItems]);
 
   const filteredProducts = useMemo(() => {
     const products = activeCategory === "fruits" ? data.fruits : data.vegetables;
@@ -65,12 +71,15 @@ const FeaturedProducts = () => {
     }, 2000);
   };
 
-  const toggleLike = (id: string) => {
-    setLikedItems((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+  const handleToggleWishlist = (product: any) => {
+    dispatch(toggleWishlist({
+      id: product.name,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+      category: product.category,
+      unit: product.unit
+    }));
   };
 
   return (
@@ -128,15 +137,15 @@ const FeaturedProducts = () => {
                   {/* Image area */}
                   <div className="product-image-wrap">
                     <button
-                      className={`wishlist-btn${likedItems.has(String(e?.id || e?.name)) ? " liked" : ""}`}
+                      className={`wishlist-btn${likedItemNames.has(e.name) ? " liked" : ""}`}
                       aria-label="Add to wishlist"
                       onClick={(ev) => { 
-                        ev.preventDefault();
-                        ev.stopPropagation(); 
-                        toggleLike(String(e?.id || e?.name)); 
+                         ev.preventDefault();
+                         ev.stopPropagation(); 
+                         handleToggleWishlist(e); 
                       }}
                     >
-                      <HeartIcon filled={likedItems.has(String(e?.id || e?.name))} />
+                      <HeartIcon filled={likedItemNames.has(e.name)} />
                     </button>
                     <Image
                       src={e?.image_url}

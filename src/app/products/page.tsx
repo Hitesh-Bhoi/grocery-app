@@ -1,9 +1,16 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/cartSlice";
-import { HiOutlineMagnifyingGlass, HiOutlineCheck } from "react-icons/hi2";
+import { toggleWishlist } from "@/redux/wishlistSlice";
+import { RootState } from "@/redux/store";
+import { 
+  HiOutlineMagnifyingGlass, 
+  HiOutlineCheck,
+  HiOutlineHeart,
+  HiHeart
+} from "react-icons/hi2";
 import { StarRating, ShoppingBag } from "../../../icons";
 import data from "../../../public/fake-json/data.json";
 
@@ -18,26 +25,9 @@ import {
 import { StyledFeatureProductCard } from "@/micro-components/featured-products/featuredProducts.styled";
 import Link from "next/link";
 
-// We'll use the same HeartIcon from FeaturedProducts
-const HeartIcon = ({ filled }: { filled: boolean }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="16"
-    height="16"
-    fill={filled ? "#e53935" : "none"}
-    stroke={filled ? "#e53935" : "currentColor"}
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ transition: "all 0.25s ease" }}
-  >
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
-
 export default function ProductsPage() {
   const dispatch = useDispatch();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
   
   // Flatten data
   const allProducts = useMemo(() => {
@@ -46,7 +36,6 @@ export default function ProductsPage() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [likedItems, setLikedItems] = useState<Set<string>>(new Set());
   const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set());
 
   // Filter products
@@ -77,12 +66,19 @@ export default function ProductsPage() {
     }, 2000);
   };
 
-  const toggleLike = (id: string) => {
-    setLikedItems((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+  const handleToggleWishlist = (p: any) => {
+    dispatch(toggleWishlist({
+      id: p.name,
+      name: p.name,
+      price: p.price,
+      image_url: p.image_url,
+      category: p.category,
+      unit: p.unit
+    }));
+  };
+
+  const isLiked = (name: string) => {
+    return wishlistItems.some(item => item.name === name);
   };
 
   return (
@@ -151,15 +147,18 @@ export default function ProductsPage() {
               >
                 <div className="product-image-wrap">
                   <button
-                    className={`wishlist-btn${likedItems.has(String(e?.id || e?.name)) ? " liked" : ""}`}
+                    className={`wishlist-btn${isLiked(e.name) ? " liked" : ""}`}
                     aria-label="Add to wishlist"
                     onClick={(ev) => { 
                       ev.preventDefault();
                       ev.stopPropagation(); 
-                      toggleLike(String(e?.id || e?.name)); 
+                      handleToggleWishlist(e); 
+                    }}
+                    style={{
+                      color: isLiked(e.name) ? '#ff4d4f' : '#888'
                     }}
                   >
-                    <HeartIcon filled={likedItems.has(String(e?.id || e?.name))} />
+                    {isLiked(e.name) ? <HiHeart /> : <HiOutlineHeart />}
                   </button>
                   <Image
                     src={e?.image_url}
@@ -203,7 +202,7 @@ export default function ProductsPage() {
                       ) : (
                         <>
                           <ShoppingBag />
-                          <span>Add</span>
+                          <span>Add to Cart</span>
                         </>
                       )}
                     </button>

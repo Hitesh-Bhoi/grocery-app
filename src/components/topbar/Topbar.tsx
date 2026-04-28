@@ -5,12 +5,7 @@ import Link from "next/link";
 import { IoMdLogOut } from "react-icons/io";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { RxCross1 } from "react-icons/rx";
 import {
-  HiMiniBars3,
-  HiOutlineClipboard,
-  HiOutlineHeart,
-  HiOutlineShoppingCart,
   HiOutlineUser,
   HiOutlineBell,
 } from "react-icons/hi2";
@@ -18,7 +13,6 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { 
-  StyledCartButton, 
   StyledLogoContainer, 
   StyledMenuBar, 
   StyledNavbarContainer, 
@@ -28,7 +22,8 @@ import {
   StyledProfileOption, 
   StyledRightSection, 
   StyledTopbarContainer, 
-  StyledUserProfile 
+  StyledUserProfile,
+  StyledNavBadge
 } from "./topbar.styled";
 
 const Topbar = () => {
@@ -41,6 +36,12 @@ const Topbar = () => {
 
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const cartCount = cartItems.length;
+
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
+  const wishlistCount = wishlistItems.length;
+
+  const orders = useSelector((state: RootState) => state.orders.orders);
+  const orderCount = orders.length;
 
   // On non-dashboard pages, the topbar should always be visible
   const isDashboard = pathname === "/dashboard";
@@ -75,23 +76,13 @@ const Topbar = () => {
           <Image src={logo} alt="Ecobazar logo" />
         </StyledLogoContainer>
 
-        {/* right: notification + cart + profile + menu bar */}
+        {/* right: notification + profile + menu bar */}
         <StyledRightSection>
           {/* notification */}
           <StyledNotificationButton onClick={() => setHasNotification(false)}>
             <HiOutlineBell className="bell-icon" />
             {hasNotification && <span className="dot" />}
           </StyledNotificationButton>
-
-          {/* cart */}
-          <Link href="/cart">
-            <StyledCartButton className={pathname === "/cart" ? "active" : ""}>
-              <HiOutlineShoppingCart className="cart-icon" />
-              {cartCount > 0 && (
-                <span className="cart-badge">{cartCount}</span>
-              )}
-            </StyledCartButton>
-          </Link>
 
           {/* profile dropdown */}
           <StyledProfileContainer ref={profileRef}>
@@ -105,24 +96,6 @@ const Topbar = () => {
                   <StyledProfileOption className={pathname === "/profile" ? "active" : ""}>
                     <HiOutlineUser className="profile-option-icon" />
                     <span>My Profile</span>
-                  </StyledProfileOption>
-                </Link>
-                <Link href="/cart" style={{ textDecoration: 'none' }}>
-                  <StyledProfileOption className={pathname === "/cart" ? "active" : ""}>
-                    <HiOutlineShoppingCart className="profile-option-icon" />
-                    <span>My Cart</span>
-                  </StyledProfileOption>
-                </Link>
-                <Link href="/orders" style={{ textDecoration: 'none' }}>
-                  <StyledProfileOption className={pathname === "/orders" ? "active" : ""}>
-                    <HiOutlineClipboard className="profile-option-icon" />
-                    <span>My Orders</span>
-                  </StyledProfileOption>
-                </Link>
-                <Link href="/wishlist" style={{ textDecoration: 'none' }}>
-                  <StyledProfileOption className={pathname === "/wishlist" ? "active" : ""}>
-                    <HiOutlineHeart className="profile-option-icon" />
-                    <span>My Wishlist</span>
                   </StyledProfileOption>
                 </Link>
                 <Link href="/logout" style={{ textDecoration: 'none' }}>
@@ -153,16 +126,22 @@ const Topbar = () => {
               <Link href="/dashboard">Home</Link>
             </li>
             <li className={pathname === "/products" ? "active" : ""}>
-              <Link href="/products">Shop Now</Link>
+              <Link href="/products">Products</Link>
+            </li>
+            <li className={pathname === "/wishlist" ? "active" : ""}>
+              <Link href="/wishlist">
+                Wishlist {wishlistCount > 0 && <StyledNavBadge>{wishlistCount}</StyledNavBadge>}
+              </Link>
             </li>
             <li className={pathname === "/cart" ? "active" : ""}>
-              <Link href="/cart">Special Offers</Link>
-            </li>
-            <li className={pathname === "/products" ? "active" : ""}>
-              <Link href="/products">Fresh Produce</Link>
+              <Link href="/cart">
+                Cart {cartCount > 0 && <StyledNavBadge>{cartCount}</StyledNavBadge>}
+              </Link>
             </li>
             <li className={pathname === "/orders" ? "active" : ""}>
-              <Link href="/orders">Track Order</Link>
+              <Link href="/orders">
+                Orders {orderCount > 0 && <StyledNavBadge>{orderCount}</StyledNavBadge>}
+              </Link>
             </li>
           </ul>
         </StyledNavbarContainer>

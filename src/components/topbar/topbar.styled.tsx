@@ -136,6 +136,8 @@ export const StyledNavbarContainer = styled.div`
     li.active {
       color: white;
       background-color: #20b820;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(32, 184, 32, 0.25);
     }
 
     .show-on-mobile {
@@ -201,12 +203,29 @@ export const StyledNavbarContainer = styled.div`
       transform: translateY(0);
     }
   }
+`;
 
-  /* @media (max-width: 1024px){
-    li{
-      text-wrap-mode: nowrap;
-    }
-  } */
+export const StyledNavBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(32, 184, 32, 0.1);
+  color: #20b820;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 1px 7px;
+  border-radius: 12px;
+  margin-left: 6px;
+  transition: all 0.3s ease;
+  vertical-align: middle;
+  line-height: 1;
+
+  li:hover &,
+  li.active & {
+    background: white;
+    color: #20b820;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 export const StyledProfileContainer = styled.div`
@@ -334,7 +353,7 @@ export const StyledCartButton = styled.button`
 
 export const StyledUserProfile = styled.div`
   .profile-icon {
-    font-size: 32px;
+    font-size: 24px;
     cursor: pointer;
     color: #333;
     transition: color 0.2s;
@@ -367,7 +386,7 @@ export const StyledProfileMenu = styled.div`
   }
 `;
 
-export const StyledProfileOption = styled.p`
+export const StyledProfileOption = styled.div`
   padding: 11px 14px;
   margin: 0px;
   display: flex;

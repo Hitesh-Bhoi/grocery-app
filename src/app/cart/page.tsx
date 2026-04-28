@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { updateQuantity, removeFromCart, clearCart } from "@/redux/cartSlice";
@@ -21,7 +21,11 @@ import {
   EmptyCart,
   PaymentMethod,
   SuccessContainer,
+  ClearAllButton,
+  ModalOverlay,
+  ModalContent,
 } from "./cart.styled";
+import { addOrder } from "@/redux/orderSlice";
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -31,30 +35,82 @@ export default function CartPage() {
   const [couponCode, setCouponCode] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [confirmModal, setConfirmModal] = useState<{
+    show: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  }>({
+    show: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   const TAX_RATE = 0.05; // 5% GST
   const taxAmount = totalPrice * TAX_RATE;
   const finalTotal = totalPrice + taxAmount;
 
-  const handleCheckout = () => {
-    const orderDetails = {
-      cartItems,
-      totalItems,
-      totalPrice,
-      taxAmount,
-      finalTotal,
-      couponCode,
-      paymentMethod: "cod" // Hardcoded as per the UI
+  useEffect(() => {
+    if (confirmModal.show) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
     };
-    console.log('Order Values:', orderDetails);
+  }, [confirmModal.show]);
+
+  const handleCheckout = () => {
+    const orderId = `#ORD-${Math.floor(Math.random() * 90000) + 10000}`;
+    const date = new Date().toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
+    const orderData = {
+      id: orderId,
+      date: date,
+      total: finalTotal,
+      status: "Processing",
+      itemsCount: totalItems,
+      items: cartItems
+    };
     
     setIsProcessing(true);
     // Simulate order processing delay
     setTimeout(() => {
       setIsProcessing(false);
       setIsSuccess(true);
+      dispatch(addOrder(orderData));
       dispatch(clearCart());
     }, 1200);
+  };
+
+  const handleRemoveItem = (name: string) => {
+    setConfirmModal({
+      show: true,
+      title: "Remove Item",
+      message: `Are you sure you want to remove "${name}" from your cart?`,
+      onConfirm: () => {
+        dispatch(removeFromCart(name));
+        setConfirmModal(prev => ({ ...prev, show: false }));
+      }
+    });
+  };
+
+  const handleClearCart = () => {
+    setConfirmModal({
+      show: true,
+      title: "Clear Cart",
+      message: "Are you sure you want to clear your entire cart? This action cannot be undone.",
+      onConfirm: () => {
+        dispatch(clearCart());
+        setConfirmModal(prev => ({ ...prev, show: false }));
+      }
+    });
   };
 
   const handleApplyCoupon = () => {
@@ -87,7 +143,7 @@ export default function CartPage() {
             </p>
             <div className="action-buttons">
               <Link href="/dashboard">Continue Shopping</Link>
-              <button onClick={() => setIsSuccess(false)}>View Details</button>
+              <Link href="/orders" className="view-details-link">View Details</Link>
             </div>
           </SuccessContainer>
         </CartContainer>
@@ -145,6 +201,10 @@ export default function CartPage() {
       <CartContainer>
         <CartGrid>
           <CartItemsList>
+            <ClearAllButton onClick={handleClearCart} title="Remove all items from cart">
+              <HiOutlineTrash className="icon" />
+              Clear All
+            </ClearAllButton>
             {cartItems.map((item, index) => (
               <CartItemCard key={item.id} style={{ animationDelay: `${index * 0.08}s` }}>
                 <ItemInfo>
@@ -181,7 +241,7 @@ export default function CartPage() {
                   <div className="price">₹{(item.price * item.quantity).toFixed(2)}</div>
                   <button
                     className="remove-btn"
-                    onClick={() => dispatch(removeFromCart(item.name))}
+                    onClick={() => handleRemoveItem(item.name)}
                     aria-label="Remove item"
                     title="Remove from cart"
                   >
@@ -260,6 +320,32 @@ export default function CartPage() {
           </CartSummary>
         </CartGrid>
       </CartContainer>
+
+      {confirmModal.show && (
+        <ModalOverlay onClick={() => setConfirmModal(prev => ({ ...prev, show: false }))}>
+          <ModalContent onClick={e => e.stopPropagation()}>
+            <div className="modal-icon-wrapper">
+              <HiOutlineTrash />
+            </div>
+            <h2>{confirmModal.title}</h2>
+            <p>{confirmModal.message}</p>
+            <div className="modal-actions">
+              <button 
+                className="cancel-btn" 
+                onClick={() => setConfirmModal(prev => ({ ...prev, show: false }))}
+              >
+                Cancel
+              </button>
+              <button 
+                className="confirm-btn" 
+                onClick={confirmModal.onConfirm}
+              >
+                Confirm
+              </button>
+            </div>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </>
   );
 }
