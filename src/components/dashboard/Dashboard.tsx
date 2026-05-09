@@ -1,4 +1,4 @@
-import Carousel from "@/micro-components/carousel/Carousel";
+import Hero from "@/micro-components/hero/hero";
 import ContactUs from "@/micro-components/contact-us/contactUs";
 import FAQ from "@/micro-components/faq/faq";
 import DiscountCard from "@/micro-components/discount-card/DiscountCard";
@@ -13,7 +13,7 @@ const Dashboard = () => {
     <>
       <div className="dashboard-container">
         <div className="dashboard-carousel-section">
-          <Carousel />
+          <Hero />
         </div>
         <div className="featured-product-container">
           <FeaturedProducts/>
