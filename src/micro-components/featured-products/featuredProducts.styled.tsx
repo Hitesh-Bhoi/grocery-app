@@ -445,3 +445,54 @@ export const StyledFeatureProductCard = styled.div`
     }
   }
 `;
+
+export const StyledSkeletonCard = styled(StyledFeatureProductCard)`
+  background: #f9f9f9;
+  border-color: #eee;
+  box-shadow: none;
+  pointer-events: none;
+  
+  .skeleton-img {
+    width: 110px;
+    height: 110px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  .skeleton-text {
+    height: 16px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+    margin-bottom: 6px;
+  }
+
+  .skeleton-text.short {
+    width: 60%;
+  }
+
+  .skeleton-text.title {
+    width: 90%;
+    height: 20px;
+  }
+  
+  .skeleton-text.price {
+    width: 40%;
+    height: 24px;
+  }
+
+  .skeleton-btn {
+    width: 80px;
+    height: 32px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+`;
