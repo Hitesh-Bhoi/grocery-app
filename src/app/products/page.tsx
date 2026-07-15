@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/cartSlice";
@@ -12,7 +12,7 @@ import {
   HiHeart
 } from "react-icons/hi2";
 import { StarRating, ShoppingBag } from "../../../icons";
-import data from "../../../public/fake-json/data.json";
+import { productAPI } from "@/libs/api";
 
 import {
   StyledProductsContainer,
@@ -22,27 +22,50 @@ import {
   StyledProductGrid,
   StyledEmptyState
 } from "./products.styled";
-import { StyledFeatureProductCard } from "@/micro-components/featured-products/featuredProducts.styled";
+import { StyledFeatureProductCard, StyledSkeletonCard } from "@/micro-components/featured-products/featuredProducts.styled";
 import Link from "next/link";
 
 export default function ProductsPage() {
   const dispatch = useDispatch();
   const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
-  
-  // Flatten data
-  const allProducts = useMemo(() => {
-    return [...data.vegetables, ...data.fruits];
-  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set());
+  
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await productAPI.getAllProducts();
+        if (res && res.data) {
+          setAllProducts(res.data);
+        }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setError("Failed to load products. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Filter products
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = activeCategory === "all" || product.category === activeCategory;
+      const matchesSearch = (product?.name || "").toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const cat = typeof product?.category === 'object' ? product?.category?.name : product?.category;
+      const categoryName = (cat || "").toLowerCase();
+      
+      const matchesCategory = activeCategory === "all" || categoryName.includes(activeCategory.toLowerCase());
+      
       return matchesSearch && matchesCategory;
     });
   }, [allProducts, searchTerm, activeCategory]);
@@ -116,7 +139,33 @@ export default function ProductsPage() {
         </StyledCategoryFilter>
       </StyledFilterBar>
 
-      {filteredProducts.length === 0 ? (
+      {error ? (
+        <div style={{ padding: '40px', color: 'red', width: '100%', textAlign: 'center', fontSize: '18px' }}>
+          {error}
+        </div>
+      ) : loading ? (
+        <StyledProductGrid>
+          {Array.from({ length: 8 }).map((_, idx) => (
+            <StyledSkeletonCard key={idx} style={{ width: '100%', minWidth: 'auto' }}>
+              <div className="product-image-wrap">
+                <div className="skeleton-img"></div>
+              </div>
+              <div className="product-content">
+                <div className="product-name-row">
+                  <div style={{ width: '100%' }}>
+                    <div className="skeleton-text short"></div>
+                    <div className="skeleton-text title"></div>
+                  </div>
+                </div>
+                <div className="product-bottom-row">
+                  <div className="skeleton-text price"></div>
+                  <div className="skeleton-btn"></div>
+                </div>
+              </div>
+            </StyledSkeletonCard>
+          ))}
+        </StyledProductGrid>
+      ) : filteredProducts.length === 0 ? (
         <StyledEmptyState>
           <div className="icon-box">🔍</div>
           <h3>No products found</h3>
@@ -142,10 +191,15 @@ export default function ProductsPage() {
           {filteredProducts.map((e: any, j: number) => (
             <StyledFeatureProductCard key={j + 1} style={{ width: '100%', minWidth: 'auto' }}>
               <Link 
-                href={`/products/${e.name.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`/products/${(e.slug || e.name).toLowerCase().replace(/\s+/g, '-')}`}
                 style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
               >
                 <div className="product-image-wrap">
+                  {e?.discount && (
+                    <div style={{ position: 'absolute', top: 10, left: 10, background: '#e53935', color: '#fff', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', zIndex: 2 }}>
+                      {e.discount}% OFF
+                    </div>
+                  )}
                   <button
                     className={`wishlist-btn${isLiked(e.name) ? " liked" : ""}`}
                     aria-label="Add to wishlist"
@@ -167,12 +221,17 @@ export default function ProductsPage() {
                     width={100}
                     height={100}
                   />
+                  {e?.stock === 0 && (
+                    <div style={{ position: 'absolute', bottom: 10, left: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', zIndex: 2 }}>
+                      Out of Stock
+                    </div>
+                  )}
                 </div>
 
                 <div className="product-content">
                   <div className="product-name-row">
                     <div style={{ minWidth: 0, flex: 1 }}>
-                      <div className="product-category">{e?.category}</div>
+                      <div className="product-category">{typeof e?.category === 'object' ? e?.category?.name : e?.category}</div>
                       <div className="product-name" title={e?.name}>{e?.name}</div>
                     </div>
                     <div className="product-rating">
@@ -188,10 +247,12 @@ export default function ProductsPage() {
                     </div>
                     <button 
                       className={`cart-btn ${addedItemIds.has(String(e?.id || e?.name)) ? "added" : ""}`} 
+                      disabled={e?.stock === 0}
+                      style={e?.stock === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
                       onClick={(ev) => {
                         ev.preventDefault();
                         ev.stopPropagation();
-                        handleAddToCart(e);
+                        if (e?.stock !== 0) handleAddToCart(e);
                       }}
                     >
                       {addedItemIds.has(String(e?.id || e?.name)) ? (
