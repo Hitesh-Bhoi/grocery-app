@@ -1,13 +1,5 @@
 "use client";
 import { useEffect, useState, useMemo } from "react";
-import {
-  StyledFeaturedProductContainer,
-  StyledFeaturedProductHeading,
-  StyledFeaturedProductSection,
-  StyledFeatureProductCard,
-  StyledSearchFilterBar,
-  StyledSkeletonCard
-} from "./featuredProducts.styled";
 import Image from "next/image";
 import { StarRating, ShoppingBag } from "../../../icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,37 +10,18 @@ import { RootState } from "@/redux/store";
 import { toggleWishlist } from "@/redux/wishlistSlice";
 import { productAPI } from "@/libs/api";
 
-const HeartIcon = ({ filled }: { filled: boolean }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="16"
-    height="16"
-    fill={filled ? "#e53935" : "none"}
-    stroke={filled ? "#e53935" : "currentColor"}
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    style={{ transition: "all 0.25s ease" }}
-  >
-    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-  </svg>
-);
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProductCard, ProductSkeleton } from "./ProductCard";
 
 const FeaturedProducts = () => {
   const [activeCategory, setActiveCategory] = useState<"fruits" | "vegetables">("fruits");
   const [searchTerm, setSearchTerm] = useState("");
-  const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set());
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const dispatch = useDispatch();
-  const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
-  
-  const likedItemNames = useMemo(() => 
-    new Set(wishlistItems.map(item => item.name)), 
-  [wishlistItems]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -79,208 +52,80 @@ const FeaturedProducts = () => {
     });
   }, [products, activeCategory, searchTerm]);
 
-  const handleAddToCart = (product: any) => {
-    dispatch(addToCart({ product, quantity: 1 }));
-    const id = String(product?.id || product?.name);
-    
-    setAddedItemIds((prev) => {
-      const next = new Set(prev);
-      next.add(id);
-      return next;
-    });
-
-    setTimeout(() => {
-      setAddedItemIds((prev) => {
-        const next = new Set(prev);
-        next.delete(id);
-        return next;
-      });
-    }, 2000);
-  };
-
-  const handleToggleWishlist = (product: any) => {
-    dispatch(toggleWishlist({
-      id: product.name,
-      name: product.name,
-      price: product.price,
-      image_url: product.image_url,
-      category: product.category,
-      unit: product.unit
-    }));
-  };
-
   return (
-    <>
-      <StyledFeaturedProductContainer>
-        <StyledFeaturedProductSection>
-          {/* Section heading */}
-          <StyledFeaturedProductHeading>
-            <div className="heading-left">
-              <div className="featured-product-title">Shop by category</div>
-              <div className="featured-product-heading">
-                {activeCategory === "fruits" ? "Season's Best Fruits" : "Season's Best Vegetables"}
-              </div>
+    <div className="w-full bg-white py-12 pb-4 box-border">
+      <div className="w-full mx-auto mb-10">
+        
+        {/* Section heading */}
+        <div className="flex justify-between items-end gap-3 px-4 pt-7 pb-4 max-w-full">
+          <div className="flex flex-col gap-1">
+            <div className="text-[11px] font-semibold text-[#199b19] uppercase tracking-[0.18em]">Shop by category</div>
+            <div className="text-[clamp(20px,2.2vw,26px)] font-black text-slate-900 leading-tight tracking-tight">
+              {activeCategory === "fruits" ? "Season's Best Fruits" : "Season's Best Vegetables"}
             </div>
+          </div>
+          <Button asChild variant="link" className="text-[#199b19] font-semibold text-base hover:text-[#17a017] hover:no-underline group px-0 h-auto">
             <Link href="/products">
-              <button className="see-all-btn">View all products</button>
+              View all products
+              <span className="text-[26px] leading-none transition-transform group-hover:translate-x-1 ml-1">&rarr;</span>
             </Link>
-          </StyledFeaturedProductHeading>
+          </Button>
+        </div>
 
-          {/* Filter and Search Bar */}
-          <StyledSearchFilterBar>
-            <div className="filter-tabs">
-              <button 
-                className={activeCategory === "fruits" ? "active" : ""} 
-                onClick={() => setActiveCategory("fruits")}
-              >
+        {/* Filter and Search Bar */}
+        <div className="flex justify-end items-center px-4 pb-6 gap-3.5 flex-wrap max-md:flex-col max-md:items-stretch">
+          <Tabs value={activeCategory} onValueChange={(val) => setActiveCategory(val as "fruits" | "vegetables")} className="bg-slate-100 p-2 rounded-xl">
+            <TabsList className="bg-transparent gap-2 h-auto p-0 border-none w-full">
+              <TabsTrigger value="fruits" className="px-5 py-2 rounded-[10px] text-sm font-bold text-slate-500 data-[state=active]:bg-white data-[state=active]:text-[#199b19] data-[state=active]:shadow-sm transition-all hover:bg-white/50 w-full sm:w-auto">
                 Fruits
-              </button>
-              <button 
-                className={activeCategory === "vegetables" ? "active" : ""} 
-                onClick={() => setActiveCategory("vegetables")}
-              >
+              </TabsTrigger>
+              <TabsTrigger value="vegetables" className="px-5 py-2 rounded-[10px] text-sm font-bold text-slate-500 data-[state=active]:bg-white data-[state=active]:text-[#199b19] data-[state=active]:shadow-sm transition-all hover:bg-white/50 w-full sm:w-auto">
                 Vegetables
-              </button>
-            </div>
-            <div className="search-wrapper">
-              <HiMagnifyingGlass className="search-icon" />
-              <input 
-                type="text" 
-                placeholder={`Search ${activeCategory}...`} 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </StyledSearchFilterBar>
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
 
-          {/* Product cards */}
-          {error ? (
-            <div style={{ padding: '20px', color: 'red', width: '100%', textAlign: 'center' }}>
-              {error}
-            </div>
-          ) : (
-            <div className="featured-product-row">
-              {loading ? (
-                Array.from({ length: 6 }).map((_, idx) => (
-                  <StyledSkeletonCard key={idx}>
-                    <div className="product-image-wrap">
-                      <div className="skeleton-img"></div>
-                    </div>
-                    <div className="product-content">
-                      <div className="product-name-row">
-                        <div style={{ width: '100%' }}>
-                          <div className="skeleton-text short"></div>
-                          <div className="skeleton-text title"></div>
-                        </div>
-                      </div>
-                      <div className="product-bottom-row">
-                        <div className="skeleton-text price"></div>
-                        <div className="skeleton-btn"></div>
-                      </div>
-                    </div>
-                  </StyledSkeletonCard>
-                ))
-              ) : filteredProducts.length > 0 ? (
-                filteredProducts.map((e: any, j: number) => (
-                  <StyledFeatureProductCard key={j + 1}>
-                    <Link 
-                      href={`/products/${(e.slug || e.name).toLowerCase().replace(/\s+/g, '-')}`}
-                      style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
-                    >
-                      {/* Image area */}
-                      <div className="product-image-wrap">
-                        {e?.discount && (
-                          <div style={{ position: 'absolute', top: 10, left: 10, background: '#e53935', color: '#fff', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', zIndex: 2 }}>
-                            {e.discount}% OFF
-                          </div>
-                        )}
-                        <button
-                          className={`wishlist-btn${likedItemNames.has(e.name) ? " liked" : ""}`}
-                          aria-label="Add to wishlist"
-                          onClick={(ev) => { 
-                             ev.preventDefault();
-                             ev.stopPropagation(); 
-                             handleToggleWishlist(e); 
-                          }}
-                        >
-                          <HeartIcon filled={likedItemNames.has(e.name)} />
-                        </button>
-                        <Image
-                          src={e?.image_url}
-                          alt={e?.name}
-                          className="product-image"
-                          width={100}
-                          height={100}
-                        />
-                        {/* Stock Availability */}
-                        {e?.stock === 0 && (
-                          <div style={{ position: 'absolute', bottom: 10, left: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', zIndex: 2 }}>
-                            Out of Stock
-                          </div>
-                        )}
-                      </div>
+          <div className="relative flex-1 w-full max-w-full md:max-w-[400px]">
+            <HiMagnifyingGlass className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
+            <Input 
+              type="text" 
+              placeholder={`Search ${activeCategory}...`} 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-11 pr-4 py-3 h-auto w-full rounded-xl border-[1.5px] border-black/5 bg-slate-50 text-[15px] text-slate-800 transition-all focus-visible:ring-0 focus-visible:border-[#199b19] focus-visible:bg-white focus-visible:shadow-[0_4px_12px_rgba(25,155,25,0.08)] placeholder:text-slate-400"
+            />
+          </div>
+        </div>
 
-                      {/* Content area */}
-                      <div className="product-content">
-
-                        {/* Name + Rating on same row */}
-                        <div className="product-name-row">
-                          <div>
-                            {/* Category label */}
-                            <div className="product-category">{typeof e?.category === 'object' ? e?.category?.name : e?.category}</div>
-                            <div className="product-name">{e?.name}</div>
-                          </div>
-                          <div className="product-rating">
-                            <StarRating />
-                            <span className="rating-score">4.2</span>
-                          </div>
-                        </div>
-
-                        {/* Price + Cart btn on same row */}
-                        <div className="product-bottom-row">
-                          <div className="price-wrap">
-                            <p className="product-unit">{e?.unit}</p>
-                            <p className="product-price">{"₹" + e?.price}</p>
-                          </div>
-                          <button 
-                            className={`cart-btn ${addedItemIds.has(String(e?.id || e?.name)) ? "added" : ""}`} 
-                            disabled={e?.stock === 0}
-                            style={e?.stock === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
-                            onClick={(ev) => {
-                              ev.preventDefault();
-                              ev.stopPropagation();
-                              if (e?.stock !== 0) handleAddToCart(e);
-                            }}
-                          >
-                            {addedItemIds.has(String(e?.id || e?.name)) ? (
-                              <>
-                                <HiOutlineCheck style={{ fontSize: '18px', strokeWidth: 2.5 }} />
-                                <span>Added</span>
-                              </>
-                            ) : (
-                              <>
-                                <ShoppingBag />
-                                <span>Add to Cart</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    </Link>
-                  </StyledFeatureProductCard>
-                ))
-              ) : (
-                <div style={{ padding: '20px', width: '100%', textAlign: 'center', color: '#666' }}>
-                  No products found.
+        {/* Product cards */}
+        {error ? (
+          <div className="p-5 text-red-500 w-full text-center">
+            {error}
+          </div>
+        ) : (
+          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-3 md:gap-4 mx-4 my-4 pb-8 snap-x snap-mandatory hide-scrollbar lg:grid lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 lg:gap-5 lg:px-2 lg:py-2 lg:overflow-visible [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden lg:[&::-webkit-scrollbar]:block lg:[&::-webkit-scrollbar]:h-2 lg:[&::-webkit-scrollbar-track]:bg-slate-100 lg:[&::-webkit-scrollbar-track]:rounded-full lg:[&::-webkit-scrollbar-thumb]:bg-[#199b19] lg:[&::-webkit-scrollbar-thumb]:rounded-full">
+            {loading ? (
+              Array.from({ length: 6 }).map((_, idx) => (
+                <div key={idx} className="flex-none w-60 md:w-70 lg:w-full lg:flex-auto shrink-0 snap-start">
+                  <ProductSkeleton />
                 </div>
-              )}
-            </div>
-          )}
-        </StyledFeaturedProductSection>
-      </StyledFeaturedProductContainer>
-    </>
+              ))
+            ) : filteredProducts.length > 0 ? (
+              filteredProducts.map((e: any, j: number) => (
+                <div key={j + 1} className="flex-none w-60 md:w-70 lg:w-full lg:flex-auto shrink-0 snap-start">
+                  <ProductCard product={e} />
+                </div>
+              ))
+            ) : (
+              <div className="p-5 w-full text-center text-slate-500 lg:col-span-full">
+                No products found.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
 export default FeaturedProducts;
-
