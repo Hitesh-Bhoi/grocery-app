@@ -56,7 +56,13 @@ const WishlistPage = () => {
                   <Card key={item.name} className="overflow-hidden">
                     <CardContent className="p-3">
                       <div className="relative mb-3 flex justify-center">
-                        <Button size="icon" variant="ghost" className="absolute right-0 top-0 text-red-500" onClick={() => dispatch(removeFromWishlist(item.name))}>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          aria-label={`Remove ${item.name} from wishlist`}
+                          className="absolute right-0 top-0 text-red-500"
+                          onClick={() => dispatch(removeFromWishlist(item.name))}
+                        >
                           <HiOutlineTrash />
                         </Button>
                         <Link href={`/products/${item.name.toLowerCase().replace(/\s+/g, "-")}`}>

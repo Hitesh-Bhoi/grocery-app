@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 
+import { cn } from "@/lib/utils";
+
 const CATEGORIES = ["All", "Quality", "Delivery", "Orders", "Returns", "Payments"];
 
 const FAQ_ITEMS = [
@@ -43,6 +45,7 @@ const FAQ = () => {
         <p className="mt-2 text-slate-500">Everything you need to know about Ecobazar.</p>
         <Input
           className="mx-auto mt-5 max-w-md"
+          aria-label="Search questions"
           placeholder="Search questions…"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -50,14 +53,20 @@ const FAQ = () => {
       </div>
       <div className="mb-6 flex flex-wrap justify-center gap-2">
         {CATEGORIES.map((cat) => (
-          <Badge
+          <button
+            type="button"
             key={cat}
-            variant={activeCategory === cat ? "default" : "outline"}
-            className="cursor-pointer px-3 py-1"
+            aria-pressed={activeCategory === cat}
             onClick={() => setActiveCategory(cat)}
+            className={cn(
+              "inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+              activeCategory === cat
+                ? "border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
+                : "border-slate-200 text-slate-900 hover:bg-slate-100"
+            )}
           >
             {cat}
-          </Badge>
+          </button>
         ))}
       </div>
       {filtered.length === 0 ? (

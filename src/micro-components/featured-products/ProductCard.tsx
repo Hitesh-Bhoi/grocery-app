@@ -101,7 +101,8 @@ export function ProductCard({ product }: { product: ProductLike }) {
         ) : null}
         <button
           type="button"
-          aria-label="Add to wishlist"
+          aria-label={liked ? "Remove from wishlist" : "Add to wishlist"}
+          aria-pressed={liked}
           onClick={handleWishlist}
           className={cn(
             "absolute right-2.5 top-2.5 z-10 flex size-9 items-center justify-center rounded-full bg-white shadow-sm transition hover:scale-110",

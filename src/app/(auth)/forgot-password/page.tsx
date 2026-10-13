@@ -8,15 +8,30 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { authAPI } from "@/libs/api";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email.trim() || !email.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      await authAPI.forgotPassword(email.trim());
       setSubmitted(true);
+    } catch (err: any) {
+      setError(err?.message || "Failed to send reset link. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,8 +78,18 @@ export default function ForgotPasswordPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full py-6 text-base font-bold shadow-md hover:shadow-lg">
-                Send Reset Link
+              {error && (
+                <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+                  {error}
+                </div>
+              )}
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full py-6 text-base font-bold shadow-md hover:shadow-lg"
+              >
+                {loading ? "Sending..." : "Send Reset Link"}
               </Button>
 
               <div className="text-center">

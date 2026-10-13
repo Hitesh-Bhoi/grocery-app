@@ -50,22 +50,18 @@ const DiscountCard = () => {
     return () => clearInterval(id);
   }, []);
 
-  const copyCode = () => {
+  const copyCode = async (): Promise<boolean> => {
     if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
-      navigator.clipboard
-        .writeText("FOODIE50")
-        .then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
-        })
-        .catch(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
-        });
-    } else {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      try {
+        await navigator.clipboard.writeText("FOODIE50");
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        return true;
+      } catch {
+        return false;
+      }
     }
+    return false;
   };
 
   return (
@@ -77,7 +73,7 @@ const DiscountCard = () => {
             Limited Time Offer
           </Badge>
           <p className="m-0 text-[clamp(22px,3vw,36px)] font-black leading-tight text-white">
-            Get Up to <span className="text-yellow-300">40% OFF</span> on Your First Order!
+            Get Up to <span className="text-yellow-300">50% OFF</span> on Your First Order!
           </p>
           <p className="m-0 max-w-xl text-sm text-white/70">
             Fresh groceries, unbeatable prices, and quick delivery — all in one place.
@@ -95,8 +91,8 @@ const DiscountCard = () => {
           </Button>
           <Button
             type="button"
-            onClick={() => {
-              copyCode();
+            onClick={async () => {
+              await copyCode();
               router.push("/products");
             }}
             className="bg-[#147e14] hover:bg-[#116611] max-sm:w-full"

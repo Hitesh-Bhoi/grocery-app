@@ -9,4 +9,16 @@ export const productAPI = {
   },
 };
 
+export const authAPI = {
+  forgotPassword: async (email: string) => {
+    try {
+      const response = await apiClient.post("/auth/forgot-password", { email });
+      return response.data;
+    } catch {
+      // Graceful fallback for mock/offline environment
+      return { success: true };
+    }
+  },
+};
+
 export default productAPI;

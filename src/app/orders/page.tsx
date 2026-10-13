@@ -45,8 +45,7 @@ const OrdersPage = () => {
             {orders.map((order) => (
               <Card
                 key={order.id}
-                onClick={() => setSelectedOrder(order)}
-                className="cursor-pointer transition-all hover:border-primary/50 hover:shadow-md"
+                className="transition-all hover:border-primary/50 hover:shadow-md"
               >
                 <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
                   <div className="space-y-1">
@@ -74,7 +73,14 @@ const OrdersPage = () => {
                     >
                       {order.status}
                     </Badge>
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedOrder(order);
+                      }}
+                    >
                       View Details
                     </Button>
                   </div>
@@ -111,6 +117,7 @@ const OrdersPage = () => {
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label="Close order details"
                 className="h-8 w-8 text-slate-500 hover:text-slate-900"
                 onClick={() => setSelectedOrder(null)}
               >

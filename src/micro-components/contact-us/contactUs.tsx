@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const TOPICS = ["Order Issue", "Delivery", "Refund", "Partnership", "General"];
 
@@ -41,9 +42,21 @@ const ContactUs = () => {
             </div>
           ))}
           <div className="flex flex-wrap gap-2 pt-2">
-            <Button variant="outline" size="sm"><WhatsAppIcon /> WhatsApp</Button>
-            <Button variant="outline" size="sm"><TwitterIcon /> Twitter</Button>
-            <Button variant="outline" size="sm"><InstagramIcon /> Instagram</Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon /> WhatsApp
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <TwitterIcon /> Twitter
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <InstagramIcon /> Instagram
+              </a>
+            </Button>
           </div>
         </div>
         <Card>
@@ -53,14 +66,20 @@ const ContactUs = () => {
             <p className="mb-2 text-sm font-medium">What is it about?</p>
             <div className="mb-5 flex flex-wrap gap-2">
               {TOPICS.map((topic) => (
-                <Badge
+                <button
+                  type="button"
                   key={topic}
-                  variant={activeTopic === topic ? "default" : "outline"}
-                  className="cursor-pointer"
+                  aria-pressed={activeTopic === topic}
                   onClick={() => setActiveTopic(topic)}
+                  className={cn(
+                    "inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                    activeTopic === topic
+                      ? "border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "border-slate-200 text-slate-900 hover:bg-slate-100"
+                  )}
                 >
                   {topic}
-                </Badge>
+                </button>
               ))}
             </div>
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>

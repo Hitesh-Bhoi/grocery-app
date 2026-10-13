@@ -19,14 +19,9 @@ export default function ProductsPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = await productAPI.getAllProducts();
-        if (res && res.data && res.data.length > 0) {
-          setAllProducts(res.data);
-        } else {
-          setAllProducts([...mockData.vegetables, ...mockData.fruits]);
-        }
+        // Use local mock products so ProductDetailPage can always resolve the item
+        setAllProducts([...mockData.vegetables, ...mockData.fruits]);
       } catch (err) {
-        // Fallback to local mock data gracefully when backend is offline
         setAllProducts([...mockData.vegetables, ...mockData.fruits]);
       } finally {
         setLoading(false);

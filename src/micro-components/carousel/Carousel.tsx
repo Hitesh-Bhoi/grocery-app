@@ -67,7 +67,7 @@ export default function Carousel() {
         }}
         onTouchMove={(e) => setTouchEnd(e.targetTouches[0].clientX)}
         onTouchEnd={() => {
-          if (!touchStart || !touchEnd) return;
+          if (touchStart === null || touchEnd === null) return;
           const distance = touchStart - touchEnd;
           if (distance > 50) next();
           else if (distance < -50) prev();

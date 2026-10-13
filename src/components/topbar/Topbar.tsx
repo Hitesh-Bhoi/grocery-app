@@ -56,9 +56,9 @@ const Topbar = () => {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 flex items-center justify-between px-2.5 transition-all duration-300 lg:px-4",
+        "fixed inset-x-0 top-0 z-50 flex items-center justify-between px-2.5 transition-all duration-300 max-lg:flex-wrap lg:px-4",
         shouldShowTopbar
-          ? "h-[70px] translate-y-0 bg-white opacity-100 shadow-md max-lg:h-12"
+          ? "h-17.5 translate-y-0 bg-white opacity-100 shadow-md max-lg:h-12"
           : "h-0 -translate-y-full opacity-0",
         isNavbarShow && "max-lg:h-auto max-lg:bg-white max-lg:pb-6",
       )}

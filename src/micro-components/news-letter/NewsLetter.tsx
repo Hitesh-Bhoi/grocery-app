@@ -71,7 +71,7 @@ const NewsLetter = () => {
         {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
         {submitted && (
           <p className="mt-2 text-sm font-semibold text-emerald-700">
-            ✓ Thank you for subscribing! We&apos;ve sent a confirmation to your inbox.
+            ✓ Thank you for subscribing! You will receive our weekly grocery deals and updates.
           </p>
         )}
       </form>
