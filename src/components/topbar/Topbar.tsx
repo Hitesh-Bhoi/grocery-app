@@ -107,7 +107,7 @@ const Topbar = () => {
                 My Profile
               </div>
             </Link>
-            <Link href="/logout" className="no-underline">
+            <Link href="/login" onClick={() => setIsProfileToggle(false)} className="no-underline">
               <div className="flex items-center gap-2.5 px-3.5 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-50">
                 <IoMdLogOut className="size-4" />
                 Logout

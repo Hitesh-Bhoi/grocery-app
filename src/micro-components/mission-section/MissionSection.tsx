@@ -10,8 +10,8 @@ const MissionSection = () => {
   ];
 
   return (
-    <section className="mx-auto my-12 grid max-w-6xl items-center gap-10 px-5 md:grid-cols-2">
-      <div className="relative min-h-[280px] overflow-hidden rounded-3xl">
+    <section id="mission-video" className="mx-auto my-12 grid max-w-6xl scroll-mt-24 items-center gap-10 px-5 md:grid-cols-2">
+      <div className="relative min-h-70 overflow-hidden rounded-3xl">
         <video
           src="https://res.cloudinary.com/dqwzddm94/video/upload/WhatsApp_Video_2026-01-10_at_2.31.36_PM_vtuk0z.mp4"
           autoPlay

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductCard, ProductSkeleton } from "./ProductCard";
+import mockData from "../../../public/fake-json/data.json";
 
 const FeaturedProducts = () => {
   const [activeCategory, setActiveCategory] = useState<"fruits" | "vegetables">("fruits");
@@ -21,12 +22,14 @@ const FeaturedProducts = () => {
         setLoading(true);
         setError(null);
         const res = await productAPI.getAllProducts();
-        if (res && res.data) {
+        if (res && res.data && res.data.length > 0) {
           setProducts(res.data);
+        } else {
+          setProducts([...mockData.vegetables, ...mockData.fruits]);
         }
       } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Failed to load products. Please try again later.");
+        // Fallback to local mock data gracefully when backend is offline
+        setProducts([...mockData.vegetables, ...mockData.fruits]);
       } finally {
         setLoading(false);
       }

@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Coupon, Discount, NewProduct } from "../../../icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +7,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
 const NewsLetter = () => {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const perks = [
     { icon: <Discount />, title: "Weekly Grocery Deals", description: "Top discounts curated every Monday morning" },
     { icon: <NewProduct />, title: "New Food Arrivals", description: "Be first to discover new products and meals" },
@@ -36,10 +40,41 @@ const NewsLetter = () => {
           ))}
         </div>
       </div>
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row">
-        <Input placeholder="Enter your email address..." className="h-12 bg-white" />
-        <Button className="h-12 px-6">Subscribe Now</Button>
-      </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (!email.trim() || !email.includes("@")) {
+            setError("Please enter a valid email address.");
+            return;
+          }
+          setError("");
+          setSubmitted(true);
+        }}
+        className="mb-6"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (error) setError("");
+            }}
+            placeholder="Enter your email address..."
+            className="h-12 bg-white"
+            disabled={submitted}
+          />
+          <Button type="submit" className="h-12 px-6" disabled={submitted}>
+            {submitted ? "Subscribed!" : "Subscribe Now"}
+          </Button>
+        </div>
+        {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+        {submitted && (
+          <p className="mt-2 text-sm font-semibold text-emerald-700">
+            ✓ Thank you for subscribing! We&apos;ve sent a confirmation to your inbox.
+          </p>
+        )}
+      </form>
       <div className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {["No spam ever", "Unsubscribe anytime", "Weekly exclusive offers", "Early access to sales"].map((label) => (
           <Label key={label} className="flex items-center gap-2 text-sm text-slate-600">

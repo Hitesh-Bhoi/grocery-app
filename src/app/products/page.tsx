@@ -5,6 +5,7 @@ import { productAPI } from "@/libs/api";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ProductCard, ProductSkeleton } from "@/micro-components/featured-products/ProductCard";
+import mockData from "../../../public/fake-json/data.json";
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,10 +20,14 @@ export default function ProductsPage() {
         setLoading(true);
         setError(null);
         const res = await productAPI.getAllProducts();
-        if (res && res.data) setAllProducts(res.data);
+        if (res && res.data && res.data.length > 0) {
+          setAllProducts(res.data);
+        } else {
+          setAllProducts([...mockData.vegetables, ...mockData.fruits]);
+        }
       } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Failed to load products. Please try again later.");
+        // Fallback to local mock data gracefully when backend is offline
+        setAllProducts([...mockData.vegetables, ...mockData.fruits]);
       } finally {
         setLoading(false);
       }

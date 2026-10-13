@@ -115,7 +115,9 @@ export default function Hero() {
             <Button asChild style={{ backgroundColor: active.accent }}>
               <Link href="/products">Shop Now</Link>
             </Button>
-            <Button variant="outline">Watch Video</Button>
+            <Button asChild variant="outline">
+              <a href="#mission-video">Watch Video</a>
+            </Button>
           </div>
           <div className="mt-5 flex gap-2">
             {filterOptions.map((opt) => (

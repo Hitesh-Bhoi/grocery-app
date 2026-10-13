@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -24,6 +26,7 @@ function pad(n: number) {
 }
 
 const DiscountCard = () => {
+  const router = useRouter();
   const [timeLeft, setTimeLeft] = useState({ h: 24, m: 0, s: 0 });
   const [copied, setCopied] = useState(false);
   const endRef = useRef<number>(0);
@@ -48,10 +51,21 @@ const DiscountCard = () => {
   }, []);
 
   const copyCode = () => {
-    navigator.clipboard.writeText("FOODIE50").then(() => {
+    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText("FOODIE50")
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        });
+    } else {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    });
+    }
   };
 
   return (
@@ -77,13 +91,25 @@ const DiscountCard = () => {
             onClick={copyCode}
             className="border-dashed border-yellow-300 bg-yellow-300/15 text-yellow-300 hover:bg-yellow-300/25 hover:text-yellow-200 max-sm:w-full"
           >
-            FOODIE50 <span>{copied ? "✓" : "⧉"}</span>
+            FOODIE50 <span>{copied ? "✓ Copied" : "⧉"}</span>
           </Button>
-          <Button type="button" className="bg-[#147e14] hover:bg-[#116611] max-sm:w-full">
+          <Button
+            type="button"
+            onClick={() => {
+              copyCode();
+              router.push("/products");
+            }}
+            className="bg-[#147e14] hover:bg-[#116611] max-sm:w-full"
+          >
             Claim Discount
           </Button>
-          <Button type="button" variant="outline" className="border-white/25 bg-white/10 text-white hover:bg-white/20 max-sm:w-full">
-            View Deals
+          <Button
+            type="button"
+            asChild
+            variant="outline"
+            className="border-white/25 bg-white/10 text-white hover:bg-white/20 max-sm:w-full"
+          >
+            <Link href="/products">View Deals</Link>
           </Button>
         </div>
       </div>

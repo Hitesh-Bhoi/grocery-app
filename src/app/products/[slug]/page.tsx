@@ -29,7 +29,10 @@ export default function ProductDetailPage() {
 
   const product = useMemo(() => {
     const allProducts = [...data.vegetables, ...data.fruits];
-    return allProducts.find((p) => p.name.toLowerCase().replace(/\s+/g, "-") === slug);
+    return allProducts.find((p: any) => {
+      const pSlug = (p.slug || p.name).toLowerCase().replace(/\s+/g, "-");
+      return pSlug === slug || p.name.toLowerCase() === slug.replace(/-/g, " ");
+    });
   }, [slug]);
 
   const isLiked = wishlistItems.some((item) => item.name === product?.name);

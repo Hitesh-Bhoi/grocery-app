@@ -84,24 +84,8 @@ export function ProductCard({ product }: { product: ProductLike }) {
 
   return (
     <Card className="group h-full overflow-hidden border-black/5 shadow-none transition hover:-translate-y-0.5 hover:shadow-md">
-      <Link href={productHref(product)} className="block text-inherit no-underline">
-        <div className="relative flex h-40 items-center justify-center bg-slate-50">
-          {product.discount ? (
-            <Badge variant="destructive" className="absolute left-2.5 top-2.5 z-10">
-              {product.discount}% OFF
-            </Badge>
-          ) : null}
-          <button
-            type="button"
-            aria-label="Add to wishlist"
-            onClick={handleWishlist}
-            className={cn(
-              "absolute right-2.5 top-2.5 z-10 flex size-9 items-center justify-center rounded-full bg-white shadow-sm",
-              liked ? "text-red-500" : "text-slate-500",
-            )}
-          >
-            {liked ? <HiHeart /> : <HiOutlineHeart />}
-          </button>
+      <div className="relative flex h-40 items-center justify-center bg-slate-50">
+        <Link href={productHref(product)} className="flex h-full w-full items-center justify-center">
           <Image
             src={product.image_url}
             alt={product.name}
@@ -109,54 +93,70 @@ export function ProductCard({ product }: { product: ProductLike }) {
             height={120}
             className="object-contain"
           />
-          {outOfStock ? (
-            <Badge className="absolute bottom-2.5 left-2.5 z-10 bg-black/70">
-              Out of Stock
-            </Badge>
-          ) : null}
-        </div>
-        <div className="space-y-3 p-3">
-          <div className="flex items-start justify-between gap-2">
-            <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                {categoryName(product)}
-              </p>
-              <h3 className="truncate text-sm font-bold text-slate-900" title={product.name}>
-                {product.name}
-              </h3>
-            </div>
-            <div className="flex shrink-0 items-center gap-1 text-xs font-bold text-slate-500">
-              <StarRating />
-              4.2
-            </div>
+        </Link>
+        {product.discount ? (
+          <Badge variant="destructive" className="pointer-events-none absolute left-2.5 top-2.5 z-10">
+            {product.discount}% OFF
+          </Badge>
+        ) : null}
+        <button
+          type="button"
+          aria-label="Add to wishlist"
+          onClick={handleWishlist}
+          className={cn(
+            "absolute right-2.5 top-2.5 z-10 flex size-9 items-center justify-center rounded-full bg-white shadow-sm transition hover:scale-110",
+            liked ? "text-red-500" : "text-slate-500 hover:text-red-500",
+          )}
+        >
+          {liked ? <HiHeart /> : <HiOutlineHeart />}
+        </button>
+        {outOfStock ? (
+          <Badge className="pointer-events-none absolute bottom-2.5 left-2.5 z-10 bg-black/70">
+            Out of Stock
+          </Badge>
+        ) : null}
+      </div>
+      <div className="space-y-3 p-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              {categoryName(product)}
+            </p>
+            <Link href={productHref(product)} className="block truncate text-sm font-bold text-slate-900 hover:text-primary" title={product.name}>
+              {product.name}
+            </Link>
           </div>
-          <div className="flex items-end justify-between gap-2">
-            <div>
-              <p className="text-[11px] text-slate-400">{product.unit}</p>
-              <p className="text-base font-black text-slate-900">₹{product.price}</p>
-            </div>
-            <Button
-              size="sm"
-              disabled={outOfStock}
-              onClick={handleAdd}
-              className={cn(
-                "h-8 rounded-lg px-2.5 text-xs",
-                added && "bg-emerald-600",
-              )}
-            >
-              {added ? (
-                <>
-                  <HiOutlineCheck /> Added
-                </>
-              ) : (
-                <>
-                  <ShoppingBag /> Add
-                </>
-              )}
-            </Button>
+          <div className="flex shrink-0 items-center gap-1 text-xs font-bold text-slate-500">
+            <StarRating />
+            4.2
           </div>
         </div>
-      </Link>
+        <div className="flex items-end justify-between gap-2">
+          <div>
+            <p className="text-[11px] text-slate-400">{product.unit}</p>
+            <p className="text-base font-black text-slate-900">₹{product.price}</p>
+          </div>
+          <Button
+            size="sm"
+            disabled={outOfStock}
+            onClick={handleAdd}
+            className={cn(
+              "h-8 rounded-lg px-2.5 text-xs",
+              added && "bg-emerald-600",
+            )}
+          >
+            {added ? (
+              <>
+                <HiOutlineCheck /> Added
+              </>
+            ) : (
+              <>
+                <ShoppingBag /> Add
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
     </Card>
   );
 }

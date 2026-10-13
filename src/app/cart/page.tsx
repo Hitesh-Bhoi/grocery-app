@@ -10,20 +10,50 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+const Header = ({ title, subtitle }: { title: string; subtitle?: string }) => (
+  <div className="border-b bg-white px-5 py-6 pt-24">
+    <div className="mx-auto flex max-w-6xl items-center justify-between">
+      <div className="flex items-center gap-2">
+        <HiOutlineShoppingBag className="text-2xl text-primary" />
+        <h1 className="text-2xl font-black">{title}</h1>
+      </div>
+      {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+    </div>
+  </div>
+);
+
 export default function CartPage() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state: RootState) => state.cart.cartItems);
   const totalItems = cartItems.length;
   const totalPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; discountPercent: number } | null>(null);
+  const [couponMessage, setCouponMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [confirmModal, setConfirmModal] = useState({
     show: false, title: "", message: "", onConfirm: () => {},
   });
 
-  const taxAmount = totalPrice * 0.05;
-  const finalTotal = totalPrice + taxAmount;
+  const discountAmount = appliedCoupon ? (totalPrice * appliedCoupon.discountPercent) / 100 : 0;
+  const taxableTotal = Math.max(0, totalPrice - discountAmount);
+  const taxAmount = taxableTotal * 0.05;
+  const finalTotal = taxableTotal + taxAmount;
+
+  const handleApplyCoupon = () => {
+    const code = couponCode.trim().toUpperCase();
+    if (!code) return;
+    if (code === "FOODIE50") {
+      setAppliedCoupon({ code: "FOODIE50", discountPercent: 50 });
+      setCouponMessage({ type: "success", text: "50% discount applied!" });
+    } else if (code === "SAVE20") {
+      setAppliedCoupon({ code: "SAVE20", discountPercent: 20 });
+      setCouponMessage({ type: "success", text: "20% discount applied!" });
+    } else {
+      setCouponMessage({ type: "error", text: "Invalid code. Try FOODIE50" });
+    }
+  };
 
   useEffect(() => {
     document.body.style.overflow = confirmModal.show ? "hidden" : "unset";
@@ -47,18 +77,6 @@ export default function CartPage() {
       dispatch(clearCart());
     }, 1200);
   };
-
-  const Header = ({ title, subtitle }: { title: string; subtitle?: string }) => (
-    <div className="border-b bg-white px-5 py-6 pt-24">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
-        <div className="flex items-center gap-2">
-          <HiOutlineShoppingBag className="text-2xl text-primary" />
-          <h1 className="text-2xl font-black">{title}</h1>
-        </div>
-        {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
-      </div>
-    </div>
-  );
 
   if (isSuccess) {
     return (
@@ -136,12 +154,32 @@ export default function CartPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between text-sm"><span>Subtotal</span><span>₹{totalPrice.toFixed(2)}</span></div>
+            {appliedCoupon && (
+              <div className="flex justify-between text-sm font-semibold text-emerald-600">
+                <span>Coupon Discount ({appliedCoupon.code})</span>
+                <span>-₹{discountAmount.toFixed(2)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-sm"><span>Delivery</span><span className="font-bold text-primary">FREE</span></div>
             <div className="flex justify-between text-sm"><span>GST (5%)</span><span>₹{taxAmount.toFixed(2)}</span></div>
             <p className="flex items-center gap-2 rounded-lg bg-green-50 p-2 text-xs text-primary"><HiOutlineTruck /> Free delivery on all orders!</p>
-            <div className="flex gap-2">
-              <Input placeholder="Coupon code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} />
-              <Button variant="outline" onClick={() => couponCode.trim() && setCouponCode("")}>Apply</Button>
+            <div className="space-y-1">
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Coupon code (e.g. FOODIE50)"
+                  value={couponCode}
+                  onChange={(e) => {
+                    setCouponCode(e.target.value);
+                    setCouponMessage(null);
+                  }}
+                />
+                <Button variant="outline" type="button" onClick={handleApplyCoupon}>Apply</Button>
+              </div>
+              {couponMessage && (
+                <p className={`text-xs ${couponMessage.type === "success" ? "text-emerald-600 font-semibold" : "text-red-500"}`}>
+                  {couponMessage.text}
+                </p>
+              )}
             </div>
             <div className="flex justify-between border-t pt-3 text-lg font-black"><span>Total</span><span>₹{finalTotal.toFixed(2)}</span></div>
             <label className="flex items-start gap-2 rounded-xl border p-3 text-sm">

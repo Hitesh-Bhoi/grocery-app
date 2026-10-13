@@ -57,7 +57,7 @@ const OrdersPage = () => {
                       Placed on {order.date} • {order.itemsCount} Items
                     </div>
                     <div className="text-lg font-black text-slate-900">
-                      ${order.total.toFixed(2)}
+                      ₹{order.total.toFixed(2)}
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -147,11 +147,11 @@ const OrdersPage = () => {
                       <div className="min-w-0 flex-1">
                         <h4 className="truncate text-sm font-semibold text-slate-800">{item.name}</h4>
                         <p className="text-xs text-slate-500">
-                          {item.quantity} x ${item.price.toFixed(2)}
+                          {item.quantity} x ₹{item.price.toFixed(2)}
                         </p>
                       </div>
                       <div className="text-sm font-bold text-slate-900">
-                        ${(item.quantity * item.price).toFixed(2)}
+                        ₹{(item.quantity * item.price).toFixed(2)}
                       </div>
                     </div>
                   ))}
@@ -162,7 +162,7 @@ const OrdersPage = () => {
 
               <div className="flex items-center justify-between text-base font-black">
                 <span className="text-slate-700">Total Amount</span>
-                <span className="text-lg text-primary">${selectedOrder.total.toFixed(2)}</span>
+                <span className="text-lg text-primary">₹{selectedOrder.total.toFixed(2)}</span>
               </div>
             </CardContent>
           </Card>
