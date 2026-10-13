@@ -1,16 +1,8 @@
 "use client";
 import { useEffect, useState, useMemo } from "react";
-import Image from "next/image";
-import { StarRating, ShoppingBag } from "../../../icons";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "@/redux/cartSlice";
-import { HiOutlineCheck, HiMagnifyingGlass } from "react-icons/hi2";
+import { HiMagnifyingGlass } from "react-icons/hi2";
 import Link from "next/link";
-import { RootState } from "@/redux/store";
-import { toggleWishlist } from "@/redux/wishlistSlice";
 import { productAPI } from "@/libs/api";
-
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
