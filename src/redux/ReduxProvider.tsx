@@ -12,25 +12,28 @@ function HydrationProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Hydrate Cart
-    const cart = localStorage.getItem("cart");
-    if (cart) dispatch(setCartItems(JSON.parse(cart)));
+    try {
+      const cart = localStorage.getItem("cart");
+      if (cart) dispatch(setCartItems(JSON.parse(cart)));
+    } catch (e) {
+      console.error("Failed to parse cart from localStorage", e);
+    }
 
     // Hydrate Wishlist
-    const wishlist = localStorage.getItem("wishlist");
-    console.log("Hydrating Wishlist from LocalStorage:", wishlist);
-    if (wishlist) {
-      try {
-        const parsed = JSON.parse(wishlist);
-        dispatch(setWishlistItems(parsed));
-        console.log("Successfully hydrated wishlist:", parsed);
-      } catch (e) {
-        console.error("Failed to parse wishlist from localStorage", e);
-      }
+    try {
+      const wishlist = localStorage.getItem("wishlist");
+      if (wishlist) dispatch(setWishlistItems(JSON.parse(wishlist)));
+    } catch (e) {
+      console.error("Failed to parse wishlist from localStorage", e);
     }
 
     // Hydrate Orders
-    const orders = localStorage.getItem("orders");
-    if (orders) dispatch(setOrders(JSON.parse(orders)));
+    try {
+      const orders = localStorage.getItem("orders");
+      if (orders) dispatch(setOrders(JSON.parse(orders)));
+    } catch (e) {
+      console.error("Failed to parse orders from localStorage", e);
+    }
   }, [dispatch]);
 
   return <>{children}</>;

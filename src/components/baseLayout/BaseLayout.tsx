@@ -7,7 +7,7 @@ import Splash from "../splash/Splash";
 import { useRouter } from "next/navigation";
 
 // Routes that should NOT render Topbar / Footer (auth pages)
-const AUTH_ROUTES = ["/login", "/register"];
+const AUTH_ROUTES = ["/login", "/register", "/forgot-password"];
 
 const BaseLayout = ({ children }: any) => {
   const [isHydrated, setIsHydrated] = useState<boolean>(false);
@@ -27,28 +27,20 @@ const BaseLayout = ({ children }: any) => {
     setIsHydrated(true);
   }, []);
 
-  // Determine if we should show splash (client-only)
-  // After first useEffect call this useEffect will run
   useEffect(() => {
-    if (!isHydrated) return;
-
     if (pathname === "/") {
       setShowSplash(true);
       const timer = setTimeout(() => {
         router.push("/dashboard");
-      }, 8000);
+      }, 2000);
       return () => clearTimeout(timer);
     } else {
       setShowSplash(false);
     }
-  }, [isHydrated, pathname]);
+  }, [pathname, router]);
 
-  // After all useEffect calls run this conditionally return content
-  if (!isHydrated) {
-    return null; // safe because all hooks have run
-  }
-
-  if (showSplash) {
+  // Show splash on root path "/"
+  if (pathname === "/" || showSplash) {
     return <Splash />;
   }
 

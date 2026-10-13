@@ -1,38 +1,15 @@
 "use client";
 import React, { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "@/redux/cartSlice";
-import { toggleWishlist } from "@/redux/wishlistSlice";
-import { RootState } from "@/redux/store";
-import { 
-  HiOutlineMagnifyingGlass, 
-  HiOutlineCheck,
-  HiOutlineHeart,
-  HiHeart
-} from "react-icons/hi2";
-import { StarRating, ShoppingBag } from "../../../icons";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 import { productAPI } from "@/libs/api";
-
-import {
-  StyledProductsContainer,
-  StyledFilterBar,
-  StyledSearchInput,
-  StyledCategoryFilter,
-  StyledProductGrid,
-  StyledEmptyState
-} from "./products.styled";
-import { StyledFeatureProductCard, StyledSkeletonCard } from "@/micro-components/featured-products/featuredProducts.styled";
-import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ProductCard, ProductSkeleton } from "@/micro-components/featured-products/ProductCard";
+import mockData from "../../../public/fake-json/data.json";
 
 export default function ProductsPage() {
-  const dispatch = useDispatch();
-  const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
-
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [addedItemIds, setAddedItemIds] = useState<Set<string>>(new Set());
-  
+  const [activeCategory, setActiveCategory] = useState("all");
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,13 +19,10 @@ export default function ProductsPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = await productAPI.getAllProducts();
-        if (res && res.data) {
-          setAllProducts(res.data);
-        }
+        // Use local mock products so ProductDetailPage can always resolve the item
+        setAllProducts([...mockData.vegetables, ...mockData.fruits]);
       } catch (err) {
-        console.error("Error fetching products:", err);
-        setError("Failed to load products. Please try again later.");
+        setAllProducts([...mockData.vegetables, ...mockData.fruits]);
       } finally {
         setLoading(false);
       }
@@ -56,224 +30,71 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // Filter products
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       const matchesSearch = (product?.name || "").toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const cat = typeof product?.category === 'object' ? product?.category?.name : product?.category;
+      const cat = typeof product?.category === "object" ? product?.category?.name : product?.category;
       const categoryName = (cat || "").toLowerCase();
-      
       const matchesCategory = activeCategory === "all" || categoryName.includes(activeCategory.toLowerCase());
-      
       return matchesSearch && matchesCategory;
     });
   }, [allProducts, searchTerm, activeCategory]);
 
-  const handleAddToCart = (product: any) => {
-    dispatch(addToCart({ product, quantity: 1 }));
-    const id = String(product?.id || product?.name);
-    
-    setAddedItemIds((prev) => {
-      const next = new Set(prev);
-      next.add(id);
-      return next;
-    });
-
-    setTimeout(() => {
-      setAddedItemIds((prev) => {
-        const next = new Set(prev);
-        next.delete(id);
-        return next;
-      });
-    }, 2000);
-  };
-
-  const handleToggleWishlist = (p: any) => {
-    dispatch(toggleWishlist({
-      id: p.name,
-      name: p.name,
-      price: p.price,
-      image_url: p.image_url,
-      category: p.category,
-      unit: p.unit
-    }));
-  };
-
-  const isLiked = (name: string) => {
-    return wishlistItems.some(item => item.name === name);
-  };
-
   return (
-    <StyledProductsContainer>
-      <StyledFilterBar>
-        <StyledSearchInput>
-          <HiOutlineMagnifyingGlass className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search products..." 
+    <div className="mx-auto max-w-7xl px-4 py-24">
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="relative w-full max-w-md">
+          <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Input
+            className="pl-10"
+            placeholder="Search products..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </StyledSearchInput>
-        
-        <StyledCategoryFilter>
-          <button 
-            className={activeCategory === "all" ? "active" : ""} 
-            onClick={() => setActiveCategory("all")}
-          >
-            All
-          </button>
-          <button 
-            className={activeCategory === "fruit" ? "active" : ""} 
-            onClick={() => setActiveCategory("fruit")}
-          >
-            Fruits
-          </button>
-          <button 
-            className={activeCategory === "vegetable" ? "active" : ""} 
-            onClick={() => setActiveCategory("vegetable")}
-          >
-            Vegetables
-          </button>
-        </StyledCategoryFilter>
-      </StyledFilterBar>
+        </div>
+        <div className="flex gap-2">
+          {[
+            ["all", "All"],
+            ["fruit", "Fruits"],
+            ["vegetable", "Vegetables"],
+          ].map(([value, label]) => (
+            <Button
+              key={value}
+              variant={activeCategory === value ? "default" : "outline"}
+              onClick={() => setActiveCategory(value)}
+            >
+              {label}
+            </Button>
+          ))}
+        </div>
+      </div>
 
       {error ? (
-        <div style={{ padding: '40px', color: 'red', width: '100%', textAlign: 'center', fontSize: '18px' }}>
-          {error}
-        </div>
+        <p className="py-10 text-center text-red-500">{error}</p>
       ) : loading ? (
-        <StyledProductGrid>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 8 }).map((_, idx) => (
-            <StyledSkeletonCard key={idx} style={{ width: '100%', minWidth: 'auto' }}>
-              <div className="product-image-wrap">
-                <div className="skeleton-img"></div>
-              </div>
-              <div className="product-content">
-                <div className="product-name-row">
-                  <div style={{ width: '100%' }}>
-                    <div className="skeleton-text short"></div>
-                    <div className="skeleton-text title"></div>
-                  </div>
-                </div>
-                <div className="product-bottom-row">
-                  <div className="skeleton-text price"></div>
-                  <div className="skeleton-btn"></div>
-                </div>
-              </div>
-            </StyledSkeletonCard>
+            <ProductSkeleton key={idx} />
           ))}
-        </StyledProductGrid>
+        </div>
       ) : filteredProducts.length === 0 ? (
-        <StyledEmptyState>
-          <div className="icon-box">🔍</div>
-          <h3>No products found</h3>
-          <p>We couldn't find anything matching "<strong>{searchTerm}</strong>". Try using different keywords or clearing your filters.</p>
-          <button 
-            style={{ 
-              marginTop: '20px', 
-              padding: '10px 24px', 
-              borderRadius: '12px', 
-              border: 'none', 
-              background: 'var(--green)', 
-              color: 'white', 
-              fontWeight: '700', 
-              cursor: 'pointer' 
-            }}
-            onClick={() => { setSearchTerm(""); setActiveCategory("all"); }}
-          >
+        <div className="py-16 text-center">
+          <div className="text-4xl">🔍</div>
+          <h3 className="mt-3 text-xl font-bold">No products found</h3>
+          <p className="mt-2 text-slate-500">
+            We couldn't find anything matching "<strong>{searchTerm}</strong>".
+          </p>
+          <Button className="mt-5" onClick={() => { setSearchTerm(""); setActiveCategory("all"); }}>
             Clear all filters
-          </button>
-        </StyledEmptyState>
+          </Button>
+        </div>
       ) : (
-        <StyledProductGrid>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {filteredProducts.map((e: any, j: number) => (
-            <StyledFeatureProductCard key={j + 1} style={{ width: '100%', minWidth: 'auto' }}>
-              <Link 
-                href={`/products/${(e.slug || e.name).toLowerCase().replace(/\s+/g, '-')}`}
-                style={{ textDecoration: 'none', color: 'inherit', width: '100%' }}
-              >
-                <div className="product-image-wrap">
-                  {e?.discount && (
-                    <div style={{ position: 'absolute', top: 10, left: 10, background: '#e53935', color: '#fff', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', zIndex: 2 }}>
-                      {e.discount}% OFF
-                    </div>
-                  )}
-                  <button
-                    className={`wishlist-btn${isLiked(e.name) ? " liked" : ""}`}
-                    aria-label="Add to wishlist"
-                    onClick={(ev) => { 
-                      ev.preventDefault();
-                      ev.stopPropagation(); 
-                      handleToggleWishlist(e); 
-                    }}
-                    style={{
-                      color: isLiked(e.name) ? '#ff4d4f' : '#888'
-                    }}
-                  >
-                    {isLiked(e.name) ? <HiHeart /> : <HiOutlineHeart />}
-                  </button>
-                  <Image
-                    src={e?.image_url}
-                    alt={e?.name}
-                    className="product-image"
-                    width={100}
-                    height={100}
-                  />
-                  {e?.stock === 0 && (
-                    <div style={{ position: 'absolute', bottom: 10, left: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', zIndex: 2 }}>
-                      Out of Stock
-                    </div>
-                  )}
-                </div>
-
-                <div className="product-content">
-                  <div className="product-name-row">
-                    <div style={{ minWidth: 0, flex: 1 }}>
-                      <div className="product-category">{typeof e?.category === 'object' ? e?.category?.name : e?.category}</div>
-                      <div className="product-name" title={e?.name}>{e?.name}</div>
-                    </div>
-                    <div className="product-rating">
-                      <StarRating />
-                      <span className="rating-score">4.2</span>
-                    </div>
-                  </div>
-
-                  <div className="product-bottom-row">
-                    <div className="price-wrap">
-                      <p className="product-unit">{e?.unit}</p>
-                      <p className="product-price">{"₹" + e?.price}</p>
-                    </div>
-                    <button 
-                      className={`cart-btn ${addedItemIds.has(String(e?.id || e?.name)) ? "added" : ""}`} 
-                      disabled={e?.stock === 0}
-                      style={e?.stock === 0 ? { opacity: 0.5, cursor: 'not-allowed' } : {}}
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        ev.stopPropagation();
-                        if (e?.stock !== 0) handleAddToCart(e);
-                      }}
-                    >
-                      {addedItemIds.has(String(e?.id || e?.name)) ? (
-                        <>
-                          <HiOutlineCheck style={{ fontSize: '18px', strokeWidth: 2.5 }} />
-                          <span>Added</span>
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingBag />
-                          <span>Add to Cart</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </Link>
-            </StyledFeatureProductCard>
+            <ProductCard key={e.id || j} product={e} />
           ))}
-        </StyledProductGrid>
+        </div>
       )}
-    </StyledProductsContainer>
+    </div>
   );
 }

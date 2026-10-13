@@ -1,152 +1,121 @@
 "use client";
 import { useState } from "react";
 import {
-  ClockHours,
-  InstagramIcon,
-  LocationPin,
-  MailEnvelope,
-  PhoneCall,
-  SendPlane,
-  TwitterIcon,
-  WhatsAppIcon,
+  ClockHours, InstagramIcon, LocationPin, MailEnvelope,
+  PhoneCall, SendPlane, TwitterIcon, WhatsAppIcon,
 } from "../../../icons";
-import {
-  ContactFormPanel,
-  ContactInfoPanel,
-  ContactUsBody,
-  ContactUsHeader,
-  ContactUsMain,
-} from "./contactUs.styled";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const TOPICS = ["Order Issue", "Delivery", "Refund", "Partnership", "General"];
-
 
 const ContactUs = () => {
   const [activeTopic, setActiveTopic] = useState("Order Issue");
 
   return (
-    <ContactUsMain>
-      {/* ── header ────────────────────────────────────────────────────── */}
-      <ContactUsHeader>
-        <div className="contact-title-block">
-          <h2>
-            Get in <span>Touch</span> with Us
-          </h2>
-          <p>
-            Have a question or feedback? We&apos;re here to help and would love
-            to hear from you.
-          </p>
+    <section className="mx-auto my-12 max-w-6xl px-5">
+      <div className="mb-8">
+        <h2 className="text-3xl font-black text-slate-900">
+          Get in <span className="text-primary">Touch</span> with Us
+        </h2>
+        <p className="mt-2 text-slate-500">Have a question or feedback? We're here to help.</p>
+      </div>
+      <div className="grid gap-8 md:grid-cols-[0.9fr_1.2fr]">
+        <div className="space-y-5">
+          {[
+            { icon: <PhoneCall />, title: "Call Us", text: "+91 98765 43210" },
+            { icon: <MailEnvelope />, title: "Email", text: "support@ecobazar.com" },
+            { icon: <LocationPin />, title: "Address", text: "Mumbai, Maharashtra, India" },
+            { icon: <ClockHours />, title: "Hours", text: "Mon – Sat · 9 am – 8 pm" },
+          ].map((row) => (
+            <div key={row.title} className="flex items-center gap-3">
+              <div className="flex size-11 items-center justify-center rounded-xl bg-green-50 text-primary">{row.icon}</div>
+              <div>
+                <h4 className="font-bold text-slate-900">{row.title}</h4>
+                <p className="text-sm text-slate-500">{row.text}</p>
+              </div>
+            </div>
+          ))}
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Button asChild variant="outline" size="sm">
+              <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon /> WhatsApp
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <TwitterIcon /> Twitter
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+                <InstagramIcon /> Instagram
+              </a>
+            </Button>
+          </div>
         </div>
-
-      </ContactUsHeader>
-
-      {/* ── body ──────────────────────────────────────────────────────── */}
-      <ContactUsBody>
-        {/* left: info + social */}
-        <ContactInfoPanel>
-          <div className="info-row">
-            <div className="info-icon"><PhoneCall /></div>
-            <div className="info-text">
-              <h4>Call Us</h4>
-              <p>+91 98765 43210</p>
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-lg font-bold">Send us a Message</p>
+            <p className="mb-4 text-sm text-slate-500">We typically reply within 2–4 hours on business days.</p>
+            <p className="mb-2 text-sm font-medium">What is it about?</p>
+            <div className="mb-5 flex flex-wrap gap-2">
+              {TOPICS.map((topic) => (
+                <button
+                  type="button"
+                  key={topic}
+                  aria-pressed={activeTopic === topic}
+                  onClick={() => setActiveTopic(topic)}
+                  className={cn(
+                    "inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+                    activeTopic === topic
+                      ? "border-transparent bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "border-slate-200 text-slate-900 hover:bg-slate-100"
+                  )}
+                >
+                  {topic}
+                </button>
+              ))}
             </div>
-          </div>
-          <div className="info-row">
-            <div className="info-icon"><MailEnvelope /></div>
-            <div className="info-text">
-              <h4>Email</h4>
-              <p>support@ecobazar.com</p>
-            </div>
-          </div>
-          <div className="info-row">
-            <div className="info-icon"><LocationPin /></div>
-            <div className="info-text">
-              <h4>Address</h4>
-              <p>Mumbai, Maharashtra, India</p>
-            </div>
-          </div>
-          <div className="info-row">
-            <div className="info-icon"><ClockHours /></div>
-            <div className="info-text">
-              <h4>Hours</h4>
-              <p>Mon – Sat · 9 am – 8 pm</p>
-            </div>
-          </div>
-
-          <div className="social-buttons">
-            <button className="social-btn"><WhatsAppIcon /> WhatsApp</button>
-            <button className="social-btn"><TwitterIcon /> Twitter</button>
-            <button className="social-btn"><InstagramIcon /> Instagram</button>
-          </div>
-        </ContactInfoPanel>
-
-        {/* right: message form */}
-        <ContactFormPanel>
-          <p className="form-heading">Send us a Message</p>
-          <p className="form-sub">
-            We typically reply within 2–4 hours on business days.
-          </p>
-
-          {/* topic chips */}
-          <p className="topic-label">What is it about?</p>
-          <div className="topic-chips">
-            {TOPICS.map((topic) => (
-              <span
-                key={topic}
-                className={`chip${activeTopic === topic ? " active" : ""}`}
-                onClick={() => setActiveTopic(topic)}
-              >
-                {topic}
-              </span>
-            ))}
-          </div>
-
-          <form onSubmit={(e) => e.preventDefault()}>
-            {/* row 1 */}
-            <div className="form-row">
-              <div className="fl-group">
-                <input type="text" id="ct-fn" placeholder=" " />
-                <label htmlFor="ct-fn">First Name</label>
+            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="ct-fn">First Name</Label>
+                  <Input id="ct-fn" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="ct-ln">Last Name</Label>
+                  <Input id="ct-ln" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="ct-em">Email Address</Label>
+                  <Input id="ct-em" type="email" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="ct-ph">Phone (Optional)</Label>
+                  <Input id="ct-ph" type="tel" />
+                </div>
               </div>
-              <div className="fl-group">
-                <input type="text" id="ct-ln" placeholder=" " />
-                <label htmlFor="ct-ln">Last Name</label>
+              <div className="space-y-1.5">
+                <Label htmlFor="ct-msg">Your Message</Label>
+                <Textarea id="ct-msg" rows={5} />
               </div>
-            </div>
-
-            {/* row 2 */}
-            <div className="form-row">
-              <div className="fl-group">
-                <input type="email" id="ct-em" placeholder=" " />
-                <label htmlFor="ct-em">Email Address</label>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <p className="text-xs text-slate-500">
+                  By submitting, you agree to our <a href="#" className="text-primary">Privacy Policy</a>.
+                </p>
+                <Button type="submit"><SendPlane /> Send Message</Button>
               </div>
-              <div className="fl-group">
-                <input type="tel" id="ct-ph" placeholder=" " />
-                <label htmlFor="ct-ph">Phone (Optional)</label>
-              </div>
-            </div>
-
-            {/* message */}
-            <div className="fl-group message-group">
-              <textarea id="ct-msg" rows={5} placeholder=" " />
-              <label htmlFor="ct-msg">Your Message</label>
-            </div>
-
-            {/* footer */}
-            <div className="form-footer">
-              <p className="privacy-note">
-                By submitting, you agree to our{" "}
-                <a href="#">Privacy Policy</a>.
-              </p>
-              <button className="send-btn" type="submit">
-                <SendPlane />
-                Send Message
-              </button>
-            </div>
-          </form>
-        </ContactFormPanel>
-      </ContactUsBody>
-    </ContactUsMain>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
   );
 };
 

@@ -1,8 +1,4 @@
-require("./page.module.css");
-
 export default function Home() {
-  return (
-    <>
-    </>
-  );
+  return null;
 }
+

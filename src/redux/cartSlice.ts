@@ -13,24 +13,8 @@ interface CartState {
   cartItems: CartItem[];
 }
 
-// Helper to safely load state from localStorage in the browser environment
-const loadCartState = (): CartItem[] => {
-  if (typeof window === 'undefined') {
-    return [];
-  }
-  try {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      return JSON.parse(savedCart);
-    }
-  } catch (err) {
-    console.error('Failed to load cart state from local storage', err);
-  }
-  return [];
-};
-
 const initialState: CartState = {
-  cartItems: loadCartState(),
+  cartItems: [],
 };
 
 const cartSlice = createSlice({

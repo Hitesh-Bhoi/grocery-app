@@ -8,83 +8,47 @@ import { addToCart } from "@/redux/cartSlice";
 import { toggleWishlist } from "@/redux/wishlistSlice";
 import { RootState } from "@/redux/store";
 import data from "../../../../public/fake-json/data.json";
-import { StarRating, ShoppingBag } from "./../../../../icons";
+import { StarRating, ShoppingBag } from "../../../../icons";
 import {
-  HiArrowLeft,
-  HiOutlineTruck,
-  HiOutlineShieldCheck,
-  HiOutlineSparkles,
-  HiOutlineCheck,
-  HiPlus,
-  HiMinus,
-  HiOutlineHeart,
-  HiHeart
+  HiArrowLeft, HiOutlineTruck, HiOutlineShieldCheck, HiOutlineSparkles,
+  HiOutlineCheck, HiPlus, HiMinus, HiOutlineHeart, HiHeart,
 } from "react-icons/hi2";
-
-import {
-  StyledDetailContainer,
-  StyledBackButton,
-  StyledProductMain,
-  StyledImageGallery,
-  StyledProductInfo,
-  StyledFeatures,
-  StyledRelatedSection,
-  StyledGalleryThumbnails,
-  StyledTabsContainer,
-  StyledTabHeader,
-  StyledTabContent,
-} from "./productDetail.styled";
-import { StyledFeatureProductCard } from "@/micro-components/featured-products/featuredProducts.styled";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProductCard } from "@/micro-components/featured-products/ProductCard";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const dispatch = useDispatch();
   const slug = params.slug as string;
-
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
-  const [activeTab, setActiveTab] = useState("description");
-
   const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
 
-  // Find product by slug
   const product = useMemo(() => {
     const allProducts = [...data.vegetables, ...data.fruits];
-    return allProducts.find(
-      (p) => p.name.toLowerCase().replace(/\s+/g, "-") === slug,
-    );
+    return allProducts.find((p: any) => {
+      const pSlug = (p.slug || p.name).toLowerCase().replace(/\s+/g, "-");
+      return pSlug === slug || p.name.toLowerCase() === slug.replace(/-/g, " ");
+    });
   }, [slug]);
 
-  const isLiked = useMemo(() => {
-    return wishlistItems.some(item => item.name === product?.name);
-  }, [wishlistItems, product]);
-
-  // Related products (same category, exclude current)
+  const isLiked = wishlistItems.some((item) => item.name === product?.name);
   const relatedProducts = useMemo(() => {
     if (!product) return [];
-    const categoryProducts =
-      product.category === "vegetable" ? data.vegetables : data.fruits;
+    const categoryProducts = product.category === "vegetable" ? data.vegetables : data.fruits;
     return categoryProducts.filter((p) => p.name !== product.name).slice(0, 4);
   }, [product]);
 
   if (!product) {
     return (
-      <StyledDetailContainer>
-        <StyledBackButton onClick={() => router.back()}>
-          <HiArrowLeft /> Back to products
-        </StyledBackButton>
-        <div style={{ textAlign: "center", padding: "100px 0" }}>
-          <h1>Product not found</h1>
-          <p>The product you're looking for doesn't exist.</p>
-          <Link
-            href="/products"
-            style={{ color: "var(--green)", fontWeight: "bold" }}
-          >
-            Browse all products
-          </Link>
-        </div>
-      </StyledDetailContainer>
+      <div className="mx-auto max-w-6xl px-4 py-24 text-center">
+        <Button variant="ghost" onClick={() => router.back()}><HiArrowLeft /> Back to products</Button>
+        <h1 className="mt-10 text-2xl font-bold">Product not found</h1>
+        <Button asChild className="mt-4"><Link href="/products">Browse all products</Link></Button>
+      </div>
     );
   }
 
@@ -96,357 +60,110 @@ export default function ProductDetailPage() {
 
   const handleToggleWishlist = (p: any) => {
     dispatch(toggleWishlist({
-      id: p.name,
-      name: p.name,
-      price: p.price,
-      image_url: p.image_url,
-      category: p.category,
-      unit: p.unit
+      id: p.name, name: p.name, price: p.price, image_url: p.image_url, category: p.category, unit: p.unit,
     }));
   };
 
   return (
-    <StyledDetailContainer>
-      <StyledBackButton onClick={() => router.back()}>
+    <div className="mx-auto max-w-6xl px-4 py-24">
+      <Button variant="ghost" className="mb-6" onClick={() => router.back()}>
         <HiArrowLeft /> Back to products
-      </StyledBackButton>
-
-      <StyledProductMain>
+      </Button>
+      <div className="grid gap-10 md:grid-cols-2">
         <div>
-          <StyledImageGallery>
+          <div className="relative overflow-hidden rounded-3xl bg-slate-50 p-8">
             {product.discount && (
-              <div className="discount-badge">-{product.discount}% OFF</div>
+              <Badge variant="destructive" className="absolute left-4 top-4">-{product.discount}% OFF</Badge>
             )}
-            <Image
-              src={product.image_url}
-              alt={product.name}
-              width={500}
-              height={500}
-              className="main-image"
-              priority
-            />
-          </StyledImageGallery>
-          
-          <StyledGalleryThumbnails>
-            <div className="thumb active">
-              <Image src={product.image_url} alt="Thumbnail 1" width={80} height={80} />
-            </div>
-            <div className="thumb">
-              <Image src={product.image_url} alt="Thumbnail 2" width={80} height={80} style={{ opacity: 0.5 }} />
-            </div>
-            <div className="thumb">
-              <Image src={product.image_url} alt="Thumbnail 3" width={80} height={80} style={{ opacity: 0.5 }} />
-            </div>
-          </StyledGalleryThumbnails>
+            <Image src={product.image_url} alt={product.name} width={500} height={500} className="mx-auto object-contain" priority />
+          </div>
         </div>
-
-        <StyledProductInfo>
-          <div className="header-group">
-            <div className="meta-row">
-              <span className="category-tag">{product.category}s</span>
-              <span className="stock-status">In Stock</span>
-            </div>
-            <h1 className="product-name">{product.name}</h1>
-
-            <div className="rating-price-row">
-              <div className="rating-row">
-                <div className="stars">
-                  <StarRating />
-                </div>
-                <span className="count">(4.8 • 120 reviews)</span>
-              </div>
-
-              <div className="price-box">
-                <span className="price">₹{product.price}</span>
-                <span className="unit">/ {product.unit}</span>
-              </div>
-            </div>
+        <div>
+          <div className="mb-3 flex items-center gap-2">
+            <Badge variant="outline">{product.category}s</Badge>
+            <Badge>In Stock</Badge>
           </div>
-
-          <p className="description">
-            Experience the peak of freshness with our premium{" "}
-            {product.name.toLowerCase()}. Sourced directly from local
-            sustainable farms, these {product.category}s are harvested at their
-            nutritional peak to ensure you get the best flavor and quality.
-            Perfect for your daily healthy meals and recipes.
+          <h1 className="text-3xl font-black text-slate-900">{product.name}</h1>
+          <div className="mt-3 flex items-center gap-4">
+            <span className="flex items-center gap-1 text-sm font-semibold text-slate-500">
+              <StarRating /> 4.8 • 120 reviews
+            </span>
+            <p className="text-2xl font-black">₹{product.price} <span className="text-sm font-medium text-slate-400">/ {product.unit}</span></p>
+          </div>
+          <p className="mt-4 text-slate-600">
+            Experience the peak of freshness with our premium {product.name.toLowerCase()}. Sourced directly from local sustainable farms.
           </p>
-
-          <div className="purchase-section">
-            <div className="action-row">
-              <div className="quantity-selector">
-                <button
-                  onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
-                >
-                  <HiMinus />
-                </button>
-                <span>{quantity}</span>
-                <button onClick={() => setQuantity((prev) => prev + 1)}>
-                  <HiPlus />
-                </button>
-              </div>
-
-              <button
-                className={`add-cart-btn ${isAdded ? "added" : ""}`}
-                onClick={handleAddToCart}
-                disabled={isAdded}
-              >
-                {isAdded ? (
-                  <span
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "8px",
-                    }}
-                  >
-                    <HiOutlineCheck /> Added to Cart
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "8px",
-                    }}
-                  >
-                    <ShoppingBag /> Add to Cart • ₹{product.price * quantity}
-                  </span>
-                )}
-              </button>
-
-              <button 
-                className={`wishlist-detail-btn ${isLiked ? 'active' : ''}`}
-                onClick={() => handleToggleWishlist(product)}
-                title={isLiked ? "Remove from wishlist" : "Add to wishlist"}
-                style={{
-                  width: '52px',
-                  height: '52px',
-                  borderRadius: '16px',
-                  border: isLiked ? 'none' : '1px solid #eef2ee',
-                  background: isLiked ? '#fef2f2' : '#fff',
-                  color: isLiked ? '#ff4d4f' : '#888',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  boxShadow: isLiked ? '0 8px 16px rgba(255, 77, 79, 0.15)' : 'none'
-                }}
-              >
-                {isLiked ? <HiHeart /> : <HiOutlineHeart />}
-              </button>
+          <div className="mt-6 flex items-center gap-3">
+            <div className="flex items-center rounded-xl border">
+              <Button variant="ghost" size="icon" onClick={() => setQuantity((p) => Math.max(1, p - 1))}><HiMinus /></Button>
+              <span className="w-8 text-center font-bold">{quantity}</span>
+              <Button variant="ghost" size="icon" onClick={() => setQuantity((p) => p + 1)}><HiPlus /></Button>
             </div>
-            
-            <div className="trust-note">
-              <HiOutlineShieldCheck style={{ color: '#10b981' }} />
-              Secure Checkout • Satisfaction Guaranteed
-            </div>
+            <Button className="flex-1" onClick={handleAddToCart} disabled={isAdded}>
+              {isAdded ? <><HiOutlineCheck /> Added to Cart</> : <><ShoppingBag /> Add to Cart • ₹{product.price * quantity}</>}
+            </Button>
+            <Button variant={isLiked ? "destructive" : "outline"} size="icon" onClick={() => handleToggleWishlist(product)}>
+              {isLiked ? <HiHeart /> : <HiOutlineHeart />}
+            </Button>
           </div>
-
-          <StyledFeatures>
-            <div className="feature-item">
-              <div className="icon">
-                <HiOutlineSparkles />
+          <p className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+            <HiOutlineShieldCheck className="text-emerald-500" /> Secure Checkout • Satisfaction Guaranteed
+          </p>
+          <div className="mt-6 grid grid-cols-3 gap-3">
+            {[
+              [HiOutlineSparkles, "100% Fresh"],
+              [HiOutlineTruck, "Fast Delivery"],
+              [HiOutlineShieldCheck, "Quality Assured"],
+            ].map(([Icon, label]) => (
+              <div key={String(label)} className="flex flex-col items-center gap-1 rounded-xl bg-slate-50 p-3 text-center text-xs font-semibold">
+                <Icon className="text-lg text-primary" />
+                {label as string}
               </div>
-              <span>100% Fresh</span>
-            </div>
-            <div className="feature-item">
-              <div className="icon">
-                <HiOutlineTruck />
-              </div>
-              <span>Fast Delivery</span>
-            </div>
-            <div className="feature-item">
-              <div className="icon">
-                <HiOutlineShieldCheck />
-              </div>
-              <span>Quality Assured</span>
-            </div>
-          </StyledFeatures>
-        </StyledProductInfo>
-      </StyledProductMain>
-
-      <StyledTabsContainer>
-        <StyledTabHeader>
-          <button 
-            className={activeTab === "description" ? "active" : ""}
-            onClick={() => setActiveTab("description")}
-          >
-            Description
-          </button>
-          <button 
-            className={activeTab === "details" ? "active" : ""}
-            onClick={() => setActiveTab("details")}
-          >
-            Additional Info
-          </button>
-          <button 
-            className={activeTab === "reviews" ? "active" : ""}
-            onClick={() => setActiveTab("reviews")}
-          >
-            Reviews (120)
-          </button>
-        </StyledTabHeader>
-        
-        <StyledTabContent>
-          {activeTab === "description" && (
-            <div>
-              <h3>Product Description</h3>
-              <p>
-                Our premium {product.name.toLowerCase()} is carefully selected for its superior quality and freshness. 
-                We work closely with local farmers who use sustainable and organic practices to bring you 
-                the healthiest produce possible.
-              </p>
-              <p style={{ marginTop: '16px' }}>
-                Rich in essential vitamins and minerals, this {product.category} is a versatile addition to any kitchen. 
-                Whether you're making a fresh salad, a hearty soup, or a nutritious side dish, 
-                it provides the perfect foundation for your culinary creations.
-              </p>
-            </div>
-          )}
-          
-          {activeTab === "details" && (
-            <div>
-              <h3>Technical Details</h3>
-              <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
-                <li><strong>Origin:</strong> Locally sourced from sustainable farms</li>
-                <li><strong>Storage:</strong> Keep in a cool, dry place or refrigerate for maximum shelf life</li>
-                <li><strong>Shelf Life:</strong> 5-7 days from date of delivery</li>
-                <li><strong>Weight:</strong> Sold by the {product.unit}</li>
-                <li><strong>Packaging:</strong> Eco-friendly, recyclable packaging</li>
-              </ul>
-            </div>
-          )}
-          
-          {activeTab === "reviews" && (
-            <div>
-              <div className="review-item">
-                <div className="review-header">
-                  <span className="user">Rahul Sharma</span>
-                  <span className="date">2 days ago</span>
-                </div>
-                <div style={{ color: '#fbbf24', marginBottom: '8px' }}>★★★★★</div>
-                <p>Absolutely fresh! The quality is much better than what I get from the local market. Highly recommended.</p>
-              </div>
-              <div className="review-item">
-                <div className="review-header">
-                  <span className="user">Priya Patel</span>
-                  <span className="date">1 week ago</span>
-                </div>
-                <div style={{ color: '#fbbf24', marginBottom: '8px' }}>★★★★☆</div>
-                <p>Very good quality. The packaging was also neat and eco-friendly. Will order again.</p>
-              </div>
-            </div>
-          )}
-        </StyledTabContent>
-      </StyledTabsContainer>
-
-      {relatedProducts.length > 0 && (
-        <StyledRelatedSection>
-          <div className="section-header">
-            <h2>You might also like</h2>
-            <Link href="/products" className="view-all">
-              View All <ShoppingBag/>
-            </Link>
-          </div>
-          <div className="related-grid">
-            {relatedProducts.map((p: any, i: number) => (
-              <Link
-                key={i}
-                href={`/products/${p.name.toLowerCase().replace(/\s+/g, "-")}`}
-                style={{ textDecoration: "none" }}
-              >
-                <StyledFeatureProductCard
-                  style={{ width: "100%", minWidth: "auto" }}
-                >
-                  <div className="product-image-wrap">
-                    <button
-                      className={`wishlist-btn ${wishlistItems.some(item => item.name === p.name) ? 'liked' : ''}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleToggleWishlist(p);
-                      }}
-                      style={{
-                        position: 'absolute',
-                        top: '12px',
-                        right: '12px',
-                        zIndex: 10,
-                        width: '36px',
-                        height: '36px',
-                        borderRadius: '50%',
-                        background: 'white',
-                        border: 'none',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        color: wishlistItems.some(item => item.name === p.name) ? '#ff4d4f' : '#888',
-                        transition: 'all 0.3s'
-                      }}
-                    >
-                      {wishlistItems.some(item => item.name === p.name) ? <HiHeart /> : <HiOutlineHeart />}
-                    </button>
-                    <Image
-                      src={p.image_url}
-                      alt={p.name}
-                      width={150}
-                      height={150}
-                      className="product-image"
-                    />
-                  </div>
-                  <div className="product-content">
-                    <div className="product-name-row">
-                      <div style={{ minWidth: 0, flex: 1 }}>
-                        <div className="product-category">{p.category}</div>
-                        <div className="product-name" title={p.name}>{p.name}</div>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-                        <StarRating />
-                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#717d8e' }}>4.2</span>
-                      </div>
-                    </div>
-                    <div className="product-bottom-row">
-                      <div className="price-wrap">
-                        <p className="product-unit">{p.unit}</p>
-                        <p className="product-price">₹{p.price}</p>
-                      </div>
-                      <button 
-                        className="cart-btn" 
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '5px',
-                          padding: '8px 12px',
-                          borderRadius: '10px',
-                          border: '1.5px solid rgba(32, 184, 32, 0.25)',
-                          background: 'rgba(32, 184, 32, 0.07)',
-                          color: 'var(--green)',
-                          fontSize: '12px',
-                          fontWeight: 800,
-                          cursor: 'pointer',
-                          transition: 'all 0.28s ease'
-                        }}
-                        onClick={(ev) => {
-                          ev.preventDefault();
-                          ev.stopPropagation();
-                          dispatch(addToCart({ product: p, quantity: 1 }));
-                        }}
-                      >
-                        <ShoppingBag />
-                        <span>Add to Cart</span>
-                      </button>
-                    </div>
-                  </div>
-                </StyledFeatureProductCard>
-              </Link>
             ))}
           </div>
-        </StyledRelatedSection>
+        </div>
+      </div>
+
+      <Tabs defaultValue="description" className="mt-12">
+        <TabsList>
+          <TabsTrigger value="description">Description</TabsTrigger>
+          <TabsTrigger value="details">Additional Info</TabsTrigger>
+          <TabsTrigger value="reviews">Reviews (120)</TabsTrigger>
+        </TabsList>
+        <TabsContent value="description" className="max-w-3xl text-slate-600">
+          <h3 className="mb-2 font-bold text-slate-900">Product Description</h3>
+          <p>Our premium {product.name.toLowerCase()} is carefully selected for its superior quality and freshness.</p>
+        </TabsContent>
+        <TabsContent value="details" className="text-slate-600">
+          <ul className="list-disc space-y-1 pl-5">
+            <li><strong>Origin:</strong> Locally sourced from sustainable farms</li>
+            <li><strong>Storage:</strong> Keep in a cool, dry place or refrigerate</li>
+            <li><strong>Shelf Life:</strong> 5-7 days from date of delivery</li>
+            <li><strong>Weight:</strong> Sold by the {product.unit}</li>
+          </ul>
+        </TabsContent>
+        <TabsContent value="reviews" className="space-y-4">
+          <div>
+            <p className="font-bold">Rahul Sharma <span className="text-xs font-normal text-slate-400">2 days ago</span></p>
+            <p className="text-amber-400">★★★★★</p>
+            <p className="text-sm text-slate-600">Absolutely fresh! Highly recommended.</p>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {relatedProducts.length > 0 && (
+        <div className="mt-12">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-2xl font-black">You might also like</h2>
+            <Button asChild variant="link"><Link href="/products">View All</Link></Button>
+          </div>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {relatedProducts.map((p: any) => (
+              <ProductCard key={p.name} product={p} />
+            ))}
+          </div>
+        </div>
       )}
-    </StyledDetailContainer>
+    </div>
   );
 }

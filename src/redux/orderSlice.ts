@@ -13,18 +13,8 @@ interface OrderState {
   orders: Order[];
 }
 
-const loadOrdersState = (): Order[] => {
-  if (typeof window === 'undefined') return [];
-  try {
-    const saved = localStorage.getItem('orders');
-    return saved ? JSON.parse(saved) : [];
-  } catch (err) {
-    return [];
-  }
-};
-
 const initialState: OrderState = {
-  orders: loadOrdersState(),
+  orders: [],
 };
 
 const orderSlice = createSlice({

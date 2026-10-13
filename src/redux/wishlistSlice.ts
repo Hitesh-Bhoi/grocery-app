@@ -14,18 +14,8 @@ interface WishlistState {
   wishlistItems: WishlistItem[];
 }
 
-const loadWishlistState = (): WishlistItem[] => {
-  if (typeof window === 'undefined') return [];
-  try {
-    const saved = localStorage.getItem('wishlist');
-    return saved ? JSON.parse(saved) : [];
-  } catch (err) {
-    return [];
-  }
-};
-
 const initialState: WishlistState = {
-  wishlistItems: loadWishlistState(),
+  wishlistItems: [],
 };
 
 const wishlistSlice = createSlice({
@@ -34,14 +24,12 @@ const wishlistSlice = createSlice({
   reducers: {
     toggleWishlist: (state, action: PayloadAction<WishlistItem>) => {
       const name = action.payload.name.trim();
-      console.log("Toggling wishlist item:", name);
       const exists = state.wishlistItems.find(item => item.name.trim() === name);
       if (exists) {
         state.wishlistItems = state.wishlistItems.filter(item => item.name.trim() !== name);
       } else {
         state.wishlistItems.push({ ...action.payload, name });
       }
-      console.log("New Wishlist State:", state.wishlistItems);
       if (typeof window !== 'undefined') {
         localStorage.setItem('wishlist', JSON.stringify(state.wishlistItems));
       }
