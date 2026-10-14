@@ -42,19 +42,21 @@ const StatsSection = () => {
   ];
 
   return (
-    <section className="mx-5 my-10 grid grid-cols-2 gap-6 rounded-3xl bg-green-50 px-6 py-10 md:grid-cols-4">
-      {stats.map((stat) => (
-        <div key={stat.label} className="flex flex-col items-center gap-2 text-center">
-          <div className="flex size-12 items-center justify-center rounded-full bg-white text-2xl text-primary shadow-sm">
-            {stat.icon}
+    <div className="w-[calc(100%-40px)] mx-auto my-14">
+      <section className="grid w-full grid-cols-2 gap-8 rounded-[32px] bg-[#20b820] py-16 px-6 text-white md:grid-cols-4 items-center justify-items-center">
+        {stats.map((stat) => (
+          <div key={stat.label} className="flex flex-col items-center gap-3 text-center">
+            <div className="flex size-14 items-center justify-center rounded-full bg-white/20 text-2xl text-white shadow-inner backdrop-blur-sm">
+              {stat.icon}
+            </div>
+            <div className="text-3xl md:text-4xl font-black text-white">
+              <Counter end={stat.value} suffix={stat.suffix} />
+            </div>
+            <p className="text-sm font-semibold text-white/90">{stat.label}</p>
           </div>
-          <div className="text-3xl font-black text-slate-900">
-            <Counter end={stat.value} suffix={stat.suffix} />
-          </div>
-          <p className="text-sm font-medium text-slate-500">{stat.label}</p>
-        </div>
-      ))}
-    </section>
+        ))}
+      </section>
+    </div>
   );
 };
 

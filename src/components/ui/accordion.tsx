@@ -6,9 +6,16 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 function Accordion({
+  className,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
+  return (
+    <AccordionPrimitive.Root
+      data-slot="accordion"
+      className={cn("w-full", className)}
+      {...props}
+    />
+  );
 }
 
 function AccordionItem({

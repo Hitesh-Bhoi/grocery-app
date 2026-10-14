@@ -17,8 +17,8 @@ const ProfilePage = () => {
 
   return (
     <>
-      <div className="border-b bg-white px-5 py-6 pt-24">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
+      <div className="w-full border-b bg-white px-4 py-6 pt-24 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between">
           <div className="flex items-center gap-2">
             <HiOutlineUser className="text-2xl text-primary" />
             <h1 className="text-2xl font-black">Account Settings</h1>
@@ -29,7 +29,7 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-4xl px-5 py-8">
+      <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         <Card className="rounded-2xl border shadow-sm">
           <CardContent className="p-6 sm:p-10">
             <div className="flex flex-col items-center gap-6 border-b pb-8 sm:flex-row sm:gap-8">

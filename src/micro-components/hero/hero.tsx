@@ -83,7 +83,7 @@ export default function Hero() {
         {active.name.split(" ").at(-1)!.toUpperCase()}
       </p>
 
-      <div className="relative z-10 mx-auto grid min-h-svh max-w-7xl items-center gap-8 px-5 py-20 lg:grid-cols-[1.1fr_1fr_0.7fr]">
+      <div className="relative z-10 mx-auto grid min-h-svh w-[calc(100%-40px)] items-center gap-8 py-20 lg:grid-cols-[1.1fr_1fr_0.7fr]">
         <div key={activeIndex + filter} className="animate-[content-in_0.5s_ease]">
           <h1 className="text-[clamp(32px,5vw,56px)] font-black leading-tight text-slate-900">
             Nature&apos;s Best,{" "}

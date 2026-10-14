@@ -11,35 +11,35 @@ import TestimonialsSection from "@/micro-components/testimonials-section/Testimo
 const Dashboard = () => {
   return (
     <>
-      <div className="dashboard-container">
-        <div className="dashboard-carousel-section">
+      <div className="dashboard-container w-full overflow-x-hidden">
+        <div className="dashboard-carousel-section w-full">
           <Hero />
         </div>
-        <div className="featured-product-container">
+        <div className="featured-product-container w-full">
           <FeaturedProducts/>
         </div>
-        <div className="discount-card-main">
+        <div className="discount-card-main w-full">
           <DiscountCard/>
         </div>
-        <div className="mission-section-container">
+        <div className="mission-section-container w-full">
           <MissionSection />
         </div>
-        <div className="stats-section-container">
+        <div className="stats-section-container w-full">
           <StatsSection />
         </div>
-        <div className="testimonials-section-container">
+        <div className="testimonials-section-container w-full">
           <TestimonialsSection />
         </div>
-        <div className="service-card-container">
+        <div className="service-card-container w-full">
           <ServiceCard/>
         </div>
-        <div className="news-letter-container">
+        <div className="news-letter-container w-full">
           <NewseLetter/>
         </div>
-        <div className="faq-container">
+        <div className="faq-container w-full">
           <FAQ/>
         </div>
-        <div className="contact-us-container">
+        <div className="contact-us-container w-full">
           <ContactUs/>
         </div>
       </div>

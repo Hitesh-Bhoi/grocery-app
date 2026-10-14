@@ -27,8 +27,8 @@ const OrdersPage = () => {
 
   return (
     <>
-      <div className="border-b bg-white px-5 py-6 pt-24">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
+      <div className="w-full border-b bg-white px-4 py-6 pt-24 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
           <div className="flex items-center gap-2">
             <HiOutlineClipboardDocumentList className="text-2xl text-primary" />
             <h1 className="text-2xl font-black">Order History</h1>
@@ -39,7 +39,7 @@ const OrdersPage = () => {
         </div>
       </div>
 
-      <div className="mx-auto max-w-5xl px-5 py-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {orders.length > 0 ? (
           <div className="space-y-4">
             {orders.map((order) => (

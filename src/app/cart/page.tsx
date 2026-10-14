@@ -11,8 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Header = ({ title, subtitle }: { title: string; subtitle?: string }) => (
-  <div className="border-b bg-white px-5 py-6 pt-24">
-    <div className="mx-auto flex max-w-6xl items-center justify-between">
+  <div className="w-full border-b bg-white px-4 py-6 pt-24 sm:px-6 lg:px-8">
+    <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
       <div className="flex items-center gap-2">
         <HiOutlineShoppingBag className="text-2xl text-primary" />
         <h1 className="text-2xl font-black">{title}</h1>
@@ -112,7 +112,7 @@ export default function CartPage() {
   return (
     <>
       <Header title="Shopping Cart" subtitle={`You have ${totalItems} ${totalItems === 1 ? "item" : "items"} in your cart`} />
-      <div className="mx-auto grid max-w-6xl gap-6 px-5 py-8 lg:grid-cols-[1.4fr_0.8fr]">
+      <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[1.4fr_0.8fr] lg:px-8">
         <div className="space-y-3">
           <Button variant="outline" size="sm" className="text-red-500" onClick={() => setConfirmModal({
             show: true, title: "Clear Cart", message: "Are you sure you want to clear your entire cart?",

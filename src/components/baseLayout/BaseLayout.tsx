@@ -50,11 +50,11 @@ const BaseLayout = ({ children }: any) => {
   }
 
   return (
-    <>
+    <div className="flex min-h-screen w-full flex-col">
       <Topbar />
-      {children}
+      <main className="w-full flex-1">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 };
 
