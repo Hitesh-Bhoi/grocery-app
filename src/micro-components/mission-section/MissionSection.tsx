@@ -10,8 +10,8 @@ const MissionSection = () => {
   ];
 
   return (
-    <section id="mission-video" className="mx-auto my-12 grid max-w-6xl scroll-mt-24 items-center gap-10 px-5 md:grid-cols-2">
-      <div className="relative min-h-70 overflow-hidden rounded-3xl">
+    <section id="mission-video" className="mx-auto my-12 grid w-[calc(100%-40px)] scroll-mt-24 items-stretch rounded-[30px] border border-black/5 bg-white shadow-[0_15px_50px_rgba(0,0,0,0.04)] overflow-hidden md:grid-cols-2">
+      <div className="relative min-h-[360px] md:min-h-full overflow-hidden">
         <video
           src="https://res.cloudinary.com/dqwzddm94/video/upload/WhatsApp_Video_2026-01-10_at_2.31.36_PM_vtuk0z.mp4"
           autoPlay
@@ -21,7 +21,7 @@ const MissionSection = () => {
           className="absolute inset-0 size-full object-cover"
         />
       </div>
-      <div>
+      <div className="p-8 md:p-12 flex flex-col justify-center">
         <h2 className="mb-4 text-3xl font-black text-slate-900">
           Our Mission: <span className="text-primary">Sustainable Farming for a Better Future</span>
         </h2>

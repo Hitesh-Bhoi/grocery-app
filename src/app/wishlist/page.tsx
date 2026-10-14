@@ -31,8 +31,8 @@ const WishlistPage = () => {
 
   return (
     <>
-      <div className="border-b bg-white px-5 py-6 pt-24">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
+      <div className="w-full border-b bg-white px-4 py-6 pt-24 sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
           <div className="flex items-center gap-2">
             <HiOutlineHeart className="text-2xl text-primary" />
             <h1 className="text-2xl font-black">My Wishlist</h1>
@@ -40,7 +40,7 @@ const WishlistPage = () => {
           <p className="text-sm text-slate-500">You have <span className="font-bold">{wishlistItems.length} items</span> in wishlist</p>
         </div>
       </div>
-      <div className="mx-auto max-w-6xl px-5 py-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {wishlistItems.length > 0 ? (
           <>
             <Button variant="outline" size="sm" className="mb-4 text-red-500" onClick={() => setShowClearModal(true)}>

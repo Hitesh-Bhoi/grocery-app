@@ -37,7 +37,8 @@ const FAQ = () => {
   });
 
   return (
-    <section className="mx-auto my-12 max-w-3xl px-5">
+    <section className="mx-auto mb-16 w-[calc(100%-40px)] rounded-[20px] border border-green-600/30 bg-gradient-to-br from-[#f0faf0] via-white to-[#f7fef7] p-6 shadow-[0_10px_40px_rgba(0,0,0,0.08)] md:p-12">
+      <div className="mx-auto max-w-4xl">
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-black text-slate-900">
           Frequently Asked <span className="text-primary">Questions</span>
@@ -95,7 +96,8 @@ const FAQ = () => {
           <Button variant="outline"><MailEnvelope /> Email Support</Button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 };
 

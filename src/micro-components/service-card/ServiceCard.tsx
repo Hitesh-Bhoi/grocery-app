@@ -11,7 +11,7 @@ const ServiceCard = () => {
   ];
 
   return (
-    <section className="mx-auto my-12 max-w-6xl px-5">
+    <section className="mx-auto my-12 w-[calc(100%-40px)] px-2 md:px-5">
       <div className="mb-8 text-center">
         <h2 className="text-3xl font-black text-slate-900">
           Why People <span className="text-primary">Choose Farmiva</span>

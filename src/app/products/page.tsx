@@ -41,7 +41,7 @@ export default function ProductsPage() {
   }, [allProducts, searchTerm, activeCategory]);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-24">
+    <div className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="relative w-full max-w-md">
           <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
